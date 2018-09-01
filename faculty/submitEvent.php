@@ -1,7 +1,7 @@
 <?php
 $conn=mysqli_connect("fdb20.your-hosting.net", "2703787_sitems", "rkp12345", "2703787_sitems");
 
-//Used mysqli_real_escape_string o avoid apostrophe conflicts
+//Used mysqli_real_escape_string to avoid apostrophe conflicts
 $name=mysqli_real_escape_string($conn,trim($_POST['name']));
 $department=mysqli_real_escape_string($conn,trim($_POST['department']));
 $incharge=mysqli_real_escape_string($conn,trim($_POST['incharge']));
@@ -10,6 +10,8 @@ $category=mysqli_real_escape_string($conn,trim($_POST['category']));
 $type=mysqli_real_escape_string($conn,trim($_POST['type']));
 $describe=mysqli_real_escape_string($conn,trim($_POST['describe']));
 $achievement=mysqli_real_escape_string($conn,trim($_POST['achievement']));
+
+//Used implode to separate array values with commas
 $attendees=implode(',', (array)$_POST['attendees']);
 $for=implode(',', (array)$_POST['for']);
 $media=implode(',', (array)$_POST['media']);
@@ -18,17 +20,22 @@ if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 }
 else{
+    //Changed date format to YEAR-DATE-MONTH (2018-02-September)
     $newDate = date("Y-d-F", strtotime($date));
+    
+    //Set target directory to required value. If it doesn't exists, create it.
     $target_dir = '../Media/'.substr($newDate, 0, 4).str_replace(' ', '', $department).substr($newDate, 8).str_replace(' ', '', $category);
     if(!is_dir($target_dir)){
         mkdir($target_dir, 0777, true);
     }
     
+    //Rename the file and store it in the file storage, and it's path in the DB
     $uniqid=uniqid();
-    $fileType = strtolower(pathinfo(basename($_FILES["media"]["name"][0]),PATHINFO_EXTENSION));
-    $target_file = $target_dir.'/'.$uniqid.".".$fileType;
-    $new_name=$uniqid.".".$fileType;    
+    $fileType = strtolower(pathinfo(basename($_FILES["media"]["name"][0]),PATHINFO_EXTENSION));    
+    $new_name=substr($newDate, 0, 4).str_replace(' ', '', $department).substr($newDate, 8).str_replace(' ', '', $category).'/'.$uniqid.".".$fileType;    
 
+    //Target file is the complete path of thefile to be stored. move_uploaded_file uploads the file.
+    $target_file = $target_dir.'/'.$uniqid.".".$fileType;
     if (move_uploaded_file($_FILES["media"]["tmp_name"][0], $target_file)) {
         $sql="INSERT INTO events (name, department, incharge, date, type, eventDescribe, achievements, attendees, eventFor, category, media) 
             VALUES ('$name', '$department', '$incharge', '$date', '$type', '$describe', '$achievement', '$attendees', '$for', '$category', '$new_name')";
