@@ -14,7 +14,6 @@ $achievement=mysqli_real_escape_string($conn,trim($_POST['achievement']));
 //Used implode to separate array values with commas
 $attendees=implode(',', (array)$_POST['attendees']);
 $for=implode(',', (array)$_POST['for']);
-$media=implode(',', (array)$_POST['media']);
 
 if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
@@ -29,13 +28,16 @@ else{
         mkdir($target_dir, 0777, true);
     }
     
-    //Store the file in the file storage, and it's path in the DB
-    $filename=$_FILES["media"]["name"][0];
-    $new_name=substr($newDate, 0, 4).str_replace(' ', '', $department).substr($newDate, 8).str_replace(' ', '', $category).'/'.str_replace(' ', '', $name).'/'.$filename;    
-
-    //Target file is the complete path of the file to be stored. move_uploaded_file uploads the file.
-    $target_file = $target_dir.'/'.$filename;
-    move_uploaded_file($_FILES["media"]["tmp_name"][0], $target_file);
+    //Run a loop to store all the uploaded files in the file storage
+    $noOfFiles=count($_FILES["media"]["name"]);
+    $arrayOfFileNames=array();
+    for($i=0; $i<$noOfFiles; $i=$i+1){
+        $filename=$_FILES["media"]["name"][$i];
+        $target_file = $target_dir.'/'.$filename;
+        move_uploaded_file($_FILES["media"]["tmp_name"][$i], $target_file);
+        $arrayOfFileNames[$i]=substr($newDate, 0, 4).str_replace(' ', '', $department).substr($newDate, 8).str_replace(' ', '', $category).'/'.str_replace(' ', '', $name).'/'.$filename;
+    }
+    $new_name=implode(',', $arrayOfFileNames);
   
     //Store everything to the database
     $sql="INSERT INTO events (name, department, incharge, date, type, eventDescribe, achievements, attendees, eventFor, category, media) 
