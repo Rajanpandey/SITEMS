@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+
+<html>
+    
+    <head>
+        
+        <!-- Meta Data -->
+        <meta charset="utf-8">    
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Bootstrap -->
+        <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+        
+        <!-- Font Awesome -->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+        
+        <!-- My CSS -->  
+        <link rel="stylesheet" type="text/css" href="assets/mycss/login.css">
+        
+        <title>
+            SIT EMS Login
+        </title>
+    
+    </head>
+
+    <body>
+        
+        <div class="container">
+            
+            <br/>
+            
+            <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                    <center><img src="assets/img/sitLogo.png"></center>
+                </div>
+            </div>
+            
+            <br/><br/>
+            
+            <form action="auth_user.php">
+              <div class="container">
+                <label for="uname"><b>Username</b></label>
+                <input type="text" placeholder="Enter Username" name="uname" required>
+                <label for="psw"><b>Password</b></label>
+                <input type="password" placeholder="Enter Password" name="psw" required>
+                <button type="submit">Login</button>
+                <label>
+                  <input type="checkbox" checked="checked" name="remember"> Remember me
+                </label>
+              </div>
+              <div class="container" style="background-color:#f1f1f1">
+                <button type="button" class="cancelbtn">Cancel</button>
+                <span class="psw"><a href="#">Forgot Password?</a></span>
+              </div>
+            </form>
+            
+        </div>
+        
+        
+        <!--Load scripts-->
+        
+        <!-- Ajax -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>	
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+        
+        <!--Bootstrap-->
+        <script src="assets/js/bootstrap.min.js"></script>
+        
+        <!-- My JS -->  
+        <script src=""></script>
+        
+    </body>
+    
+</html>
