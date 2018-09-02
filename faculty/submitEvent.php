@@ -29,26 +29,25 @@ else{
         mkdir($target_dir, 0777, true);
     }
     
-    //Rename the file and store it in the file storage, and it's path in the DB
-    $uniqid=uniqid();
-    $fileType = strtolower(pathinfo(basename($_FILES["media"]["name"][0]),PATHINFO_EXTENSION));    
-    $new_name=substr($newDate, 0, 4).str_replace(' ', '', $department).substr($newDate, 8).str_replace(' ', '', $category).'/'.str_replace(' ', '', $name).'/'.$uniqid.".".$fileType;    
+    //Store the file in the file storage, and it's path in the DB
+    $filename=$_FILES["media"]["name"][0];
+    $new_name=substr($newDate, 0, 4).str_replace(' ', '', $department).substr($newDate, 8).str_replace(' ', '', $category).'/'.str_replace(' ', '', $name).'/'.$filename;    
 
-    //Target file is the complete path of thefile to be stored. move_uploaded_file uploads the file.
-    $target_file = $target_dir.'/'.$uniqid.".".$fileType;
-    if (move_uploaded_file($_FILES["media"]["tmp_name"][0], $target_file)) {
-        $sql="INSERT INTO events (name, department, incharge, date, type, eventDescribe, achievements, attendees, eventFor, category, media) 
-            VALUES ('$name', '$department', '$incharge', '$date', '$type', '$describe', '$achievement', '$attendees', '$for', '$category', '$new_name')";
-    
-        if(mysqli_query($conn, $sql)){
-            echo "<script type=\"text/javascript\">
-            alert('Your event has been sent to information officer for approval!');
-            window.location='home.html';
-            </script>";
-        } else {
-            echo "Error".$sql."<br>".$conn->error;
-        }      
-    }    
+    //Target file is the complete path of the file to be stored. move_uploaded_file uploads the file.
+    $target_file = $target_dir.'/'.$filename;
+    move_uploaded_file($_FILES["media"]["tmp_name"][0], $target_file);
+  
+    //Store everything to the database
+    $sql="INSERT INTO events (name, department, incharge, date, type, eventDescribe, achievements, attendees, eventFor, category, media) 
+        VALUES ('$name', '$department', '$incharge', '$date', '$type', '$describe', '$achievement', '$attendees', '$for', '$category', '$new_name')";    
+    if(mysqli_query($conn, $sql)){
+        echo "<script type=\"text/javascript\">
+        alert('Your event has been sent to information officer for approval!');
+        window.location='home.html';
+        </script>";
+    } else {
+        echo "Error".$sql."<br>".$conn->error;
+    }          
 }          
 
 mysqli_close($conn);
