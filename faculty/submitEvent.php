@@ -24,7 +24,7 @@ else{
     $newDate = date("Y-d-F", strtotime($date));
     
     //Set target directory to required value. If it doesn't exists, create it.
-    $target_dir = '../Media/'.substr($newDate, 0, 4).str_replace(' ', '', $department).substr($newDate, 8).str_replace(' ', '', $category);
+    $target_dir = '../Media/'.substr($newDate, 0, 4).str_replace(' ', '', $department).substr($newDate, 8).str_replace(' ', '', $category).'/'.str_replace(' ', '', $name);
     if(!is_dir($target_dir)){
         mkdir($target_dir, 0777, true);
     }
@@ -32,7 +32,7 @@ else{
     //Rename the file and store it in the file storage, and it's path in the DB
     $uniqid=uniqid();
     $fileType = strtolower(pathinfo(basename($_FILES["media"]["name"][0]),PATHINFO_EXTENSION));    
-    $new_name=substr($newDate, 0, 4).str_replace(' ', '', $department).substr($newDate, 8).str_replace(' ', '', $category).'/'.$uniqid.".".$fileType;    
+    $new_name=substr($newDate, 0, 4).str_replace(' ', '', $department).substr($newDate, 8).str_replace(' ', '', $category).'/'.str_replace(' ', '', $name).'/'.$uniqid.".".$fileType;    
 
     //Target file is the complete path of thefile to be stored. move_uploaded_file uploads the file.
     $target_file = $target_dir.'/'.$uniqid.".".$fileType;
