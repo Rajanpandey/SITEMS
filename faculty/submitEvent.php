@@ -26,6 +26,17 @@ if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 }
 else{
+    
+    //Login for dynamic url generation
+    $new_url=friendly_seo_string($name);                                
+    $counter=1;		
+    $intial_url=$new_url;	    
+    while(mysqli_num_rows(mysqli_query($conn, "SELECT * FROM events WHERE url ='$new_url'" ))){	          
+        $counter++;        
+        $new_url="{$intial_url}-{$counter}"; 
+        //If the url already exists for some other article then put a number (-2, -3...etc) infront of it
+    }      
+    
     //Changed date format to YEAR-DATE-MONTH (2018-02-September)
     $newDate = date("Y-d-F", strtotime($date));
     
@@ -47,8 +58,8 @@ else{
     $new_name=implode(',', $arrayOfFileNames);
   
     //Store everything to the database
-    $sql="INSERT INTO events (name, department, incharge, date, type, eventDescribe, achievements, attendees, eventFor, category, media, userId) 
-        VALUES ('$name', '$department', '$incharge', '$date', '$type', '$describe', '$achievement', '$attendees', '$for', '$category', '$new_name', '$userId')";    
+    $sql="INSERT INTO events (name, department, incharge, date, type, eventDescribe, achievements, attendees, eventFor, category, media, userId, url) 
+        VALUES ('$name', '$department', '$incharge', '$date', '$type', '$describe', '$achievement', '$attendees', '$for', '$category', '$new_name', '$userId', '$new_url')";    
     if(mysqli_query($conn, $sql)){
         echo "<script type=\"text/javascript\">
         alert('Your event has been sent to information officer for approval!');
@@ -58,6 +69,18 @@ else{
         echo "Error".$sql."<br>".$conn->error;
     }          
 }          
+
+function friendly_seo_string($vp_string){   														
+    $vp_string = trim($vp_string);														
+    $vp_string = html_entity_decode($vp_string);														
+    $vp_string = strip_tags($vp_string);														
+    $vp_string = strtolower($vp_string);														
+    $vp_string = preg_replace('~[^ a-z0-9_.]~', ' ', $vp_string);														
+    $vp_string = preg_replace('~ ~', '-', $vp_string);														
+    $vp_string = preg_replace('~-+~', '-', $vp_string);												
+    return $vp_string;
+						
+}  
 
 mysqli_close($conn);
 ?>

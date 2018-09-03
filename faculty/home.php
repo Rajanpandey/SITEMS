@@ -18,16 +18,36 @@ $resultUserId=mysqli_query($conn, $sqlUserId);
 $rowUserId=mysqli_fetch_assoc($resultUserId);
 $userId = $rowUserId['userId'];
 
+//Logic to count total pages for pagination
+$num_rec_per_page=10;
+$selecAllIssues = "SELECT * FROM events WHERE userId='$userId' AND approvalStatus='1'";
+$allIssues = mysqli_query($conn, $selecAllIssues);			  
+$total_records =mysqli_num_rows($allIssues);  //count number of issues					  
+$total_pages = ceil($total_records / $num_rec_per_page);   
+
+//Fetch Issues Posted By All Users
+if(isset($_GET["page"])) {
+    $page  = $_GET["page"]; 
+} else { 
+    $page=1; 
+}; 
+
 //Query to select events awaiting approval
-$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus IS NULL";
+$issues=0;
+$start_from=($page-1)*$num_rec_per_page; 
+$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus IS NULL ORDER BY date DESC LIMIT $start_from, $num_rec_per_page";
 $result=mysqli_query($conn, $sql);
-$array1=array();
-while($row=$result->fetch_array()){
+if($result!=NULL){
+    $array1 = array();
+    while($row=mysqli_fetch_assoc($result)){
          $array1[]=$row;
+         $issues++;
+    }
 }
+$totalUnapprovedEvents=mysqli_num_rows($result);
 
 //Query to select events that are approved
-$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus='1'";
+$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus='1' ORDER BY date DESC";
 $result=mysqli_query($conn, $sql);
 $array2=array();
 while($row=$result->fetch_array()){
@@ -103,6 +123,7 @@ mysqli_close($conn);
               <div class="form-group">
                 <label for="sedepartmentl1">Institute Level/Department:</label>
                   <select class="form-control" id="department"  name="department" required>
+                    <option disabled selected value> -- Select an option -- </option>
                     <option value="CSIT">CS/IT</option>
                     <option value="EnTc">EnTc</option>
                     <option value="Mech">Mech</option>
@@ -142,6 +163,7 @@ mysqli_close($conn);
               <div class="form-group">
                 <label for="type">Type:</label>
                   <select class="form-control" id="type" name="type" required>
+                    <option disabled selected value> -- Select an option -- </option>
                     <option value="Curricular Activity">Curricular Activity</option>
                     <option value="Co-Curricular Activity">Co-Curricular Activity</option>
                   </select>
@@ -150,6 +172,7 @@ mysqli_close($conn);
               <div class="form-group">
                 <label for="category">Category of event:</label>
                   <select class="form-control" id="category" name="category" required>
+                    <option disabled selected value> -- Select an option -- </option>
                     <option value="Guest Lecture">Guest Lecture</option>
                     <option value="Seminar">Seminar</option>
                     <option value="Workshop-Student Training">Workshop/Student Training</option>
@@ -197,12 +220,21 @@ mysqli_close($conn);
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <center><img class="logo" src="../assets/img/sitLogo.png"></center><br/>            
             <button type="button" class="btn btn-outline-info btn-block" data-toggle="modal" data-target="#myModal">Submit a new event</button><br/><br/>
-        </div>
+        </div>        
         
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <h3>Events awaiting approval: </h3><br/>
         </div>
         
+    <?php 
+        if($totalUnapprovedEvents==0){
+    ?>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-success">
+          <strong>Congrats!</strong> There is no unapproved event!
+        </div>
+    <?php 
+        }else{
+    ?>
         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
               <a><div class="posts">
                <div class="image">
@@ -214,66 +246,280 @@ mysqli_close($conn);
                 </div>
               </div></a>
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
-              <a><div class="posts">
-               <div class="image">
-                <img class="articleImage" src="../assets/img/Conference.jpg">
-               </div>
-               <div class="container" id="description">
-                  <h4 class="card-title">Conference on Machine Learning and IOT</h4>
-                  <p class="card-text">Conference on Machine Learning and IOT Conference on Machine Learning and IOT</p>
-                </div>
-              </div></a>
-        </div>
         <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4"></div>
         <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4"></div>
         <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 seeAll">
             <a><button class="btn btn-danger btn-sm " >See More</button></a>
         </div>  
+    <?php 
+        }
+    ?>        
         
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <br/><hr/><h3>Past Events: </h3><br/>
+            <hr/><br/>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+            <h3>Past Events: </h3>
+        </div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"></div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
+<?php  
+    //If page 1-3 is selected, show first 5 pages
+    if($page<4){
+?>
+    <ul class="pagination">
+    <?php     
+    if($page==1){
+        ?>
+        <li class="page-item disabled"><a class="page-link" href='home.php?page=1'> << </a></li>
+    <?php
+    }
+    else {
+        ?>
+        <li class="page-item"><a class="page-link" href='home.php?page=1'> << </a></li>
+    <?php
+    }    
+        
+    if($total_pages<=5) {
+        for ($i=1; $i<=$total_pages; $i++) { 							 
+            if($i == $page){	
+                ?>
+                <li class="page-item active"><a class="page-link"><?php echo "$i" ?></a></li>	
+                <?php				   
+            } else{
+                ?>
+                <li class="page-item"><a class="page-link" href='home.php?page=<?php echo "$i" ?>'><?php echo "$i" ?></a></li>
+            <?php	
+            }							
+        };
+    }
+        
+    else {
+        for ($i=1; $i<=5; $i++) { 							 
+            if($i == $page){	
+                ?>
+                <li class="page-item active"><a class="page-link"><?php echo "$i" ?></a></li>	
+                <?php				   
+            } else{
+                ?>
+                <li class="page-item"><a class="page-link" href='home.php?page=<?php echo "$i" ?>'><?php echo "$i" ?></a></li>
+            <?php	
+            }							
+        };
+    }
+                             
+    if($page==$total_pages){
+    ?>
+    <li class="page-item disabled"><a class="page-link" href='home.php?page=<?php echo "$total_pages" ?>'> >> </a></li>	
+    <?php
+    }
+    else {
+        ?>
+        <li class="page-item"><a class="page-link" href='home.php?page=<?php echo "$total_pages" ?>'> >> </a></li>	
+     <?php	
+        }
+    ?>
+</ul> 
+
+<?php	
+        }
+    //If page selected is more than total-3, show last five pages
+    elseif($page>$total_pages-3){
+?>
+<ul class="pagination">
+    <?php     
+    if($page==1){
+        ?>
+        <li class="page-item disabled"><a class="page-link" href='home.php?page=1'> << </a></li>
+    <?php
+    }
+    else {
+        ?>
+        <li class="page-item"><a class="page-link" href='home.php?page=1'> << </a></li>
+    <?php
+    }
+                             
+    for ($i=$total_pages-4; $i<=$total_pages; $i++) { 							 
+        if($i == $page){	
+            ?>
+            <li class="page-item active"><a class="page-link"><?php echo "$i" ?></a></li>	
+            <?php				   
+        } else{
+            ?>
+            <li class="page-item"><a class="page-link" href='home.php?page=<?php echo "$i" ?>'><?php echo "$i" ?></a></li>
+        <?php	
+        }							
+    };
+                             
+    if($page==$total_pages){
+    ?>
+    <li class="page-item disabled"><a class="page-link" href='home.php?page=<?php echo "$total_pages" ?>'> >> </a></li>	
+    <?php
+    }
+    else {
+        ?>
+        <li class="page-item"><a class="page-link" href='home.php?page=<?php echo "$total_pages" ?>'> >> </a></li>	
+     <?php	
+        }
+    ?>
+</ul> 
+
+<?php	
+        }
+    //If any middle page is selected, show that page and left two and right two along with it
+    else{
+?>
+
+<ul class="pagination">
+    <?php     
+    if($page==1){
+        ?>
+        <li class="page-item disabled"><a class="page-link" href='home.php?page=1'> << </a></li>
+    <?php
+    }
+    else {
+        ?>
+        <li class="page-item"><a class="page-link" href='home.php?page=1'> << </a></li>
+    <?php
+    }
+                             
+    for ($i=$page-2; $i<=$page+2; $i++) { 							 
+        if($i == $page){	
+            ?>
+            <li class="page-item active"><a class="page-link"><?php echo "$i" ?></a></li>	
+            <?php				   
+        } else{
+            ?>
+            <li class="page-item"><a class="page-link" href='home.php?page=<?php echo "$i" ?>'><?php echo "$i" ?></a></li>
+        <?php	
+        }							
+    };
+                             
+    if($page==$total_pages){
+    ?>
+    <li class="page-item disabled"><a class="page-link" href='home.php?page=<?php echo "$total_pages" ?>'> >> </a></li>	
+    <?php
+    }
+    else {
+        ?>
+        <li class="page-item"><a class="page-link" href='home.php?page=<?php echo "$total_pages" ?>'> >> </a></li>	
+     <?php	
+        }
+    ?>
+</ul> 
+<?php	
+        }
+?>
         </div>
         
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
-              <a><div class="posts">
-               <div class="image">
-                <img class="articleImage" src="../assets/img/<?php echo $array2[0]['category']; ?>.jpg">
-               </div>
-               <div class="container" id="description">
-                  <h4 class="card-title"><?php echo $array2[0]['name']; ?></h4>
-                  <p class="card-text"><?php echo $array2[0]['eventDescribe']; ?></p>
-                </div>
-              </div></a>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-info">
+          <a class="alert-link toggleFilters">Click Here</a> for more filters to sort!
+          
+          <form class="moreFilters" style="display:none">
+            <br/>
+              
+              <div class="form-group">
+                <label for="sedepartmentl1">Institute Level/Department:</label>
+                  <select class="form-control" id="department1" name="departmentSort">
+                    <option disabled selected value> -- Select an option -- </option>
+                    <option value="CSIT">CS/IT</option>
+                    <option value="EnTc">EnTc</option>
+                    <option value="Mech">Mech</option>
+                    <option value="Civil">Civil</option>
+                    <option value="Applied Science">Applied Science</option>
+                    <option value="Reverb">Reverb</option>
+                    <option value="EP2C">EP2C</option>
+                    <option value="Techfest">Techfest</option>
+                    <option value="CSR">CSR</option>
+                    <option value="Other Club Activities">Other Club Activities</option>
+                  </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="year">Year:</label>
+                <input type="number" min="2008" max="2020" step="1" value="" id="year1" class="form-control" name="yearSort"/>
+              </div>
+              
+              <div class="form-group">
+                <label for="date">Attendees:</label>
+                <label class="checkbox-inline"><input type="checkbox" value="Staff" id="Staff1" name="attendeesSort[]">&nbsp; Staff &nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline"><input type="checkbox" value="Faculty" id="Faculty1" name="attendeesSort[]">&nbsp; Faculty &nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline"><input type="checkbox" value="Student" id="Student1" name="attendeesSort[]">&nbsp; Student &nbsp;&nbsp;&nbsp;</label>
+              </div>
+              
+              <div class="form-group">
+                <label for="for">Event is for:</label>
+                <label class="checkbox-inline"><input type="checkbox" value="B.Tech" id="B.Tech1" name="eventFor[]">&nbsp; B.Tech &nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline"><input type="checkbox" value="M.Tech" id="M.Tech1" name="eventFor[]">&nbsp; M.Tech &nbsp;&nbsp;&nbsp;</label>
+              </div>
+              
+              <div class="form-group">
+                <label for="type">Type:</label>
+                  <select class="form-control" id="type1" name="typeSort">
+                    <option disabled selected value> -- Select an option -- </option>
+                    <option value="Curricular Activity">Curricular Activity</option>
+                    <option value="Co-Curricular Activity">Co-Curricular Activity</option>
+                  </select>
+              </div>     
+                       
+              <div class="form-group">
+                <label for="category">Category of event:</label>
+                  <select class="form-control" id="category1"  name="categorySort"> 
+                    <option disabled selected value> -- Select an option -- </option>
+                    <option value="Guest Lecture">Guest Lecture</option>
+                    <option value="Seminar">Seminar</option>
+                    <option value="Workshop-Student Training">Workshop/Student Training</option>
+                    <option value="Faculty Development Programme">FDP</option>
+                    <option value="Industrial Visit">Industrial Visit</option>
+                    <option value="Industry-Institute Interaction Activity">Industry-Institute Interaction Activity</option>
+                    <option value="Alumni Activity">Alumni Activity</option>
+                    <option value="Entrepreneurship Initiatives">Entrepreneurship Initiatives</option>
+                    <option value="Cultural Events">Cultural Events</option>
+                    <option value="Spons Activity Event">Spons Activity Event</option>
+                    <option value="Annual College Gathering Fest">Annual College Gathering Fest</option>
+                    <option value="Annual College Technical Fest">Annual College Technical Fest</option>
+                    <option value="Conference">Conference</option>
+                    <option value="">Any Other Activity:</option>
+                  </select>
+              </div>
+              
+              <button type="submit" class="btn btn-outline-primary" id="applyFilters">Apply Filters</button>  
+          </form>
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
-              <a><div class="posts">
-               <div class="image">
-                <img class="articleImage" src="../assets/img/Conference.jpg">
-               </div>
-               <div class="container" id="description">
-                  <h4 class="card-title">Conference on Machine Learning and IOT</h4>
-                  <p class="card-text">Conference on Machine Learning and IOT Conference on Machine Learning and IOT</p>
-                </div>
-              </div></a>
+        
+        <div class="table-responsive" id="eventsTable">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th><a class="column_sort" id="name" data-order="desc" href="#">Name of the Event</a></th>
+              <th><a class="column_sort" id="category" data-order="desc" href="#">Category</a></th>              
+              <th><a class="column_sort" id="eventDescribe" data-order="desc" href="#">Description</a></th>
+              <th><a class="column_sort" id="date" data-order="desc" href="#">Date</a></th>
+            </tr>
+          </thead>
+          <tbody>
+          <?php
+            if($page==$total_pages && ($total_records % 10)!=0){
+                $n=$total_records % 10;
+            }else{
+                $n=10;
+            }
+      
+            for($i=0; $i<$n; $i=$i+1){
+            ?>
+                <tr>
+                  <td><?php echo $array2[$i]['name']; ?></td>
+                  <td><?php echo $array2[$i]['category']; ?></td>
+                  <td><?php echo $array2[$i]['eventDescribe']; ?></td>
+                  <td><?php echo $array2[$i]['date']; ?></td>
+                </tr>
+          <?php
+            }  
+          ?> 
+          </tbody>
+        </table>  
         </div>
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
-              <a><div class="posts">
-               <div class="image">
-                <img class="articleImage" src="../assets/img/Conference.jpg">
-               </div>
-               <div class="container" id="description">
-                  <h4 class="card-title">Conference on Machine Learning and IOT</h4>
-                  <p class="card-text">Conference on Machine Learning and IOT Conference on Machine Learning and IOT</p>
-                </div>
-              </div></a>
-        </div>
-        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4"></div>
-        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4"></div>
-        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 seeAll">
-            <a><button class="btn btn-danger btn-sm " >See More</button></a>
-        </div>        
-    </div><br/><hr/>
+    </div><br/><br/><br/>
 </div>
 
 <!-- Ajax -->
@@ -285,4 +531,61 @@ mysqli_close($conn);
 
 <!-- My JS -->
 <script src="../assets/myjs/navbar.js"></script>
+
+<script>  
+ $(document).ready(function(){  
+      $(document).on('click', '.column_sort', function(){  
+           var column_name = $(this).attr("id");  
+           var order = $(this).data("order");  
+           var arrow = ''; 
+           if(order == 'desc')  
+           {  
+                arrow = '&nbsp;<i class="fa fa-chevron-down" aria-hidden="true"></i>';  
+           }  
+           else  
+           {  
+                arrow = '&nbsp;<i class="fa fa-chevron-up" aria-hidden="true"></i>';  
+           }  
+           $.ajax({  
+                url:"sortColumns.php",  
+                method:"POST",  
+                data:{column_name:column_name, order:order},  
+                success:function(data)  
+                {  
+                     $('#eventsTable').html(data);  
+                     $('#'+column_name+'').append(arrow);  
+                }  
+           })  
+      });  
+ });  
+    
+ $(document).ready(function(){  
+      $('form').submit(function(event) { 
+          var department1 = $("#department1").val();
+          var year = $("#year1").val();
+          var type = $("#password1").val();
+          var category = $("#contact1").val();
+          var dataString = 'department1='+ department1 + '&year1='+ year + '&type1='+ type + '&category1='+ category;
+
+           $.ajax({  
+                url:"sortFilters.php",  
+                type : "POST",  
+                data : dataString,
+                success:function(data)  
+                {  
+                    alert(data);
+                     $('#eventsTable').html(data);
+                }  
+           })  
+      });  
+ }); 
+    
+$(document).ready(function(){
+    $(".toggleFilters").click(function(){
+        $(".moreFilters").toggle();
+    });
+    
+
+});
+ </script> 
 </body>
