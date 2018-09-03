@@ -1,4 +1,11 @@
 <?php
+include('../session.php');
+$login_session=$_SESSION['login_user'];
+$sqlUserId="SELECT userId FROM users WHERE email='$login_session'";
+$resultUserId=mysqli_query($conn, $sqlUserId);
+$rowUserId=mysqli_fetch_assoc($resultUserId);
+$userId = $rowUserId['userId'];
+
 $conn=mysqli_connect("localhost", "root", "", "sitems");
 
 //Used mysqli_real_escape_string to avoid apostrophe conflicts
@@ -40,8 +47,8 @@ else{
     $new_name=implode(',', $arrayOfFileNames);
   
     //Store everything to the database
-    $sql="INSERT INTO events (name, department, incharge, date, type, eventDescribe, achievements, attendees, eventFor, category, media) 
-        VALUES ('$name', '$department', '$incharge', '$date', '$type', '$describe', '$achievement', '$attendees', '$for', '$category', '$new_name')";    
+    $sql="INSERT INTO events (name, department, incharge, date, type, eventDescribe, achievements, attendees, eventFor, category, media, userId) 
+        VALUES ('$name', '$department', '$incharge', '$date', '$type', '$describe', '$achievement', '$attendees', '$for', '$category', '$new_name', '$userId')";    
     if(mysqli_query($conn, $sql)){
         echo "<script type=\"text/javascript\">
         alert('Your event has been sent to information officer for approval!');

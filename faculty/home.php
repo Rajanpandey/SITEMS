@@ -12,16 +12,26 @@ if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 }
 
+//Query to select the user
 $sqlUserId="SELECT userId FROM users WHERE email='$login_session'";
 $resultUserId=mysqli_query($conn, $sqlUserId);
 $rowUserId=mysqli_fetch_assoc($resultUserId);
 $userId = $rowUserId['userId'];
 
-$sql="SELECT * FROM events WHERE userId='$userId'";
+//Query to select events awaiting approval
+$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus IS NULL";
 $result=mysqli_query($conn, $sql);
-$array=array();
+$array1=array();
 while($row=$result->fetch_array()){
-         $array[]=$row;
+         $array1[]=$row;
+}
+
+//Query to select events that are approved
+$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus='1'";
+$result=mysqli_query($conn, $sql);
+$array2=array();
+while($row=$result->fetch_array()){
+         $array2[]=$row;
 }
 
 mysqli_close($conn);
@@ -87,12 +97,12 @@ mysqli_close($conn);
           <form method="POST" action="submitEvent.php" enctype='multipart/form-data' >
              <div class="form-group">
                 <label for="event">Name of the event:</label>
-                <input type="text" class="form-control" id="event" name="name">
+                <input type="text" class="form-control" id="event" name="name" required>
               </div>
               
               <div class="form-group">
                 <label for="sedepartmentl1">Institute Level/Department:</label>
-                  <select class="form-control" id="department"  name="department">
+                  <select class="form-control" id="department"  name="department" required>
                     <option value="CSIT">CS/IT</option>
                     <option value="EnTc">EnTc</option>
                     <option value="Mech">Mech</option>
@@ -108,12 +118,12 @@ mysqli_close($conn);
               
               <div class="form-group">
                   <label for="incharge">Event In-charge (Name of faculty/staff):</label>
-                  <textarea class="form-control" rows="5" id="incharge" maxlength="1000" name="incharge"></textarea>
+                  <textarea class="form-control" rows="5" id="incharge" maxlength="1000" name="incharge" required></textarea>
               </div>
               
               <div class="form-group">
                 <label for="date">Date of the event:</label>
-                <input type="date" class="form-control" id="date"  name="date">
+                <input type="date" class="form-control" id="date"  name="date" required>
               </div>
               
               <div class="form-group">
@@ -131,7 +141,7 @@ mysqli_close($conn);
               
               <div class="form-group">
                 <label for="type">Type:</label>
-                  <select class="form-control" id="type" name="type">
+                  <select class="form-control" id="type" name="type" required>
                     <option value="Curricular Activity">Curricular Activity</option>
                     <option value="Co-Curricular Activity">Co-Curricular Activity</option>
                   </select>
@@ -139,7 +149,7 @@ mysqli_close($conn);
                        
               <div class="form-group">
                 <label for="category">Category of event:</label>
-                  <select class="form-control" id="category" name="category">
+                  <select class="form-control" id="category" name="category" required>
                     <option value="Guest Lecture">Guest Lecture</option>
                     <option value="Seminar">Seminar</option>
                     <option value="Workshop-Student Training">Workshop/Student Training</option>
@@ -159,12 +169,12 @@ mysqli_close($conn);
               
               <div class="form-group">
                   <label for="describe">A paragraph describing the event/activty:</label>
-                  <textarea class="form-control" rows="5" id="describe" maxlength="5000" name="describe"></textarea>
+                  <textarea class="form-control" rows="5" id="describe" maxlength="5000" name="describe" required></textarea>
               </div>
               
               <div class="form-group">
                   <label for="achievement">Any Achievement/Awards won during the said activity:</label>
-                  <textarea class="form-control" rows="5" id="achievement" maxlength="1000" name="achievement"></textarea>
+                  <textarea class="form-control" rows="5" id="achievement" maxlength="1000" name="achievement" required></textarea>
               </div>
               
               <div class="form-group">
@@ -187,16 +197,52 @@ mysqli_close($conn);
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <center><img class="logo" src="../assets/img/sitLogo.png"></center><br/>            
             <button type="button" class="btn btn-outline-info btn-block" data-toggle="modal" data-target="#myModal">Submit a new event</button><br/><br/>
-            <h3>Past Events: </h3><br/>
+        </div>
+        
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <h3>Events awaiting approval: </h3><br/>
+        </div>
+        
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+              <a><div class="posts">
+               <div class="image">
+                <img class="articleImage" src="../assets/img/<?php echo $array1[0]['category']; ?>.jpg">
+               </div>
+               <div class="container" id="description">
+                  <h4 class="card-title"><?php echo $array1[0]['name']; ?></h4>
+                  <p class="card-text"><?php echo $array1[0]['eventDescribe']; ?></p>
+                </div>
+              </div></a>
         </div>
         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
               <a><div class="posts">
                <div class="image">
-                <img class="articleImage" src="../assets/img/<?php echo $array[0]['category']; ?>.jpg">
+                <img class="articleImage" src="../assets/img/Conference.jpg">
                </div>
                <div class="container" id="description">
-                  <h4 class="card-title"><?php echo $array[0]['name']; ?></h4>
-                  <p class="card-text"><?php echo $array[0]['eventDescribe']; ?></p>
+                  <h4 class="card-title">Conference on Machine Learning and IOT</h4>
+                  <p class="card-text">Conference on Machine Learning and IOT Conference on Machine Learning and IOT</p>
+                </div>
+              </div></a>
+        </div>
+        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4"></div>
+        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4"></div>
+        <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 seeAll">
+            <a><button class="btn btn-danger btn-sm " >See More</button></a>
+        </div>  
+        
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+            <br/><hr/><h3>Past Events: </h3><br/>
+        </div>
+        
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+              <a><div class="posts">
+               <div class="image">
+                <img class="articleImage" src="../assets/img/<?php echo $array2[0]['category']; ?>.jpg">
+               </div>
+               <div class="container" id="description">
+                  <h4 class="card-title"><?php echo $array2[0]['name']; ?></h4>
+                  <p class="card-text"><?php echo $array2[0]['eventDescribe']; ?></p>
                 </div>
               </div></a>
         </div>
@@ -227,7 +273,7 @@ mysqli_close($conn);
         <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4 seeAll">
             <a><button class="btn btn-danger btn-sm " >See More</button></a>
         </div>        
-    </div>
+    </div><br/><hr/>
 </div>
 
 <!-- Ajax -->
