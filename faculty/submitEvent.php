@@ -1,5 +1,5 @@
 <?php
-$conn=mysqli_connect("fdb20.your-hosting.net", "2703787_sitems", "rkp12345", "2703787_sitems");
+$conn=mysqli_connect("localhost", "root", "", "sitems");
 
 //Used mysqli_real_escape_string to avoid apostrophe conflicts
 $name=mysqli_real_escape_string($conn,trim($_POST['name']));
@@ -45,7 +45,7 @@ else{
     if(mysqli_query($conn, $sql)){
         echo "<script type=\"text/javascript\">
         alert('Your event has been sent to information officer for approval!');
-        window.location='home.html';
+        window.location='home.php';
         </script>";
     } else {
         echo "Error".$sql."<br>".$conn->error;
