@@ -258,6 +258,81 @@ mysqli_close($conn);
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <hr/><br/>
         </div>
+        
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-info">
+          <a class="alert-link toggleFilters">Click Here</a> for more filters to sort!
+          
+          <form class="moreFilters" style="display:none">
+            <br/>
+              
+              <div class="form-group">
+                <label for="sedepartmentl1">Institute Level/Department:</label>
+                  <select class="form-control" id="department1" name="departmentSort">
+                    <option disabled selected value=""> -- Select an option -- </option>
+                    <option value="CSIT">CS/IT</option>
+                    <option value="EnTc">EnTc</option>
+                    <option value="Mech">Mech</option>
+                    <option value="Civil">Civil</option>
+                    <option value="Applied Science">Applied Science</option>
+                    <option value="Reverb">Reverb</option>
+                    <option value="EP2C">EP2C</option>
+                    <option value="Techfest">Techfest</option>
+                    <option value="CSR">CSR</option>
+                    <option value="Other Club Activities">Other Club Activities</option>
+                  </select>
+              </div>
+              
+              <div class="form-group">
+                <label for="year">Year:</label>
+                <input type="number" min="2008" max="2020" step="1" value="" id="year1" class="form-control" name="yearSort"/>
+              </div>
+              
+              <div class="form-group">
+                <label for="date">Attendees:</label>
+                <label class="checkbox-inline"><input type="checkbox" value="Staff" id="Staff1" name="attendeesSort[]">&nbsp; Staff &nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline"><input type="checkbox" value="Faculty" id="Faculty1" name="attendeesSort[]">&nbsp; Faculty &nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline"><input type="checkbox" value="Student" id="Student1" name="attendeesSort[]">&nbsp; Student &nbsp;&nbsp;&nbsp;</label>
+              </div>
+              
+              <div class="form-group">
+                <label for="for">Event is for:</label>
+                <label class="checkbox-inline"><input type="checkbox" value="B.Tech" id="B.Tech1" name="eventFor[]">&nbsp; B.Tech &nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline"><input type="checkbox" value="M.Tech" id="M.Tech1" name="eventFor[]">&nbsp; M.Tech &nbsp;&nbsp;&nbsp;</label>
+              </div>
+              
+              <div class="form-group">
+                <label for="type">Type:</label>
+                  <select class="form-control" id="type1" name="typeSort">
+                    <option disabled selected value=""> -- Select an option -- </option>
+                    <option value="Curricular Activity">Curricular Activity</option>
+                    <option value="Co-Curricular Activity">Co-Curricular Activity</option>
+                  </select>
+              </div>     
+                       
+              <div class="form-group">
+                <label for="category">Category of event:</label>
+                  <select class="form-control" id="category1"  name="categorySort"> 
+                    <option disabled selected value=""> -- Select an option -- </option>
+                    <option value="Guest Lecture">Guest Lecture</option>
+                    <option value="Seminar">Seminar</option>
+                    <option value="Workshop-Student Training">Workshop/Student Training</option>
+                    <option value="Faculty Development Programme">FDP</option>
+                    <option value="Industrial Visit">Industrial Visit</option>
+                    <option value="Industry-Institute Interaction Activity">Industry-Institute Interaction Activity</option>
+                    <option value="Alumni Activity">Alumni Activity</option>
+                    <option value="Entrepreneurship Initiatives">Entrepreneurship Initiatives</option>
+                    <option value="Cultural Events">Cultural Events</option>
+                    <option value="Spons Activity Event">Spons Activity Event</option>
+                    <option value="Annual College Gathering Fest">Annual College Gathering Fest</option>
+                    <option value="Annual College Technical Fest">Annual College Technical Fest</option>
+                    <option value="Conference">Conference</option>
+                    <option value="">Any Other Activity:</option>
+                  </select>
+              </div>
+              
+              <button type="submit" class="btn btn-outline-primary" id="applyFilters">Apply Filters</button>  
+          </form>
+        </div>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
             <h3>Past Events: </h3>
         </div>
@@ -412,81 +487,6 @@ mysqli_close($conn);
 ?>
         </div>
         
-        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-info">
-          <a class="alert-link toggleFilters">Click Here</a> for more filters to sort!
-          
-          <form class="moreFilters" style="display:none">
-            <br/>
-              
-              <div class="form-group">
-                <label for="sedepartmentl1">Institute Level/Department:</label>
-                  <select class="form-control" id="department1" name="departmentSort">
-                    <option disabled selected value> -- Select an option -- </option>
-                    <option value="CSIT">CS/IT</option>
-                    <option value="EnTc">EnTc</option>
-                    <option value="Mech">Mech</option>
-                    <option value="Civil">Civil</option>
-                    <option value="Applied Science">Applied Science</option>
-                    <option value="Reverb">Reverb</option>
-                    <option value="EP2C">EP2C</option>
-                    <option value="Techfest">Techfest</option>
-                    <option value="CSR">CSR</option>
-                    <option value="Other Club Activities">Other Club Activities</option>
-                  </select>
-              </div>
-              
-              <div class="form-group">
-                <label for="year">Year:</label>
-                <input type="number" min="2008" max="2020" step="1" value="" id="year1" class="form-control" name="yearSort"/>
-              </div>
-              
-              <div class="form-group">
-                <label for="date">Attendees:</label>
-                <label class="checkbox-inline"><input type="checkbox" value="Staff" id="Staff1" name="attendeesSort[]">&nbsp; Staff &nbsp;&nbsp;&nbsp;</label>
-                <label class="checkbox-inline"><input type="checkbox" value="Faculty" id="Faculty1" name="attendeesSort[]">&nbsp; Faculty &nbsp;&nbsp;&nbsp;</label>
-                <label class="checkbox-inline"><input type="checkbox" value="Student" id="Student1" name="attendeesSort[]">&nbsp; Student &nbsp;&nbsp;&nbsp;</label>
-              </div>
-              
-              <div class="form-group">
-                <label for="for">Event is for:</label>
-                <label class="checkbox-inline"><input type="checkbox" value="B.Tech" id="B.Tech1" name="eventFor[]">&nbsp; B.Tech &nbsp;&nbsp;&nbsp;</label>
-                <label class="checkbox-inline"><input type="checkbox" value="M.Tech" id="M.Tech1" name="eventFor[]">&nbsp; M.Tech &nbsp;&nbsp;&nbsp;</label>
-              </div>
-              
-              <div class="form-group">
-                <label for="type">Type:</label>
-                  <select class="form-control" id="type1" name="typeSort">
-                    <option disabled selected value> -- Select an option -- </option>
-                    <option value="Curricular Activity">Curricular Activity</option>
-                    <option value="Co-Curricular Activity">Co-Curricular Activity</option>
-                  </select>
-              </div>     
-                       
-              <div class="form-group">
-                <label for="category">Category of event:</label>
-                  <select class="form-control" id="category1"  name="categorySort"> 
-                    <option disabled selected value> -- Select an option -- </option>
-                    <option value="Guest Lecture">Guest Lecture</option>
-                    <option value="Seminar">Seminar</option>
-                    <option value="Workshop-Student Training">Workshop/Student Training</option>
-                    <option value="Faculty Development Programme">FDP</option>
-                    <option value="Industrial Visit">Industrial Visit</option>
-                    <option value="Industry-Institute Interaction Activity">Industry-Institute Interaction Activity</option>
-                    <option value="Alumni Activity">Alumni Activity</option>
-                    <option value="Entrepreneurship Initiatives">Entrepreneurship Initiatives</option>
-                    <option value="Cultural Events">Cultural Events</option>
-                    <option value="Spons Activity Event">Spons Activity Event</option>
-                    <option value="Annual College Gathering Fest">Annual College Gathering Fest</option>
-                    <option value="Annual College Technical Fest">Annual College Technical Fest</option>
-                    <option value="Conference">Conference</option>
-                    <option value="">Any Other Activity:</option>
-                  </select>
-              </div>
-              
-              <button type="submit" class="btn btn-outline-primary" id="applyFilters">Apply Filters</button>  
-          </form>
-        </div>
-        
         <div class="table-responsive" id="eventsTable">
         <table class="table table-bordered table-hover">
           <thead>
@@ -495,6 +495,7 @@ mysqli_close($conn);
               <th><a class="column_sort" id="category" data-order="desc" href="#">Category</a></th>              
               <th><a class="column_sort" id="eventDescribe" data-order="desc" href="#">Description</a></th>
               <th><a class="column_sort" id="date" data-order="desc" href="#">Date</a></th>
+              <th><a class="column_sort" id="url" data-order="" href="#">Details</a></th>
             </tr>
           </thead>
           <tbody>
@@ -507,12 +508,15 @@ mysqli_close($conn);
       
             for($i=0; $i<$n; $i=$i+1){
             ?>
-                <tr>
+                <div id="eventRows">
+                 <tr>
                   <td><?php echo $array2[$i]['name']; ?></td>
                   <td><?php echo $array2[$i]['category']; ?></td>
                   <td><?php echo $array2[$i]['eventDescribe']; ?></td>
                   <td><?php echo $array2[$i]['date']; ?></td>
+                  <td><a href="events.php/url=<?php echo $array2[$i]['url']; ?>"><button  type="button" class="btn btn-outline-dark">View</button></a></td>
                 </tr>
+                </div>
           <?php
             }  
           ?> 
@@ -574,7 +578,7 @@ mysqli_close($conn);
                 success:function(data)  
                 {  
                     alert(data);
-                     $('#eventsTable').html(data);
+                    $('#eventsTable').html(data);
                 }  
            })  
       });  
