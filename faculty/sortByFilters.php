@@ -74,7 +74,7 @@ mysqli_close($conn);
 <br/>
 <div class="container-fluid">
     <div class="row">
-       <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 alert alert-info">
+       <div class="col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 alert alert-info">
           <strong class="alert-link toggleFilters">More Filters</strong> to sort!
                   
           <form class="moreFilters">
@@ -82,8 +82,8 @@ mysqli_close($conn);
               
               <div class="form-group">
                 <label for="department">Institute Level/Department:</label>
-                  <select class="form-control" id="department1" onchange="sortDepartment();">
-                    <option disabled selected value=""> -- Select an option -- </option>
+                  <select class="form-control" id="department1">
+                    <option selected value=""> -- Select an option -- </option>
                     <option value="CSIT">CS/IT</option>
                     <option value="EnTc">EnTc</option>
                     <option value="Mech">Mech</option>
@@ -99,26 +99,26 @@ mysqli_close($conn);
               
               <div class="form-group">
                 <label for="year">Year:</label>
-                <input type="number" min="2008" max="2020" step="1" value="" id="year1" class="form-control" onkeyup="sortYear();"/>
+                <input type="number" min="2008" max="2020" step="1" value="" id="year1" class="form-control"/>
               </div>
               
               <div class="form-group">
                 <label for="date">Attendees:</label>
-                <label class="checkbox-inline"><input type="checkbox" value="Staff" id="attendees1" name="attendees[]" onchange="sortAttendees(this.value);">&nbsp; Staff &nbsp;&nbsp;&nbsp;</label>
-                <label class="checkbox-inline"><input type="checkbox" value="Faculty" id="attendees1" name="attendees[]" onchange="sortAttendees(this.value);">&nbsp; Faculty &nbsp;&nbsp;&nbsp;</label>
-                <label class="checkbox-inline"><input type="checkbox" value="Student" id="attendees1" name="attendees[]" onchange="sortAttendees(this.value);">&nbsp; Student &nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline"><input type="checkbox" value="Staff" id="attendees1" name="attendees[]">&nbsp; Staff &nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline"><input type="checkbox" value="Faculty" id="attendees1" name="attendees[]">&nbsp; Faculty &nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline"><input type="checkbox" value="Student" id="attendees1" name="attendees[]">&nbsp; Student &nbsp;&nbsp;&nbsp;</label>
               </div>
               
               <div class="form-group">
                 <label for="for">Event is for:</label>
-                <label class="checkbox-inline"><input type="checkbox" value="B.Tech" id="B.Tech1" name="eventFor[]" onchange="sortEventFor(this.value);">&nbsp; B.Tech &nbsp;&nbsp;&nbsp;</label>
-                <label class="checkbox-inline"><input type="checkbox" value="M.Tech" id="M.Tech1" name="eventFor[]" onchange="sortEventFor(this.value);">&nbsp; M.Tech &nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline"><input type="checkbox" value="B.Tech" id="B.Tech1" name="eventFor[]">&nbsp; B.Tech &nbsp;&nbsp;&nbsp;</label>
+                <label class="checkbox-inline"><input type="checkbox" value="M.Tech" id="M.Tech1" name="eventFor[]">&nbsp; M.Tech &nbsp;&nbsp;&nbsp;</label>
               </div>
               
               <div class="form-group">
                 <label for="type">Type:</label>
-                  <select class="form-control" id="type1" onchange="sortType();">
-                    <option disabled selected value=""> -- Select an option -- </option>
+                  <select class="form-control" id="type1">
+                    <option selected value=""> -- Select an option -- </option>
                     <option value="Curricular Activity">Curricular Activity</option>
                     <option value="Co-Curricular Activity">Co-Curricular Activity</option>
                   </select>
@@ -126,8 +126,8 @@ mysqli_close($conn);
                        
               <div class="form-group">
                 <label for="category">Category of event:</label>
-                  <select class="form-control" id="category1" onchange="sortCategory();"> 
-                    <option disabled selected value=""> -- Select an option -- </option>
+                  <select class="form-control" id="category1"> 
+                    <option selected value=""> -- Select an option -- </option>
                     <option value="Guest Lecture">Guest Lecture</option>
                     <option value="Seminar">Seminar</option>
                     <option value="Workshop-Student Training">Workshop/Student Training</option>
@@ -144,12 +144,12 @@ mysqli_close($conn);
                     <option value="">Any Other Activity:</option>
                   </select>
               </div>
-              
-              <button type="submit" class="btn btn-outline-primary" id="applyFilters">Apply Filters</button>  
+              <button onclick="reset();" class="btn btn-outline-danger" id="resetFilters">Reset</button>  
+              <button onmouseover="sort();" class="btn btn-outline-success" id="submitFilters">Hover over me to Sort</button>  
           </form>  
          </div>
           
-        <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10">
+        <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-10">
             <h3>List of all the Past Events: </h3>
             <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">
         
@@ -208,10 +208,47 @@ mysqli_close($conn);
 
 <script>  
     
-$('td:nth-child(6),th:nth-child(6)').hide();
-$('td:nth-child(7),th:nth-child(7)').hide();
-$('td:nth-child(8),th:nth-child(8)').hide();
-$('td:nth-child(9),th:nth-child(9)').hide();
+function sort(){
+    var department, category, year, type, attendees, eventFor;
+    department=$('#department1').val();
+    category=$('#category1').val();
+    year=$('#year1').val();
+    type=$('#type1').val();
+    attendees=$('#attendees1').val();
+    eventFor=$('#eventFor1').val();
+        
+    reset();
+
+    if(department!=""){
+        sortTable(department, 1);
+    }
+    if(category!=""){
+        sortTable(category, 2);
+    }
+    if(year!=""){
+        sortYear(year, 5);
+    }
+    if(type!=""){
+        sortType(type, 8);
+    }
+    if(attendees!=""){
+        sortAttendees(attendees, 6);
+    }
+    if(eventFor!=""){
+        sortEventFor(eventFor, 7);
+    }
+}
+    
+function reset(){
+  var table, tr, td, i, j;
+  table = document.getElementById("myTable");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+      if(tr[i].style.display == "none"){
+           tr[i].style.display = "";
+        }   
+  }
+}
     
 function search() {
   var input, filter, table, tr, td, i;
@@ -223,7 +260,11 @@ function search() {
     td = tr[i].getElementsByTagName("td")[0];
     if (td) {
       if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
+        if(tr[i].style.display == "none"){
+           tr[i].style.display = "none";
+        }else{
+            tr[i].style.display = "";
+        }
       } else {
         tr[i].style.display = "none";
       }
@@ -231,116 +272,27 @@ function search() {
   }
 }
     
-function sortDepartment() {
-  var input, filter, table, tr, td, i;  
-  var value=$('#department1').val();
-  input=value;
-  filter = input.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[1];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }       
-  }
-} 
-    
-function sortCategory() {
-  var input, filter, table, tr, td, i;  
-  var value=$('#category1').val();
-  input=value;
-  filter = input.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[2];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }       
-  }
-} 
-    
-function sortYear() {
-  var input, filter, table, tr, td, i;  
-  var value=$('#year1').val();
-  input=value;
-  filter = input.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[5];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }       
-  }
-}
-    
-function sortType() {
-  var input, filter, table, tr, td, i;  
-  var value=$('#type1').val();
-  input=value;
-  filter = input.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[8];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }       
-  }
-}  
-    
-function sortAttendees(value) {
+function sortTable(col, pos) {
   var input, filter, table, tr, td, i;
-  input=value;
-  filter = input.toUpperCase();
+  filter = col.toUpperCase();
   table = document.getElementById("myTable");
   tr = table.getElementsByTagName("tr");
   for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[6];
+    td = tr[i].getElementsByTagName("td")[pos];
     if (td) {
       if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
+        if(tr[i].style.display == "none"){
+           tr[i].style.display = "none";
+        }else{
+            tr[i].style.display = "";
+        }
+        
       } else {
         tr[i].style.display = "none";
       }
     }       
   }
 } 
-    
-function sortEventFor(value) {
-  var input, filter, table, tr, td, i;  
-  input=value;
-  filter = input.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[7];
-    if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }       
-  }
-} 
+
  </script> 
 </body>
