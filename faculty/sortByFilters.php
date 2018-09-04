@@ -74,11 +74,10 @@ mysqli_close($conn);
 <br/>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2"></div>
-       <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 alert alert-info">
-          <a class="alert-link toggleFilters">Click Here</a> for more filters to sort!
+       <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2 alert alert-info">
+          <strong class="alert-link toggleFilters">More Filters</strong> to sort!
                   
-          <form class="moreFilters" style="display:none">
+          <form class="moreFilters">
             <br/>
               
               <div class="form-group">
@@ -149,10 +148,8 @@ mysqli_close($conn);
               <button type="submit" class="btn btn-outline-primary" id="applyFilters">Apply Filters</button>  
           </form>  
          </div>
-         <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2"></div>  
-         
-         <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2"></div>  
-        <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
+          
+        <div class="col-10 col-sm-10 col-md-10 col-lg-10 col-xl-10">
             <h3>List of all the Past Events: </h3>
             <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">
         
@@ -194,8 +191,7 @@ mysqli_close($conn);
           ?> 
           </tbody>
         </table>    
-        </div> 
-        <div class="col-2 col-sm-2 col-md-2 col-lg-2 col-xl-2"></div>         
+        </div>        
     </div>
     <br/><br/><br/>
 </div>
@@ -211,13 +207,6 @@ mysqli_close($conn);
 <script src="../assets/myjs/navbar.js"></script>
 
 <script>  
-$(document).ready(function(){
-    $(".toggleFilters").click(function(){
-        $(".moreFilters").toggle('slow','swing');
-    });
-});
-    
-    
     
 $('td:nth-child(6),th:nth-child(6)').hide();
 $('td:nth-child(7),th:nth-child(7)').hide();
