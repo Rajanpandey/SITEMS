@@ -90,7 +90,7 @@ mysqli_close($conn);
                     <option value="Civil">Civil</option>
                     <option value="Applied Science">Applied Science</option>
                     <option value="Reverb">Reverb</option>
-                    <option value="EP2C">EP2C</option>
+                    <option value="EPIC">EPIC</option>
                     <option value="Techfest">Techfest</option>
                     <option value="CSR">CSR</option>
                     <option value="Other Club Activities">Other Club Activities</option>
@@ -98,21 +98,43 @@ mysqli_close($conn);
               </div>
               
               <div class="form-group">
-                <label for="year">Year:</label>
-                <input type="number" min="2008" max="2020" step="1" value="" id="year1" class="form-control"/>
+                <label for="department">Year:</label>
+                  <select class="form-control" id="year1">
+                    <option selected value=""> -- Select an option -- </option>
+                    <option value="2018">2018</option>
+                    <option value="2017">2017</option>
+                    <option value="2016">2016</option>
+                    <option value="2015">2015</option>
+                    <option value="2014">2014</option>
+                    <option value="2013">2013</option>
+                    <option value="2012">2012</option>
+                    <option value="2011">2011</option>
+                    <option value="2010">2010</option>
+                  </select>
               </div>
               
               <div class="form-group">
-                <label for="date">Attendees:</label>
-                <label class="checkbox-inline"><input type="checkbox" value="Staff" id="attendees1" name="attendees[]">&nbsp; Staff &nbsp;&nbsp;&nbsp;</label>
-                <label class="checkbox-inline"><input type="checkbox" value="Faculty" id="attendees1" name="attendees[]">&nbsp; Faculty &nbsp;&nbsp;&nbsp;</label>
-                <label class="checkbox-inline"><input type="checkbox" value="Student" id="attendees1" name="attendees[]">&nbsp; Student &nbsp;&nbsp;&nbsp;</label>
+                <label for="department">Attendees:</label>
+                  <select class="form-control" id="attendees1">
+                    <option selected value=""> -- Select an option -- </option>
+                    <option value="Staff">Staff</option>
+                    <option value="Faculty">Faculty</option>
+                    <option value="Student">Student</option>
+                    <option value="Staff,Faculty">Staff and Faculty</option>
+                    <option value="Staff,Student">Staff and Student</option>
+                    <option value="Faculty,Student">Faculty and Student</option>
+                    <option value="Staff, Faculty,Student">Staff, Faculty and Student</option>
+                  </select>
               </div>
               
               <div class="form-group">
-                <label for="for">Event is for:</label>
-                <label class="checkbox-inline"><input type="checkbox" value="B.Tech" id="B.Tech1" name="eventFor[]">&nbsp; B.Tech &nbsp;&nbsp;&nbsp;</label>
-                <label class="checkbox-inline"><input type="checkbox" value="M.Tech" id="M.Tech1" name="eventFor[]">&nbsp; M.Tech &nbsp;&nbsp;&nbsp;</label>
+                <label for="department">Event is for:</label>
+                  <select class="form-control" id="eventFor1">
+                    <option selected value=""> -- Select an option -- </option>
+                    <option value="B.Tech">B.Tech</option>
+                    <option value="M.Tech">M.Tech</option>
+                    <option value="B.Tech,M.Tech">B.Tech and M.Tech</option>
+                  </select>
               </div>
               
               <div class="form-group">
@@ -226,16 +248,16 @@ function sort(){
         sortTable(category, 2);
     }
     if(year!=""){
-        sortYear(year, 5);
+        sortTable(year, 5);
     }
     if(type!=""){
-        sortType(type, 8);
+        sortTable(type, 8);
     }
     if(attendees!=""){
-        sortAttendees(attendees, 6);
+        sortTable(attendees, 6);
     }
     if(eventFor!=""){
-        sortEventFor(eventFor, 7);
+        sortTable(eventFor, 7);
     }
 }
     

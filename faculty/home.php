@@ -130,7 +130,7 @@ mysqli_close($conn);
                     <option value="Civil">Civil</option>
                     <option value="Applied Science">Applied Science</option>
                     <option value="Reverb">Reverb</option>
-                    <option value="EP2C">EP2C</option>
+                    <option value="EPIC">EPIC</option>
                     <option value="Techfest">Techfest</option>
                     <option value="CSR">CSR</option>
                     <option value="Other Club Activities">Other Club Activities</option>
