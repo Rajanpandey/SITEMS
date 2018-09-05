@@ -75,7 +75,7 @@ mysqli_close($conn);
 <div class="container-fluid">
     <div class="row">
        <div class="col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 alert alert-info">
-          <strong class="alert-link toggleFilters">More Filters</strong> to sort!
+          <strong class="alert-link">Filters</strong> to sort!
                   
           <form class="moreFilters">
             <br/>
@@ -229,7 +229,7 @@ mysqli_close($conn);
 <script src="../assets/myjs/navbar.js"></script>
 
 <script>  
-    
+
 function sort(){
     var department, category, year, type, attendees, eventFor;
     department=$('#department1').val();
@@ -316,5 +316,10 @@ function sortTable(col, pos) {
   }
 } 
 
+$('#myInput').keydown(function(event) {
+    if (event.keyCode == 8) {
+        event.preventDefault();
+    }
+});
  </script> 
 </body>

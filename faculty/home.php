@@ -133,8 +133,9 @@ mysqli_close($conn);
                     <option value="EPIC">EPIC</option>
                     <option value="Techfest">Techfest</option>
                     <option value="CSR">CSR</option>
-                    <option value="Other Club Activities">Other Club Activities</option>
+                    <option value="" id="otherDepartmentDropdown">Other Club Activities</option><br/>                    
                   </select>
+                  <input type="text" class="form-control" id="otherDepartmentText" placeholder="For Other Club Activities (Leave blank if not applicable)" onkeyup="otherDepartment()" value="">
               </div>
               
               <div class="form-group">
@@ -563,5 +564,16 @@ mysqli_close($conn);
            })  
       });  
  });
+    
+function otherDepartment(){
+    var x = document.getElementById("otherDepartmentDropdown");
+    var y = $("#otherDepartmentText").val();
+    
+    x.setAttribute("value",y); 
+
+    alert(x);
+}
  </script> 
+ 
+
 </body>
