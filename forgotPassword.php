@@ -1,17 +1,3 @@
-<?php
-include('session.php');
-
-if(isset($_SESSION['login_user'])){    
-    if($_SESSION['user_type']=='admin'){
-        header("location: admin/home.php");   
-    }elseif($_SESSION['user_type']=='informationOfficer'){
-        header("location: informationOfficer/home.php");   
-    }else{
-        header("location: faculty/home.php");   
-    }     
-} 
-?>
-
 <!DOCTYPE HTML>
 <html>
     
@@ -31,7 +17,7 @@ if(isset($_SESSION['login_user'])){
         <link rel="stylesheet" type="text/css" href="assets/mycss/login.css">
         
         <title>
-            SIT EMS Login
+            Forgot Password
         </title>
     
     </head>
@@ -49,25 +35,18 @@ if(isset($_SESSION['login_user'])){
             </div>
             
             <br/><br/>
-            
-            <form action="connection.php" method="POST">
+            <h4>Forgot Password:</h4>
+            <form action="sendMail.php" method="POST">
               <div class="container">
                 <label for="email"><b>Email:</b></label>
                 <input type="email" placeholder="Enter Email Address" name="email" required value="<?php if(isset($_COOKIE["member_email"])) { echo $_COOKIE["member_email"]; } ?>">
+                <p>The password will be sent to your Email ID.</p>   
                 
-                <label for="password"><b>Password:</b></label>
-                <input type="password" placeholder="Enter Password" name="password" required value="<?php if(isset($_COOKIE["member_password"])) { echo $_COOKIE["member_password"]; } ?>" class="input-field">
-                
-                <button type="submit">Login</button>
-                
-                <label>
-                  <input type="checkbox" checked="checked" name="remember" value="1"> Remember me
-                </label>
-                
+                <button type="submit">SEND PASSWORD</button>                
+
               </div>
               <div class="container" style="background-color:#f1f1f1">
-                <button type="button" class="cancelbtn">Cancel</button>
-                <span class="psw"><a href="forgotPassword.php">Forgot Password?</a></span>
+                <button type="button" class="cancelbtn" onclick="location.href='index.php';">Go Back</button>
               </div>
             </form>
             
