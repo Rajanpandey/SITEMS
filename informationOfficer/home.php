@@ -35,7 +35,7 @@ if(isset($_GET["page"])) {
 //Query to select events awaiting approval
 $issues=0;
 $start_from=($page-1)*$num_rec_per_page; 
-$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus IS NULL ORDER BY date DESC";
+$sql="SELECT * FROM events WHERE approvalStatus IS NULL ORDER BY date DESC";
 $result=mysqli_query($conn, $sql);
 if($result!=NULL){
     $array1 = array();
@@ -224,14 +224,14 @@ mysqli_close($conn);
         </div>        
         
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <h3>Events awaiting approval: </h3><br/>
+            <h3>Events awaiting your approval: </h3><br/>
         </div>
         
     <?php 
         if($totalUnapprovedEvents==0){
     ?>
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-success">
-          <strong>Congrats!</strong> There is no unapproved event!
+          <strong>Congrats!</strong> There is no unapproved event left!
         </div>
     <?php 
         }else{
@@ -244,9 +244,13 @@ mysqli_close($conn);
                <div class="container" id="description">
                   <h4 class="card-title"><?php echo $array1[0]['name']; ?></h4>
                   <p class="card-text"><?php echo $array1[0]['eventDescribe']; ?></p>
+                  <div class=" cardFooter">
+                      <button onclick="approve();" class="btn btn-outline-success">Approve</button> 
+                      <button class="btn btn-outline-danger">Decline</button> 
+                  </div>
                 </div>
               </div></a>
-        </div>
+        </div> 
     <?php 
         }
     ?>        
@@ -256,7 +260,7 @@ mysqli_close($conn);
         </div>
         
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-info">
-          <a class="alert-link" href="allEvents.php">Click Here</a> to view all events at once!
+          <a class="alert-link" href="allEvents.php">Click Here</a> to view all events posted by everyone!
         </div>  
         
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
