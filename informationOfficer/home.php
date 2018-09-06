@@ -214,6 +214,29 @@ mysqli_close($conn);
   </div>
 <!-- Submit Event Modal Ends -->
 
+<div id="myModal2" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-lg">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">        
+        <h4 class="modal-title">Reason for declining (optional):</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form action="" method="POST">
+            <div class="form-group">
+              <label for="comment"></label>
+              <textarea class="form-control" rows="5" name="comment" id="comment" placeholder="Write a comment here"></textarea>
+            </div>
+            
+            <button type="submit" class="btn btn-outline-danger decline" name="submit">Decline</button>
+        </form>
+      </div>     
+    </div>
+  </div>
+</div>  
+
 <div class="container">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
@@ -247,13 +270,10 @@ mysqli_close($conn);
                   <p class="card-text">Held on: <?php echo $array1[$i]['date']; ?></p>
                   <div class=" cardFooter">
                       <button class="btn btn-outline-success approve" id="approve-<?php echo $array1[$i]['eventId']; ?>" style="display:">Approve</button> 
-                      <button class="btn btn-outline-danger decline" id="decline-<?php echo $array1[$i]['eventId']; ?>" style="display:">Decline</button> 
+                      <button class="btn btn-outline-danger commentDecline" id="decline-<?php echo $array1[$i]['eventId']; ?>" style="display:" data-toggle="modal" data-target="#myModal2">Decline</button> 
                       <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-success approved" id="approved-<?php echo $array1[$i]['eventId']; ?>" style="display:none">
                           <a class="alert-link">Approved!!</a>
-                      </div>  
-                      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-danger declined" id="declined-<?php echo $array1[$i]['eventId']; ?>" style="display:none">
-                          <a class="alert-link">Declined!!</a>
-                      </div>  
+                      </div>
                   </div>
                 </div>
               </div>
@@ -540,31 +560,24 @@ $(".approve").click(function(){
     $("#decline-"+eventId).hide();
     $("#approved-"+eventId).show();    
 });
-
+    
  $(document).ready(function(){  
       $(document).on('click', '.decline', function(){  
-          var id = $(this).attr("id");  
+          
+          var id=$('.commentDecline').attr('id');
           var eventId=id.substr(8);
+          var comment = $('textarea#comment').val();          
+          
            $.ajax({  
                 url:"decline.php",  
                 method:"POST",  
-                data:{eventId:eventId},  
+                data:{eventId:eventId, comment:comment},  
                 success:function(data){  
                     
                 }  
            })  
       });  
  });
-    
-$(".decline").click(function(){
-    var id=this.id;
-    var eventId=id.substr(8);
-    
-    $("#approve-"+eventId).hide();
-    $("#decline-"+eventId).hide();
-    $("#declined-"+eventId).show();    
-});
-    
     
  </script> 
 </body>

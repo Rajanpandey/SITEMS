@@ -13,7 +13,8 @@ if(mysqli_connect_error()){
 }
 
 $eventId = $_POST["eventId"]; 
-$sql="DELETE FROM events WHERE eventId='$eventId'";
+$comment = $_POST["comment"]; 
+$sql="UPDATE events SET approvalStatus='-1', declineReply='$comment' WHERE eventId='$eventId'";
 $result=mysqli_query($conn, $sql);
 
 mysqli_close($conn);
