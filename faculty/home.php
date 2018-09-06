@@ -235,21 +235,28 @@ mysqli_close($conn);
         </div>
     <?php 
         }else{
+            for($i=0; $i<$totalUnapprovedEvents; $i++){
     ?>
+    
         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
               <a><div class="posts">
                <div class="image">
-                <img class="articleImage" src="../assets/img/<?php echo $array1[0]['category']; ?>.jpg">
+                <img class="articleImage" src="../assets/img/<?php echo $array1[$i]['category']; ?>.jpg">
                </div>
                <div class="container" id="description">
-                  <h4 class="card-title"><?php echo $array1[0]['name']; ?></h4>
-                  <p class="card-text"><?php echo $array1[0]['eventDescribe']; ?></p>
+                  <h4 class="card-title"><?php echo $array1[$i]['name']; ?></h4>
+                  <p class="card-text">Held on: <?php echo $array1[$i]['date']; ?></p>
+                  <div class=" cardFooter">
+                      <button onclick="approve();" class="btn btn-outline-success">Approve</button> 
+                      <button class="btn btn-outline-danger">Decline</button> 
+                  </div>
                 </div>
               </div></a>
-        </div>
+        </div> 
     <?php 
+            }
         }
-    ?>        
+    ?>       
         
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <hr/><br/>
@@ -502,8 +509,6 @@ function otherDepartment(){
     var y = $("#otherDepartmentText").val();
     
     x.setAttribute("value",y); 
-
-    alert(x);
 }
  </script> 
  

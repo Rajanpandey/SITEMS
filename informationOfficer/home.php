@@ -33,20 +33,18 @@ if(isset($_GET["page"])) {
 }; 
 
 //Query to select events awaiting approval
-$issues=0;
-$start_from=($page-1)*$num_rec_per_page; 
 $sql="SELECT * FROM events WHERE approvalStatus IS NULL ORDER BY date DESC";
 $result=mysqli_query($conn, $sql);
 if($result!=NULL){
     $array1 = array();
     while($row=mysqli_fetch_assoc($result)){
          $array1[]=$row;
-         $issues++;
     }
 }
 $totalUnapprovedEvents=mysqli_num_rows($result);
 
 //Query to select events that are approved
+$start_from=($page-1)*$num_rec_per_page; 
 $sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus='1' ORDER BY date DESC LIMIT $start_from, $num_rec_per_page";
 $result=mysqli_query($conn, $sql);
 $array2=array();
@@ -224,37 +222,48 @@ mysqli_close($conn);
         </div>        
         
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <h3>Events awaiting your approval: </h3><br/>
+            <h3>Events awaiting your approval: <button onclick="location.href='approveAll.php';" class="btn btn-outline-dark">Approve All Events!</button> </h3>
+            <br/>
         </div>
-        
-    <?php 
+        <?php 
         if($totalUnapprovedEvents==0){
     ?>
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-success">
-          <strong>Congrats!</strong> There is no unapproved event left!
+          <strong>Congrats!</strong> There is no unapproved event left! 
         </div>
     <?php 
         }else{
+            for($i=0; $i<$totalUnapprovedEvents; $i++){
     ?>
+    
         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
-              <a><div class="posts">
+              <a>
+              <div class="posts" id="<?php echo $array1[$i]['eventId']; ?>">
                <div class="image">
-                <img class="articleImage" src="../assets/img/<?php echo $array1[0]['category']; ?>.jpg">
+                <img class="articleImage" src="../assets/img/<?php echo $array1[$i]['category']; ?>.jpg">
                </div>
                <div class="container" id="description">
-                  <h4 class="card-title"><?php echo $array1[0]['name']; ?></h4>
-                  <p class="card-text"><?php echo $array1[0]['eventDescribe']; ?></p>
+                  <h4 class="card-title"><?php echo $array1[$i]['name']; ?></h4>
+                  <p class="card-text">Held on: <?php echo $array1[$i]['date']; ?></p>
                   <div class=" cardFooter">
-                      <button onclick="approve();" class="btn btn-outline-success">Approve</button> 
-                      <button class="btn btn-outline-danger">Decline</button> 
+                      <button class="btn btn-outline-success approve" id="approve-<?php echo $array1[$i]['eventId']; ?>" style="display:">Approve</button> 
+                      <button class="btn btn-outline-danger decline" id="decline-<?php echo $array1[$i]['eventId']; ?>" style="display:">Decline</button> 
+                      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-success approved" id="approved-<?php echo $array1[$i]['eventId']; ?>" style="display:none">
+                          <a class="alert-link">Approved!!</a>
+                      </div>  
+                      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-danger declined" id="declined-<?php echo $array1[$i]['eventId']; ?>" style="display:none">
+                          <a class="alert-link">Declined!!</a>
+                      </div>  
                   </div>
                 </div>
-              </div></a>
+              </div>
+              </a>
         </div> 
     <?php 
+            }
         }
     ?>        
-        
+   
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <hr/><br/>
         </div>
@@ -506,10 +515,56 @@ function otherDepartment(){
     var y = $("#otherDepartmentText").val();
     
     x.setAttribute("value",y); 
-
-    alert(x);
 }
- </script> 
- 
 
+ $(document).ready(function(){  
+      $(document).on('click', '.approve', function(){  
+          var id = $(this).attr("id");  
+          var eventId=id.substr(8);
+           $.ajax({  
+                url:"approve.php",  
+                method:"POST",  
+                data:{eventId:eventId},  
+                success:function(data){  
+                    
+                }  
+           })  
+      });  
+ });
+    
+$(".approve").click(function(){
+    var id=this.id;
+    var eventId=id.substr(8);
+    
+    $("#approve-"+eventId).hide();
+    $("#decline-"+eventId).hide();
+    $("#approved-"+eventId).show();    
+});
+
+ $(document).ready(function(){  
+      $(document).on('click', '.decline', function(){  
+          var id = $(this).attr("id");  
+          var eventId=id.substr(8);
+           $.ajax({  
+                url:"decline.php",  
+                method:"POST",  
+                data:{eventId:eventId},  
+                success:function(data){  
+                    
+                }  
+           })  
+      });  
+ });
+    
+$(".decline").click(function(){
+    var id=this.id;
+    var eventId=id.substr(8);
+    
+    $("#approve-"+eventId).hide();
+    $("#decline-"+eventId).hide();
+    $("#declined-"+eventId).show();    
+});
+    
+    
+ </script> 
 </body>
