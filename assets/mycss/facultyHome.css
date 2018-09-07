@@ -59,3 +59,14 @@ th a:active{
     border: 1px solid #ddd; /* Add a grey border */
     margin-bottom: 12px; /* Add some space below the input */
 }
+
+#navbardrop{
+}
+
+.dropdown-menu a:link {
+}
+
+.dropdown-menu a:hover {
+    background-color: dodgerblue;
+    color: white;
+}

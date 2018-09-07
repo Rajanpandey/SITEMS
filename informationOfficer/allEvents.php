@@ -169,7 +169,7 @@ mysqli_close($conn);
             <h3>List of all the Past Events: </h3>
             <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">
         
-        <table class="table table-bordered table-hover" id="myTable">
+        <table class="table table-bordered table-hover allEventsTable" id="myTable">
           <thead>
             <tr>
               <th><a id="name" data-order="desc" href="#">Name of the Event</a></th>
@@ -206,7 +206,9 @@ mysqli_close($conn);
             }  
           ?> 
           </tbody>
-        </table>    
+        </table>  
+          <button onclick="exportToExcel();" class="btn btn-outline-info" id="generateReport">Generate and Download Report</button>  
+          <button onclick="print();" class="btn btn-outline-info" id="printReport">Print Report</button>  
         </div>        
     </div>
     <br/><br/><br/>
@@ -296,7 +298,7 @@ function sortTable(col, pos) {
   for (i = 0; i < tr.length; i++) {
     td = tr[i].getElementsByTagName("td")[pos];
     if (td) {
-      if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+      if (td.innerHTML.toUpperCase()===filter) {
         if(tr[i].style.display == "none"){
            tr[i].style.display = "none";
         }else{
@@ -318,5 +320,67 @@ $('#myInput').keydown(function(event) {
 
 $("th:nth-child(6)").hide()
 $("td:nth-child(6)").hide()
+    
+function exportToExcel(){
+    var tableID=$('.allEventsTable').attr('id');
+    var tab_text="<table border='2px'><tr bgcolor='#87AFC6' style='height: 75px; text-align: center; width: 250px'>";
+    var textRange; var i=0;
+    tab = document.getElementById(tableID); // id of table
+
+    for(i = 0 ; i < tab.rows.length ; i++)
+    {
+
+        tab_text=tab_text;
+        if(tab.rows[i].style.display != "none"){
+            tab_text=tab_text+tab.rows[i].innerHTML+"</tr>";
+        }
+        
+        //tab_text=tab_text+"</tr>";
+    }
+
+    tab_text= tab_text+"</table>";
+
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
+
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+    {
+        txtArea1.document.open("txt/html","replace");
+        txtArea1.document.write( 'sep=,\r\n' + tab_text);
+        txtArea1.document.close();
+        txtArea1.focus();
+        sa=txtArea1.document.execCommand("SaveAs",true,"report.txt");
+    }
+    else {
+       sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+    }
+    
+    return (sa);
+}
+    
+function print()
+{
+    var tableID=$('.allEventsTable').attr('id');
+    var tab_text="<table border='2px'><tr bgcolor='#87AFC6' style='height: 75px; text-align: center; width: 250px'>";
+    var textRange; var i=0;
+    tab = document.getElementById(tableID); // id of table
+
+    for(i = 0 ; i < tab.rows.length ; i++)
+    {
+
+        tab_text=tab_text;
+        if(tab.rows[i].style.display != "none"){
+            tab_text=tab_text+tab.rows[i].innerHTML+"</tr>";
+        }
+        
+        //tab_text=tab_text+"</tr>";
+    }
+    tab_text= tab_text+"</table>";
+    
+    newWin= window.open("");
+    newWin.document.write(tab_text);
+    newWin.print();
+    newWin.close();
+}
  </script> 
 </body>

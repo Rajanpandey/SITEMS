@@ -41,7 +41,7 @@ else{
     $newDate = date("Y-d-F", strtotime($date));
     
     //Set target directory to required value. If it doesn't exists, create it.
-    $target_dir = '../Media/'.substr($newDate, 0, 4).str_replace(' ', '', $department).substr($newDate, 8).str_replace(' ', '', $category).'/'.str_replace(' ', '', $name);
+    $target_dir = '../TempMedia/'.substr($newDate, 0, 4).'/'.str_replace(' ', '', $department).'/'.substr($newDate, 8).' - '.str_replace(' ', '', $category).'/'.$name;
     if(!is_dir($target_dir)){
         mkdir($target_dir, 0777, true);
     }
@@ -53,7 +53,7 @@ else{
         $filename=$_FILES["media"]["name"][$i];
         $target_file = $target_dir.'/'.$filename;
         move_uploaded_file($_FILES["media"]["tmp_name"][$i], $target_file);
-        $arrayOfFileNames[$i]=substr($newDate, 0, 4).str_replace(' ', '', $department).substr($newDate, 8).str_replace(' ', '', $category).'/'.str_replace(' ', '', $name).'/'.$filename;
+        $arrayOfFileNames[$i]=substr($newDate, 0, 4).'/'.str_replace(' ', '', $department).'/'.substr($newDate, 8).' - '.str_replace(' ', '', $category).'/'.$name.'/'.$filename;
     }
     $new_name=implode(',', $arrayOfFileNames);
   

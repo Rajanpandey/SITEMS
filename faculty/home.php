@@ -54,6 +54,15 @@ while($row=$result->fetch_array()){
          $array2[]=$row;
 }
 
+//Query to select number of new messages
+$sql="SELECT * FROM events WHERE userId='$userId' AND declineReply IS NOT NULL";
+$result=mysqli_query($conn, $sql);
+$array3=array();
+while($row=$result->fetch_array()){
+         $array3[]=$row;
+}
+$data=mysqli_num_rows($result);
+
 mysqli_close($conn);
 ?>
 
@@ -81,24 +90,56 @@ mysqli_close($conn);
 
 <body>
 
-<!-- Side Navbar -->
-<nav class="navbar navbar-expand-sm bg-light sticky-top">
-
- <div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="home.php"><i class="fas fa-home"></i>   Home</a>
-  <a href="myprofile.php"><i class="fas fa-user"></i>   My Events</a>
-  <a href="allEvents.php"><i class="fas fa-question-circle"></i>   All Events</a>
-  <a href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
-</div>
-
+<!-- Navbar starts -->  
+<nav class="navbar sticky-top navbar-expand-sm bg-dark navbar-dark">
   <ul class="navbar-nav">
-    <li class="nav-item">
-      <a class="nav-link"><i class="fas fa-bars button-collapse" onclick="openNav()"></i></a>
+   <li class="nav-item">
+      <a class="nav-link disabled" href="#"><i class="fas fa-home"></i>   Home</a>
     </li>
-  </ul>  
+    <li class="nav-item">
+      <a class="nav-link" href="#">Submit an Event</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">Rejected Events</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="#">All Events</a>
+    </li>
+  </ul>
+  <ul class="navbar-nav ml-auto">
+<li class="nav-item dropdown">
+  <?php
+    if($data==0){
+  ?>
+    <a class="nav-link"><i class="far fa-bell"> No New Message</i></a>
+  <?php
+    }else{
+  ?>
+    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-bell"> New Message (<?php echo $data ?>)</i></a>
+      <div class="dropdown-menu dropdown-menu-right">
+       <?php
+        for($i=0; $i<$data; $i=$i+1){
+       ?>
+        <a class="dropdown-item" href="events.php/url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo $array3[$i]['declineReply']; ?></a>
+      <?php
+        }
+      ?>
+      </div>
+  <?php
+    } 
+  ?>  
+</li>
+    
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       Profile</i></a>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="#"><i class="fas fa-user-alt"></i>   My Profile</a>
+        <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i>   Logout</a>
+      </div>
+    </li>
+  </ul>
 </nav>
-<!-- Side Navbar Ends -->
+<!-- Navbar ends -->  
 
 <!-- Submit Event Modal -->
 <div class="modal fade" id="myModal">
@@ -203,7 +244,7 @@ mysqli_close($conn);
               
               <div class="form-group">
                   <label for="media">Please upload 5/7 <b>high resolution pictures</b> of the said event; and also mail the same to Information Officer:</label>
-                  <input type="file" name="media[]" accept="file_extension|audio/*|video/*|image/*|media_type" multiple="multiple" class="form-control-file">
+                  <input type="file" name="media[]" accept="file_extension|audio/*|video/*|image/*|media_type" multiple="multiple" class="form-control-file" required>
               </div>
               
               <button type="submit" class="btn btn-outline-primary" name="submit">Submit</button>              
@@ -246,10 +287,6 @@ mysqli_close($conn);
                <div class="container" id="description">
                   <h4 class="card-title"><?php echo $array1[$i]['name']; ?></h4>
                   <p class="card-text">Held on: <?php echo $array1[$i]['date']; ?></p>
-                  <div class=" cardFooter">
-                      <button onclick="approve();" class="btn btn-outline-success">Approve</button> 
-                      <button class="btn btn-outline-danger">Decline</button> 
-                  </div>
                 </div>
               </div></a>
         </div> 
