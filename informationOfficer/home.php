@@ -79,24 +79,27 @@ mysqli_close($conn);
 
 <body>
 
-<!-- Side Navbar -->
-<nav class="navbar navbar-expand-sm bg-light sticky-top">
-
- <div id="mySidenav" class="sidenav">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="home.php"><i class="fas fa-home"></i>   Home</a>
-  <a href="myprofile.php"><i class="fas fa-user"></i>   My Events</a>
-  <a href="allEvents.php"><i class="fas fa-question-circle"></i>   All Events</a>
-  <a href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
-</div>
-
+<!-- Navbar starts -->  
+<nav class="navbar sticky-top navbar-expand-sm bg-dark navbar-dark">
   <ul class="navbar-nav">
-    <li class="nav-item">
-      <a class="nav-link"><i class="fas fa-bars button-collapse" onclick="openNav()"></i></a>
+   <li class="nav-item">
+      <a class="nav-link disabled"><i class="fas fa-home"></i>   Home</a>
     </li>
-  </ul>  
+    <li class="nav-item">
+      <a class="nav-link"  href="allEvents.php"><i class="fas fa-calendar-alt"></i>   All Events</a>
+    </li>
+  </ul>
+  <ul class="navbar-nav ml-auto">
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       Profile</i></a>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="profile.php"><i class="fas fa-user-alt"></i>   My Profile</a>
+        <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
+      </div>
+    </li>
+  </ul>
 </nav>
-<!-- Side Navbar Ends -->
+<!-- Navbar ends -->  
 
 <!-- Submit Event Modal -->
 <div class="modal fade" id="myModal">

@@ -66,16 +66,13 @@ mysqli_close($conn);
 <nav class="navbar sticky-top navbar-expand-sm bg-dark navbar-dark">
   <ul class="navbar-nav">
    <li class="nav-item">
-      <a class="nav-link" href="#"><i class="fas fa-home"></i>   Home</a>
+      <a class="nav-link" href="home.php"><i class="fas fa-home"></i>   Home</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Submit an Event</a>
+      <a class="nav-link" href="rejectedEvents.php"><i class="far fa-calendar"></i>   Rejected Events</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">Rejected Events</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link disabled" href="#">All Events</a>
+      <a class="nav-link disabled"><i class="fas fa-calendar-alt"></i>   All Events</a>
     </li>
   </ul>
   <ul class="navbar-nav ml-auto">
@@ -105,8 +102,8 @@ mysqli_close($conn);
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       Profile</i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="#"><i class="fas fa-user-alt"></i>   My Profile</a>
-        <a class="dropdown-item" href="#"><i class="fas fa-sign-out-alt"></i>   Logout</a>
+        <a class="dropdown-item" href="profile.php"><i class="fas fa-user-alt"></i>   My Profile</a>
+        <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
       </div>
     </li>
   </ul>
