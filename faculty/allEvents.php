@@ -53,8 +53,6 @@ mysqli_close($conn);
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     
     <!-- My CSS -->  
-	
-	<link rel="stylesheet" href="../assets/mycss/navbar.css">
 	<link rel="stylesheet" href="../assets/mycss/facultyHome.css">
 	
 	<title>Events List</title>
@@ -89,7 +87,7 @@ mysqli_close($conn);
        <?php
         for($i=0; $i<$data; $i=$i+1){
        ?>
-        <a class="dropdown-item" href="events.php/url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo $array3[$i]['declineReply']; ?></a>
+        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo $array3[$i]['declineReply']; ?></a>
       <?php
         }
       ?>
@@ -244,7 +242,7 @@ mysqli_close($conn);
                   <td><?php echo $array[$i]['attendees']; ?></td>
                   <td><?php echo $array[$i]['eventFor']; ?></td>
                   <td><?php echo $array[$i]['type']; ?></td>
-                  <td><a href="events.php/url=<?php echo $array[$i]['url']; ?>"><button  type="button" class="btn btn-outline-dark">View</button></a></td>
+                  <td><a href="../eventDetails.php/?url=<?php echo $array[$i]['url']; ?>"><button  type="button" class="btn btn-outline-dark">View</button></a></td>
                 </tr>
                 </div>
           <?php
@@ -264,11 +262,7 @@ mysqli_close($conn);
 <!-- Bootstrap -->
 <script src="../assets/js/bootstrap.min.js"></script>
 
-<!-- My JS -->
-<script src="../assets/myjs/navbar.js"></script>
-
 <script>  
-
 $("th:nth-child(6)").hide()
 $("td:nth-child(6)").hide()
     

@@ -70,8 +70,6 @@ mysqli_close($conn);
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     
     <!-- My CSS -->  
-	
-	<link rel="stylesheet" href="../assets/mycss/navbar.css">
 	<link rel="stylesheet" href="../assets/mycss/facultyHome.css">
 	
 	<title>Faculty Home</title>
@@ -248,7 +246,7 @@ mysqli_close($conn);
         </div>        
         
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <h3>Events awaiting your approval: <button onclick="location.href='approveAll.php';" class="btn btn-outline-dark">Approve All Events!</button> </h3>
+            <h3>Events awaiting my approval: <button onclick="location.href='approveAll.php';" class="btn btn-outline-dark">Approve All Events!</button> </h3>
             <br/>
         </div>
         <?php 
@@ -263,7 +261,7 @@ mysqli_close($conn);
     ?>
     
         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
-              <a>
+              <a href="../eventDetails.php/?url=<?php echo $array1[$i]['url']; ?>">
               <div class="posts" id="<?php echo $array1[$i]['eventId']; ?>">
                <div class="image">
                 <img class="articleImage" src="../assets/img/<?php echo $array1[$i]['category']; ?>.jpg">
@@ -296,7 +294,7 @@ mysqli_close($conn);
         </div>  
         
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <h3>Past Events posted by you: </h3>
+            <h3>Past Events posted by me: </h3>
         </div>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"></div>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
@@ -477,7 +475,7 @@ mysqli_close($conn);
                   <td><?php echo $array2[$i]['category']; ?></td>
                   <td><?php echo $array2[$i]['eventDescribe']; ?></td>
                   <td><?php echo $array2[$i]['date']; ?></td>
-                  <td><a href="events.php/url=<?php echo $array2[$i]['url']; ?>"><button  type="button" class="btn btn-outline-dark">View</button></a></td>
+                  <td><a href="../eventDetails.php/?url=<?php echo $array2[$i]['url']; ?>"><button  type="button" class="btn btn-outline-dark">View</button></a></td>
                 </tr>
                 </div>
           <?php
@@ -502,9 +500,6 @@ mysqli_close($conn);
 
 <!-- Bootstrap -->
 <script src="../assets/js/bootstrap.min.js"></script>
-
-<!-- My JS -->
-<script src="../assets/myjs/navbar.js"></script>
 
 <script>  
  $(document).ready(function(){  

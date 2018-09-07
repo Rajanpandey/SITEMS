@@ -55,7 +55,7 @@ while($row=$result->fetch_array()){
 }
 
 //Query to select number of new messages
-$sql="SELECT * FROM events WHERE userId='$userId' AND declineReply IS NOT NULL";
+$sql="SELECT * FROM events WHERE userId='$userId' AND viewedNotification IS NULL";
 $result=mysqli_query($conn, $sql);
 $array3=array();
 while($row=$result->fetch_array()){
@@ -81,8 +81,6 @@ mysqli_close($conn);
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     
     <!-- My CSS -->  
-	
-	<link rel="stylesheet" href="../assets/mycss/navbar.css">
 	<link rel="stylesheet" href="../assets/mycss/facultyHome.css">
 	
 	<title>Faculty Home</title>
@@ -117,7 +115,7 @@ mysqli_close($conn);
        <?php
         for($i=0; $i<$data; $i=$i+1){
        ?>
-        <a class="dropdown-item" href="events.php/url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo $array3[$i]['declineReply']; ?></a>
+        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo $array3[$i]['declineReply']; ?></a>
       <?php
         }
       ?>
@@ -277,7 +275,7 @@ mysqli_close($conn);
     ?>
     
         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
-              <a><div class="posts">
+              <a href="../eventDetails.php/?url=<?php echo $array1[$i]['url']; ?>"><div class="posts">
                <div class="image">
                 <img class="articleImage" src="../assets/img/<?php echo $array1[$i]['category']; ?>.jpg">
                </div>
@@ -301,7 +299,7 @@ mysqli_close($conn);
         </div>  
         
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <h3>Past Events posted by you: </h3>
+            <h3>Approved Events: </h3>
         </div>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"></div>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
@@ -482,7 +480,7 @@ mysqli_close($conn);
                   <td><?php echo $array2[$i]['category']; ?></td>
                   <td><?php echo $array2[$i]['eventDescribe']; ?></td>
                   <td><?php echo $array2[$i]['date']; ?></td>
-                  <td><a href="events.php/url=<?php echo $array2[$i]['url']; ?>"><button  type="button" class="btn btn-outline-dark">View</button></a></td>
+                  <td><a href="../eventDetails.php/?url=<?php echo $array2[$i]['url']; ?>"><button  type="button" class="btn btn-outline-dark">View</button></a></td>
                 </tr>
                 </div>
           <?php
@@ -507,9 +505,6 @@ mysqli_close($conn);
 
 <!-- Bootstrap -->
 <script src="../assets/js/bootstrap.min.js"></script>
-
-<!-- My JS -->
-<script src="../assets/myjs/navbar.js"></script>
 
 <script>  
  $(document).ready(function(){  
