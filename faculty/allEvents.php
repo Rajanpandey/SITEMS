@@ -28,7 +28,7 @@ while($row=$result->fetch_array()){
 $totalEvents=mysqli_num_rows($result);
 
 //Query to select number of new messages
-$sql="SELECT * FROM events WHERE userId='$userId' AND declineReply IS NOT NULL";
+$sql="SELECT * FROM events WHERE userId='$userId' AND declineReply IS NOT NULL AND viewedNotification IS NULL";
 $result=mysqli_query($conn, $sql);
 $array3=array();
 while($row=$result->fetch_array()){
@@ -57,7 +57,6 @@ mysqli_close($conn);
 	
 	<title>Events List</title>
 </head>
-
 <body>
 
 <!-- Navbar starts -->  
@@ -100,7 +99,7 @@ mysqli_close($conn);
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       Profile</i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="profile.php"><i class="fas fa-user-alt"></i>   My Profile</a>
+        <a class="dropdown-item" href="../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
         <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
       </div>
     </li>
@@ -224,7 +223,6 @@ mysqli_close($conn);
               <th><a id="attendees" data-order="desc" href="#">Attendees</a></th>
               <th><a id="eventFor" data-order="desc" href="#">Event For</a></th>
               <th><a id="type" data-order="desc" href="#">Type</a></th>
-              <th><a class="column_sort" id="url" data-order="" href="#">Details</a></th>
             </tr>
           </thead>
           <tbody>
@@ -232,7 +230,7 @@ mysqli_close($conn);
             for($i=0; $i<$totalEvents; $i=$i+1){
             ?>
                 <div id="eventRows">
-                 <tr>
+                 <tr class='clickable-row' data-href='../eventDetails.php/?url=<?php echo $array[$i]['url']; ?>'>
                   <td><?php echo $array[$i]['name']; ?></td>
                   <td><?php echo $array[$i]['department']; ?></td>
                   <td><?php echo $array[$i]['category']; ?></td>
@@ -242,7 +240,6 @@ mysqli_close($conn);
                   <td><?php echo $array[$i]['attendees']; ?></td>
                   <td><?php echo $array[$i]['eventFor']; ?></td>
                   <td><?php echo $array[$i]['type']; ?></td>
-                  <td><a href="../eventDetails.php/?url=<?php echo $array[$i]['url']; ?>"><button  type="button" class="btn btn-outline-dark">View</button></a></td>
                 </tr>
                 </div>
           <?php
@@ -356,6 +353,12 @@ $('#myInput').keydown(function(event) {
     if (event.keyCode == 8) {
         event.preventDefault();
     }
+});
+    
+jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
 });
  </script> 
 </body>

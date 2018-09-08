@@ -12,6 +12,12 @@ if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 }
 
+//Query to select the user
+$sqlUserId="SELECT userId FROM users WHERE email='$login_session'";
+$resultUserId=mysqli_query($conn, $sqlUserId);
+$rowUserId=mysqli_fetch_assoc($resultUserId);
+$userId = $rowUserId['userId'];
+
 //Query to select events that are approved
 $sql="SELECT * FROM events WHERE approvalStatus='1' ORDER BY date DESC";
 $result=mysqli_query($conn, $sql);
@@ -59,7 +65,7 @@ mysqli_close($conn);
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       Profile</i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="profile.php"><i class="fas fa-user-alt"></i>   My Profile</a>
+        <a class="dropdown-item" href="../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
         <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
       </div>
     </li>
@@ -183,7 +189,6 @@ mysqli_close($conn);
               <th><a id="attendees" data-order="desc" href="#">Attendees</a></th>
               <th><a id="eventFor" data-order="desc" href="#">Event For</a></th>
               <th><a id="type" data-order="desc" href="#">Type</a></th>
-              <th><a class="column_sort" id="url" data-order="" href="#">Details</a></th>
             </tr>
           </thead>
           <tbody>
@@ -191,7 +196,7 @@ mysqli_close($conn);
             for($i=0; $i<$totalEvents; $i=$i+1){
             ?>
                 <div id="eventRows">
-                 <tr>
+                 <tr class='clickable-row' data-href='../eventDetails.php/?url=<?php echo $array[$i]['url']; ?>'>
                   <td><?php echo $array[$i]['name']; ?></td>
                   <td><?php echo $array[$i]['department']; ?></td>
                   <td><?php echo $array[$i]['category']; ?></td>
@@ -201,7 +206,6 @@ mysqli_close($conn);
                   <td><?php echo $array[$i]['attendees']; ?></td>
                   <td><?php echo $array[$i]['eventFor']; ?></td>
                   <td><?php echo $array[$i]['type']; ?></td>
-                  <td><a href="../eventDetails.php/?url=<?php echo $array[$i]['url']; ?>"><button  type="button" class="btn btn-outline-dark">View</button></a></td>
                 </tr>
                 </div>
           <?php
@@ -381,5 +385,11 @@ function print()
     newWin.print();
     newWin.close();
 }
+
+jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+});
  </script> 
 </body>

@@ -55,7 +55,7 @@ while($row=$result->fetch_array()){
 }
 
 //Query to select number of new messages
-$sql="SELECT * FROM events WHERE userId='$userId' AND viewedNotification IS NULL";
+$sql="SELECT * FROM events WHERE userId='$userId' AND declineReply IS NOT NULL AND viewedNotification IS NULL";
 $result=mysqli_query($conn, $sql);
 $array3=array();
 while($row=$result->fetch_array()){
@@ -128,7 +128,7 @@ mysqli_close($conn);
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       Profile</i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="profile.php"><i class="fas fa-user-alt"></i>   My Profile</a>
+        <a class="dropdown-item" href="../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
         <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
       </div>
     </li>
@@ -275,15 +275,16 @@ mysqli_close($conn);
     ?>
     
         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
-              <a href="../eventDetails.php/?url=<?php echo $array1[$i]['url']; ?>"><div class="posts">
+              <div class="posts">
+              <a href="../eventDetails.php/?url=<?php echo $array1[$i]['url']; ?>">
                <div class="image">
                 <img class="articleImage" src="../assets/img/<?php echo $array1[$i]['category']; ?>.jpg">
                </div>
                <div class="container" id="description">
                   <h4 class="card-title"><?php echo $array1[$i]['name']; ?></h4>
                   <p class="card-text">Held on: <?php echo $array1[$i]['date']; ?></p>
-                </div>
-              </div></a>
+                </div></a>
+              </div>
         </div> 
     <?php 
             }
@@ -293,10 +294,6 @@ mysqli_close($conn);
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <hr/><br/>
         </div>
-        
-        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-info">
-          <a class="alert-link" href="allEvents.php">Click Here</a> to view all events at once!
-        </div>  
         
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
             <h3>Approved Events: </h3>
@@ -454,14 +451,13 @@ mysqli_close($conn);
         </div>
         
         <div class="table-responsive" id="eventsTable">
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover" id="myTable">
           <thead>
             <tr>
               <th><a class="column_sort" id="name" data-order="desc" href="#">Name of the Event</a></th>
               <th><a class="column_sort" id="category" data-order="desc" href="#">Category</a></th>              
               <th><a class="column_sort" id="eventDescribe" data-order="desc" href="#">Description</a></th>
               <th><a class="column_sort" id="date" data-order="desc" href="#">Date</a></th>
-              <th><a class="column_sort" id="url" data-order="" href="#">Details</a></th>
             </tr>
           </thead>
           <tbody>
@@ -475,12 +471,11 @@ mysqli_close($conn);
                 for($i=0; $i<$n; $i=$i+1){
             ?>
                 <div id="eventRows">
-                 <tr>
+                 <tr class='clickable-row' data-href='../eventDetails.php/?url=<?php echo $array2[$i]['url']; ?>'>
                   <td><?php echo $array2[$i]['name']; ?></td>
                   <td><?php echo $array2[$i]['category']; ?></td>
                   <td><?php echo $array2[$i]['eventDescribe']; ?></td>
                   <td><?php echo $array2[$i]['date']; ?></td>
-                  <td><a href="../eventDetails.php/?url=<?php echo $array2[$i]['url']; ?>"><button  type="button" class="btn btn-outline-dark">View</button></a></td>
                 </tr>
                 </div>
           <?php
@@ -492,11 +487,14 @@ mysqli_close($conn);
             }
           ?> 
           </tbody>
-        </table>  
-        </div>
-        
+        </table><br/>   
+        </div>       
+               
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-info">
+          <a class="alert-link" href="allEvents.php">Click Here</a> to view all events at once!
+        </div>          
     </div>
-    <br/><br/><br/>
+    <br/><br/>
 </div>
 
 <!-- Ajax -->
@@ -539,6 +537,12 @@ function otherDepartment(){
     
     x.setAttribute("value",y); 
 }
+    
+jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+});
  </script> 
  
 

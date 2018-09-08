@@ -72,7 +72,7 @@ mysqli_close($conn);
     <!-- My CSS -->  
 	<link rel="stylesheet" href="../assets/mycss/facultyHome.css">
 	
-	<title>Faculty Home</title>
+	<title>Information Officer Home</title>
 </head>
 
 <body>
@@ -91,7 +91,7 @@ mysqli_close($conn);
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       Profile</i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="profile.php"><i class="fas fa-user-alt"></i>   My Profile</a>
+        <a class="dropdown-item" href="../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
         <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
       </div>
     </li>
@@ -260,15 +260,18 @@ mysqli_close($conn);
             for($i=0; $i<$totalUnapprovedEvents; $i++){
     ?>
     
-        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
-              <a href="../eventDetails.php/?url=<?php echo $array1[$i]['url']; ?>">
+        <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">              
               <div class="posts" id="<?php echo $array1[$i]['eventId']; ?>">
+              <a href="../eventDetails.php/?url=<?php echo $array1[$i]['url']; ?>">
                <div class="image">
                 <img class="articleImage" src="../assets/img/<?php echo $array1[$i]['category']; ?>.jpg">
                </div>
+               </a>
                <div class="container" id="description">
+                 <a href="../eventDetails.php/?url=<?php echo $array1[$i]['url']; ?>">
                   <h4 class="card-title"><?php echo $array1[$i]['name']; ?></h4>
                   <p class="card-text">Held on: <?php echo $array1[$i]['date']; ?></p>
+                 </a><br/>
                   <div class=" cardFooter">
                       <button class="btn btn-outline-success approve" id="approve-<?php echo $array1[$i]['eventId']; ?>" style="display:">Approve</button> 
                       <button class="btn btn-outline-danger commentDecline" id="decline-<?php echo $array1[$i]['eventId']; ?>" style="display:" data-toggle="modal" data-target="#myModal2">Decline</button> 
@@ -278,7 +281,7 @@ mysqli_close($conn);
                   </div>
                 </div>
               </div>
-              </a>
+              
         </div> 
     <?php 
             }
@@ -449,14 +452,13 @@ mysqli_close($conn);
         </div>
         
         <div class="table-responsive" id="eventsTable">
-        <table class="table table-bordered table-hover">
+        <table class="table table-bordered table-hover" id="myTable">
           <thead>
             <tr>
               <th><a class="column_sort" id="name" data-order="desc" href="#">Name of the Event</a></th>
               <th><a class="column_sort" id="category" data-order="desc" href="#">Category</a></th>              
               <th><a class="column_sort" id="eventDescribe" data-order="desc" href="#">Description</a></th>
               <th><a class="column_sort" id="date" data-order="desc" href="#">Date</a></th>
-              <th><a class="column_sort" id="url" data-order="" href="#">Details</a></th>
             </tr>
           </thead>
           <tbody>
@@ -470,12 +472,11 @@ mysqli_close($conn);
                 for($i=0; $i<$n; $i=$i+1){
             ?>
                 <div id="eventRows">
-                 <tr>
+                 <tr class='clickable-row' data-href='../eventDetails.php/?url=<?php echo $array2[$i]['url']; ?>'>
                   <td><?php echo $array2[$i]['name']; ?></td>
                   <td><?php echo $array2[$i]['category']; ?></td>
                   <td><?php echo $array2[$i]['eventDescribe']; ?></td>
                   <td><?php echo $array2[$i]['date']; ?></td>
-                  <td><a href="../eventDetails.php/?url=<?php echo $array2[$i]['url']; ?>"><button  type="button" class="btn btn-outline-dark">View</button></a></td>
                 </tr>
                 </div>
           <?php
@@ -559,12 +560,17 @@ $(".approve").click(function(){
     $("#approved-"+eventId).show();    
 });
     
+    
+var declineId;
+$(".commentDecline").click(function(){
+    var id=this.id;
+    var eventId=id.substr(8);
+    declineId=eventId;
+});    
  $(document).ready(function(){  
       $(document).on('click', '.decline', function(){  
-          
-          var id=$('.commentDecline').attr('id');
-          var eventId=id.substr(8);
-          var comment = $('textarea#comment').val();          
+          var eventId=declineId;
+          var comment = $('textarea#comment').val();
           
            $.ajax({  
                 url:"decline.php",  
@@ -577,5 +583,10 @@ $(".approve").click(function(){
       });  
  });
     
+jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+});
  </script> 
 </body>

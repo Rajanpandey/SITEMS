@@ -70,3 +70,23 @@ th a:active{
     background-color: dodgerblue;
     color: white;
 }
+
+.posts a:link {
+    color: black;
+}
+
+.posts a:visited {
+    color: black;
+}
+
+.posts a:hover{
+    color: black;
+}
+
+.posts a:active{
+    color: black;
+}
+
+#myTable tr {
+    cursor: pointer;
+}  

@@ -14,8 +14,11 @@ if(mysqli_connect_error()){
 
 $url=$_GET["url"]; 
 
-$sql="UPDATE events SET viewedNotification='1' WHERE url='$url'";
-$result=mysqli_query($conn, $sql);
+if(substr($_SERVER['HTTP_REFERER'], -8)=='home.php'){
+    $sql="UPDATE events SET viewedNotification='1' WHERE url='$url'";
+    $result=mysqli_query($conn, $sql);
+}
+
 
 //Query to select the user
 $sqlUserId="SELECT type FROM users WHERE email='$login_session'";
@@ -53,7 +56,7 @@ mysqli_close($conn);
 	
 	<title>Event Details</title>
 </head>
-    <body onload="viewed();">
+    <body>
         
         <div class="container">
             
@@ -220,7 +223,7 @@ mysqli_close($conn);
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
         
         <!--Bootstrap-->
-        <script src="assets/js/bootstrap.min.js"></script>   
+        <script src="assets/js/bootstrap.min.js"></script>  
     
     </body>
     
