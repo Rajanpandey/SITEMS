@@ -41,7 +41,7 @@ for($i=0; $i<$noOfFiles; $i=$i+1){
     rename("../TempMedia/$files[$i]", "../Media/$files[$i]");
 }
 
-removeEmptySubFolders("../TempMedia/2018");
+removeEmptySubFolders("../TempMedia");
 
 mysqli_close($conn);
 

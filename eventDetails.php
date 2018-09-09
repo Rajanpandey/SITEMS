@@ -35,6 +35,9 @@ if($result!=NULL){
     }
 }
 
+$arrayOfMediaLoc=explode(",", $array[0]['media']);
+$sizeOfArray=count($arrayOfMediaLoc);
+
 mysqli_close($conn);
 ?>
 
@@ -57,6 +60,30 @@ mysqli_close($conn);
 	<title>Event Details</title>
 </head>
     <body>
+       
+<!-- Navbar starts -->  
+<nav class="navbar sticky-top navbar-expand-sm bg-dark navbar-dark">
+  <ul class="navbar-nav">
+   <li class="nav-item">
+    <?php
+     if($userType=='faculty'){
+    ?>
+         <a class="nav-link" href="../faculty/home.php"><i class="fas fa-home"></i>   Home</a>
+    <?php
+     }elseif($userType=='informationOfficer'){
+    ?>
+         <a class="nav-link" href="../informationOfficer/home.php"><i class="fas fa-home"></i>   Home</a>
+    <?php
+     }else{
+    ?>
+         <a class="nav-link" href="../admin/home.php"><i class="fas fa-home"></i>   Home</a>
+    <?php
+     }
+    ?>
+    </li>
+  </ul>
+</nav>
+<!-- Navbar ends -->  
         
         <div class="container">
             
@@ -75,10 +102,12 @@ mysqli_close($conn);
                 if($array[0]['declineReply']!=""){
               ?>
                   <h5>The Information Officer says:</h5>
-                  <?php echo $array[0]['declineReply']; ?> 
+                  <?php echo $array[0]['declineReply']; ?>
+                  <br/><a href="../faculty/editEvent.php/?url=<?php echo $array[0]['url']; ?>"><button type="button" class="btn btn-outline-primary">Edit</button></a>                   
               <?php 
                 }
               ?>
+              <a href="../faculty/deleteEvent.php?url=<?php echo $array[0]['url']; ?>"><button type="button" class="btn btn-outline-danger">Delete</button></a>
             </div>
           <?php 
            }
@@ -99,14 +128,6 @@ mysqli_close($conn);
           ?>
            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-primary">
               The event submission is pending approval.
-              <?php 
-                if($array[0]['declineReply']!=""){
-              ?>
-                  <h5>The Information Officer says:</h5>
-                  <?php echo $array[0]['declineReply']; ?> 
-              <?php 
-                }
-              ?>
             </div>
           <?php 
            }
@@ -177,15 +198,19 @@ mysqli_close($conn);
               <h3>Media Location</h3>
               <?php 
                 if($array[0]['approvalStatus']==1){
+                    for($i=0; $i<$sizeOfArray; $i=$i+1){
               ?>
-               <p>pathToMedia/<?php echo $array[0]['url']; ?></p>
+                        <p>pathToMedia/<?php echo $arrayOfMediaLoc[$i] ?></p>
               <?php 
-               }else{
-              ?>   
-               <p>pathToTempMedia/<?php echo $array[0]['url']; ?></p>
+                    }
+                }else{
+                    for($i=0; $i<$sizeOfArray; $i=$i+1){
+              ?>
+                      <p>pathToTempMedia/<?php echo $arrayOfMediaLoc[$i] ?></p>
               <?php 
-               }
-              ?>            
+                    }
+                }
+              ?>         
               <br/><br/>
             </div>
               
@@ -211,7 +236,7 @@ mysqli_close($conn);
             </div>
               
             <div>
-              <br/><br/><br/><br/><br/><br/>
+              <br/>
             </div>
             
           </div>

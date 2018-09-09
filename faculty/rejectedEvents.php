@@ -159,13 +159,13 @@ mysqli_close($conn);
                   <?php    
                     if($array[$i]['declineReply']!=''){
                   ?>
-                  <td><a href=""><button type="button" class="btn btn-outline-dark">View</button></a></td>                  
-                  <td><a href=""><button type="button" class="btn btn-outline-primary">Edit</button></a></td>
-                  <td><a href=""><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
+                  <td><a href=""><button type="button" class="btn btn-outline-dark viewResponse" id="<?php echo $array[$i]['declineReply']; ?>">View</button></a></td>                  
+                  <td><a href="editEvent.php/?url=<?php echo $array[$i]['url']; ?>"><button type="button" class="btn btn-outline-primary">Edit</button></a></td>
+                  <td><a href="deleteEvent.php?url=<?php echo $array[$i]['url']; ?>"><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
                   <?php    
                     }else{
                   ?>
-                  <td colspan="3"><a href=""><button type="button" class="btn btn-outline-danger">No Response, Delete</button></a></td>                  
+                  <td colspan="3"><a href="deleteEvent.php?url=<?php echo $array[$i]['url']; ?>"><button type="button" class="btn btn-outline-danger">No Response, Delete</button></a></td>                  
                   <?php    
                     }
                   ?>                  
@@ -195,7 +195,12 @@ jQuery(document).ready(function($) {
         window.location = $(this).data("href");
     });
 });
- </script> 
+    
+$(".viewResponse").click(function(){
+    alert(this.id);
+});
+    
+</script> 
  
 
 </body>

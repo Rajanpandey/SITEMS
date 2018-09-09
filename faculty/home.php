@@ -63,6 +63,11 @@ while($row=$result->fetch_array()){
 }
 $data=mysqli_num_rows($result);
 
+//Query to select number of rejected events
+$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus='-1'";
+$result=mysqli_query($conn, $sql);
+$rejected=mysqli_num_rows($result);
+
 mysqli_close($conn);
 ?>
 
@@ -268,6 +273,16 @@ mysqli_close($conn);
     ?>
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-success">
           <strong>Congrats!</strong> There is no unapproved event!
+        </div>
+     <?php 
+        if($rejected!=0){
+    ?>     
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-danger">
+          <strong>But,</strong> there are some declined events!
+        </div>
+     <?php 
+        }
+    ?>     
         </div>
     <?php 
         }else{
