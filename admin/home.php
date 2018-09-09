@@ -75,6 +75,12 @@ mysqli_close($conn);
 	<title>Information Officer Home</title>
 </head>
 
+<style>
+    center a{
+        color: black;
+    }    
+</style>
+
 <body>
 
 <!-- Navbar starts -->  
@@ -108,13 +114,17 @@ mysqli_close($conn);
             <center><img class="logo" src="../assets/img/sitLogo.png"></center><hr/><br/><br/><br/><br/><br/><br/><br/><br/>          
         </div>        
         
-        <div class="col-6">            
+        <div class="col-4">            
             <center><a href="allUsers.php"><i class="fas fa-users fa-5x"></i><br/>Manage Users</a></center><br/><br/><br/><br/>    
         </div>
            
-        <div class="col-6">
+        <div class="col-4">
             <center><a href="allEvents.php"><i class="fas fa-calendar-alt fa-5x"></i><br/>Manage Events</a></center>
-        </div>        
+        </div>  
+        
+        <div class="col-4">
+            <center><a href="archiveEvents.php"><i class="fas fa-archive fa-5x"></i><br/>Archive Events</a></center>
+        </div>       
         </div>
         
     </div>

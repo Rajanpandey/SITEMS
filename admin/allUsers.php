@@ -76,45 +76,144 @@ mysqli_close($conn);
 </nav>
 <!-- Navbar ends -->  
 
+<!-- Add User Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Add new users</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal Header Ends -->
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form method="POST" action="addUser.php" enctype='multipart/form-data' >
+            <table class="table" id="userTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" class="form-control" id="event" name="name[]" required></td>
+                    <td><input type="email" class="form-control" id="event" name="email[]" required></td>
+                    <td><input type="text" class="form-control" id="event" name="password[]" required></td>
+                    <td>
+                      <select class="form-control" id="event" name="type[]" required>
+                        <option value="faculty" selected>Faculty</option>
+                        <option value="informationOfficer">Information Officer</option>
+                        <option value="admin">Admin</option>                
+                      </select>
+                  </tr>
+                </tbody>
+            </table>
+            <a class="btn btn-outline-primary" id="add">Add a new row</a><br/><br/>                
+            <button type="submit" class="btn btn-outline-primary" name="submit">Submit</button>              
+          </form>
+        </div>  
+        <!-- Modal body Ends -->  
+            
+      </div>
+    </div>
+  </div>
+<!-- Add User Modal Ends -->
+
+<!-- Edit User Modal -->
+<div class="modal fade" id="myModal2">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Edit user details</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal Header Ends -->
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form method="POST" action="editUser.php" enctype='multipart/form-data' >
+            <table class="table" id="userTable">
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" class="form-control" id="eName" name="name" value="" required></td>
+                    <td><input type="email" class="form-control" id="eEmail" name="email" value="" required></td>
+                    <td><input type="text" class="form-control" id="ePassword" name="password" value="" required></td>
+                    <td>
+                      <select class="form-control" id="eType" name="type" value="" required>
+                        <option value="faculty" selected>Faculty</option>
+                        <option value="informationOfficer">Information Officer</option>
+                        <option value="admin">Admin</option>                
+                      </select>
+                  </tr>
+                </tbody>
+            </table>         
+            <input type="text" class="form-control" id="eUserId" name="userId" value="" style="display: none">
+            <button type="submit" class="btn btn-outline-primary" name="submit">Submit Changes</button>              
+          </form>
+        </div>  
+        <!-- Modal body Ends -->  
+            
+      </div>
+    </div>
+  </div>
+<!-- Add User Modal Ends -->
+
 <br/>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <h3>List of all Users: </h3>
+            <h3>List of all Users: <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#myModal">Add new users</button><br/></h3>
 
-
-            <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">
+            <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">            
         
         <table class="table table-bordered table-hover allEventsTable" id="myTable">
           <thead>
             <tr>
-              <th><a id="name" data-order="desc" href="#">User ID</a></th>
-              <th><a id="department" data-order="desc" href="#">Name</a></th>    
-              <th><a id="category" data-order="desc" href="#">EMail</a></th>              
-              <th><a id="eventDescribe" data-order="desc" href="#">Password</a></th>
-              <th><a id="date" data-order="desc" href="#">Role</a></th>
-              <th><a id="year" data-order="desc" href="#">Delete</a></th>
+              <th><a data-order="desc" href="#">User ID</a></th>
+              <th><a data-order="desc" href="#">Name</a></th>    
+              <th><a data-order="desc" href="#">EMail</a></th>              
+              <th><a data-order="desc" href="#">Password</a></th>
+              <th><a data-order="desc" href="#">Role</a></th>
+              <th><a data-order="desc" href="#">Edit</a></th>
+              <th><a data-order="desc" href="#">Delete</a></th>
             </tr>
           </thead>
           <tbody>
           <?php
             for($i=0; $i<$totalEvents; $i=$i+1){
             ?>
-                <div id="eventRows">
-                 <tr class='clickable-row' data-href='../eventDetails.php/?url=<?php echo $array[$i]['url']; ?>'>
-                  <td><?php echo $array[$i]['userId']; ?></td>
-                  <td><?php echo $array[$i]['name']; ?></td>
-                  <td><?php echo $array[$i]['email']; ?></td>
-                  <td><?php echo $array[$i]['password']; ?></td>
-                  <td><?php echo $array[$i]['type']; ?></td>
-                  <td><a href="deleteUser.php?url=<?php echo $array[$i]['userId']; ?>"><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
+                <div id="userRows">
+                 <tr>
+                  <td class="userId"><?php echo $array[$i]['userId']; ?></td>
+                  <td class="name"><?php echo $array[$i]['name']; ?></td>
+                  <td class="email"><?php echo $array[$i]['email']; ?></td>
+                  <td class="password"><?php echo $array[$i]['password']; ?></td>
+                  <td class="type"><?php echo $array[$i]['type']; ?></td>
+                  <td><button type="button" class="btn btn-outline-info edit" data-toggle="modal" data-target="#myModal2">Edit</button></td>
+                  <td><a href="deleteUser.php/?userId=<?php echo $array[$i]['userId']; ?>"><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
                 </tr>
                 </div>
           <?php
             }  
           ?> 
           </tbody>
-        </table>  
+        </table>           
           <button onclick="exportToExcel();" class="btn btn-outline-info" id="generateReport">Generate and Download Report</button>  
           <button onclick="print();" class="btn btn-outline-info" id="printReport">Print Report</button>  
         </div>        
@@ -210,11 +309,37 @@ function print()
     newWin.print();
     newWin.close();
 }
-
-jQuery(document).ready(function($) {
-    $(".clickable-row").click(function() {
-        window.location = $(this).data("href");
-    });
+    
+$("#add").click(function () {
+     $("#userTable").each(function () {
+         var tds = '<tr>';
+         jQuery.each($('tr:last td', this), function () {
+             tds += '<td>' + $(this).html() + '</td>';
+         });
+         tds += '</tr>';
+         if ($('tbody', this).length > 0) {
+             $('tbody', this).append(tds);
+         } else {
+             $(this).append(tds);
+         }
+     });
+});
+ 
+$(".edit").click(function() {
+    var userId=$(this).closest("tr")   // Finds the closest row <tr> 
+                       .find(".userId")     // Gets a descendent with class="nr"
+                       .text();         // Retrieves the text within <td>
+    
+     var name=$(this).closest("tr").find(".name").text();
+     var email=$(this).closest("tr").find(".email").text();     
+     var password=$(this).closest("tr").find(".password").text();
+     var type=$(this).closest("tr").find(".type").text();    
+    
+     document.getElementById('eUserId').value=userId;
+     document.getElementById('eName').value=name;
+     document.getElementById('eEmail').value=email;
+     document.getElementById('ePassword').value=password;
+     document.getElementById('eType').value=type;
 });
  </script> 
 </body>
