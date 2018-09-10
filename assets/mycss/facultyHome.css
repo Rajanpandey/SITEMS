@@ -28,27 +28,6 @@
     padding-top: 10px;
 }
 
-thead{
-    background-color: black;
-    color: aliceblue;
-}
-
-th a:link {
-    color: white;
-}
-
-th a:visited {
-    color: white;
-}
-
-th a:hover{
-    color: aliceblue;
-}
-
-th a:active{
-    color: aliceblue;
-}
-
 #myInput {
     background-image: url('../img/searchIcon.png'); /* Add a search icon to input */
     background-position: 10px 12px; /* Position the search icon */

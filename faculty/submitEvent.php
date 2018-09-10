@@ -21,6 +21,8 @@ $achievement=mysqli_real_escape_string($conn,trim($_POST['achievement']));
 //Used implode to separate array values with commas
 $attendees=implode(',', (array)$_POST['attendees']);
 $for=implode(',', (array)$_POST['for']);
+$resourceName=implode(',', (array)$_POST['resourceName']);
+$resourceDesignation=implode(',', (array)$_POST['resourceDesignation']);
 
 if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
@@ -58,8 +60,8 @@ else{
     $new_name=implode(',', $arrayOfFileNames);
   
     //Store everything to the database
-    $sql="INSERT INTO events (name, department, incharge, date, type, eventDescribe, achievements, attendees, eventFor, category, media, userId, url) 
-        VALUES ('$name', '$department', '$incharge', '$date', '$type', '$describe', '$achievement', '$attendees', '$for', '$category', '$new_name', '$userId', '$new_url')";    
+    $sql="INSERT INTO events (name, department, incharge, date, type, eventDescribe, achievements, attendees, eventFor, resourceName, resourceDesignation, category, media, userId, url) 
+        VALUES ('$name', '$department', '$incharge', '$date', '$type', '$describe', '$achievement', '$attendees', '$for', '$resourceName', '$resourceDesignation', '$category', '$new_name', '$userId', '$new_url')";    
     if(mysqli_query($conn, $sql)){
         echo "<script type=\"text/javascript\">
         alert('Your event has been sent to information officer for approval!');

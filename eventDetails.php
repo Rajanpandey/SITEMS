@@ -35,6 +35,10 @@ if($result!=NULL){
     }
 }
 
+$resourcePersonArray=explode(',', $array[0]['resourceName']);
+$resourceDesignationArray=explode(',', $array[0]['resourceDesignation']);
+$noOfResource=count($resourcePersonArray);
+
 $arrayOfMediaLoc=explode(",", $array[0]['media']);
 $sizeOfArray=count($arrayOfMediaLoc);
 
@@ -171,14 +175,14 @@ mysqli_close($conn);
               
             <div>
               <br/><br/><br/><br/><br/><br/>
-            </div>
+            </div>            
               
             <div class="col-sm-12">
               <h3>Description</h3>
               <p><?php echo $array[0]['eventDescribe']; ?>
               </p>
             </div>
-              
+            
             <div>
               <br/><br/><br/><br/><br/><br/>
             </div>
@@ -189,9 +193,37 @@ mysqli_close($conn);
                 <?php echo $array[0]['achievements']; ?>
               </p>
             </div>
-              
+            
             <div>
               <br/><br/><br/><br/><br/><br/>
+            </div>   
+             
+            <div class="col-sm-6">
+              <h3>Resource person(s)</h3>
+              <table class="table table-hover">
+                <thead class="thead-dark">
+                  <tr>
+                    <th>Name</th>
+                    <th>Designation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                 <?php
+                    for($i=0; $i<$noOfResource; $i=$i+1){
+                 ?>
+                        <tr>
+                            <td><?php echo $resourcePersonArray[$i]; ?></td>
+                            <td><?php echo $resourceDesignationArray[$i]; ?></td>
+                        </tr>
+                 <?php
+                    }
+                 ?>
+                </tbody>
+                </table>
+            </div>
+              
+            <div>
+              <br/><br/><br/><br/><br/><br/><br/><br/>
             </div>
               
             <div class="col-sm-12">

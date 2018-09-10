@@ -181,7 +181,7 @@ mysqli_close($conn);
               
               <div class="form-group">
                   <label for="incharge">Event In-charge (Name of faculty/staff):</label>
-                  <textarea class="form-control" rows="5" id="incharge" maxlength="1000" name="incharge" required></textarea>
+                  <input type="text" class="form-control" id="incharge" name="incharge" required>
               </div>
               
               <div class="form-group">
@@ -228,8 +228,27 @@ mysqli_close($conn);
                     <option value="Annual College Gathering Fest">Annual College Gathering Fest</option>
                     <option value="Annual College Technical Fest">Annual College Technical Fest</option>
                     <option value="Conference">Conference</option>
-                    <option value="">Any Other Activity:</option>
+                    <option value="" id="otherCategoryDropdown">Any Other Activity:</option>
                   </select>
+                  <input type="text" class="form-control" id="otherCategoryText" placeholder="For Other Category of event (Leave blank if not applicable)" onkeyup="otherCategory()" value="">
+              </div>
+              
+              <div class="form-group">
+                  <label for="resource">Mention the Name and Designation of Resource person(s):</label>&nbsp;&nbsp;&nbsp;<a class="btn btn-outline-primary" id="add">Add a new row</a>
+                  <table class="table" id="userTable">
+                <thead  class="thead-light">
+                  <tr>
+                    <th>Name</th>
+                    <th>Designation</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><input type="text" class="form-control" id="event" name="resourceName[]" required></td>
+                    <td><input type="text" class="form-control" id="event" name="resourceDesignation[]" required></td>
+                  </tr>
+                </tbody>
+                </table>
               </div>
               
               <div class="form-group">
@@ -313,6 +332,7 @@ mysqli_close($conn);
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
             <h3>Approved Events: </h3>
         </div>
+        
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"></div>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
 <?php  
@@ -467,7 +487,7 @@ mysqli_close($conn);
         
         <div class="table-responsive" id="eventsTable">
         <table class="table table-bordered table-hover" id="myTable">
-          <thead>
+          <thead  class="thead-dark">
             <tr>
               <th><a class="column_sort" id="name" data-order="desc" href="#">Name of the Event</a></th>
               <th><a class="column_sort" id="category" data-order="desc" href="#">Category</a></th>              
@@ -510,7 +530,7 @@ mysqli_close($conn);
         </div>          
     </div>
     <br/><br/>
-</div>
+
 
 <!-- Ajax -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>	
@@ -547,16 +567,34 @@ mysqli_close($conn);
  });
     
 function otherDepartment(){
-    var x = document.getElementById("otherDepartmentDropdown");
-    var y = $("#otherDepartmentText").val();
+    var x = $("#otherDepartmentText").val();
+    document.getElementById("otherDepartmentDropdown").value=x;
+}
     
-    x.setAttribute("value",y); 
+function otherCategory(){
+    var x = $("#otherCategoryText").val();
+    document.getElementById("otherCategoryDropdown").value=x;
 }
     
 jQuery(document).ready(function($) {
     $(".clickable-row").click(function() {
         window.location = $(this).data("href");
     });
+});    
+    
+$("#add").click(function () {
+     $("#userTable").each(function () {
+         var tds = '<tr>';
+         jQuery.each($('tr:last td', this), function () {
+             tds += '<td>' + $(this).html() + '</td>';
+         });
+         tds += '</tr>';
+         if ($('tbody', this).length > 0) {
+             $('tbody', this).append(tds);
+         } else {
+             $(this).append(tds);
+         }
+     });
 });
  </script> 
  

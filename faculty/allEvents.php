@@ -212,7 +212,7 @@ mysqli_close($conn);
             <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">
         
         <table class="table table-bordered table-hover" id="myTable">
-          <thead>
+          <thead  class="thead-dark">
             <tr>
               <th><a id="name" data-order="desc" href="#">Name of the Event</a></th>
               <th><a id="department" data-order="desc" href="#">Department</a></th>    

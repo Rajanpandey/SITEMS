@@ -83,7 +83,7 @@ mysqli_close($conn);
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Add new users</h4>
+          <h4 class="modal-title">Add new users</h4>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-outline-primary" id="add">Add a new row</a>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <!-- Modal Header Ends -->
@@ -92,7 +92,7 @@ mysqli_close($conn);
         <div class="modal-body">
           <form method="POST" action="addUser.php" enctype='multipart/form-data' >
             <table class="table" id="userTable">
-                <thead>
+                <thead class="thead-light">
                   <tr>
                     <th>Name</th>
                     <th>Email</th>
@@ -111,10 +111,10 @@ mysqli_close($conn);
                         <option value="informationOfficer">Information Officer</option>
                         <option value="admin">Admin</option>                
                       </select>
+                    </td>
                   </tr>
                 </tbody>
-            </table>
-            <a class="btn btn-outline-primary" id="add">Add a new row</a><br/><br/>                
+            </table>            
             <button type="submit" class="btn btn-outline-primary" name="submit">Submit</button>              
           </form>
         </div>  
@@ -141,7 +141,7 @@ mysqli_close($conn);
         <div class="modal-body">
           <form method="POST" action="editUser.php" enctype='multipart/form-data' >
             <table class="table" id="userTable">
-                <thead>
+                <thead class="thead-dark">
                   <tr>
                     <th>Name</th>
                     <th>Email</th>
@@ -183,7 +183,7 @@ mysqli_close($conn);
             <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">            
         
         <table class="table table-bordered table-hover allEventsTable" id="myTable">
-          <thead>
+          <thead class="thead-dark">
             <tr>
               <th><a data-order="desc" href="#">User ID</a></th>
               <th><a data-order="desc" href="#">Name</a></th>    
