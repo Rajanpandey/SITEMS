@@ -95,6 +95,9 @@ mysqli_close($conn);
     <li class="nav-item">
       <a class="nav-link"  href="allEvents.php"><i class="fas fa-calendar-alt"></i>   All Events</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link"  href="archives.php"><i class="fas fa-archive"></i>   Archives</a>
+    </li>
   </ul>
   <ul class="navbar-nav ml-auto">
     <li class="nav-item dropdown">
@@ -123,7 +126,7 @@ mysqli_close($conn);
         </div>  
         
         <div class="col-4">
-            <center><a href="archiveEvents.php"><i class="fas fa-archive fa-5x"></i><br/>Archive Events</a></center>
+            <center><a href="archives.php"><i class="fas fa-archive fa-5x"></i><br/>Archive Events</a></center>
         </div>       
         </div>
         
@@ -135,32 +138,5 @@ mysqli_close($conn);
 
 <!-- Bootstrap -->
 <script src="../assets/js/bootstrap.min.js"></script>
-
-<script>  
- $(document).ready(function(){  
-      $(document).on('click', '.column_sort', function(){  
-           var column_name = $(this).attr("id");  
-           var order = $(this).data("order");  
-           var arrow = ''; 
-           if(order == 'desc')  
-           {  
-                arrow = '&nbsp;<i class="fa fa-chevron-down" aria-hidden="true"></i>';  
-           }  
-           else  
-           {  
-                arrow = '&nbsp;<i class="fa fa-chevron-up" aria-hidden="true"></i>';  
-           }  
-           $.ajax({  
-                url:"sortColumns.php",  
-                method:"POST",  
-                data:{column_name:column_name, order:order},  
-                success:function(data)  
-                {  
-                     $('#eventsTable').html(data);  
-                     $('#'+column_name+'').append(arrow);  
-                }  
-           })  
-      });  
- });
- </script> 
+ 
 </body>

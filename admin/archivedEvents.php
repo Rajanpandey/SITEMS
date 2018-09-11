@@ -12,29 +12,16 @@ if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 }
 
-//Query to select the user
-$sqlUserId="SELECT userId FROM users WHERE email='$login_session'";
-$resultUserId=mysqli_query($conn, $sqlUserId);
-$rowUserId=mysqli_fetch_assoc($resultUserId);
-$userId = $rowUserId['userId'];
+$archiveName=$_GET['archive'];
 
 //Query to select events that are approved
-$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus='1' AND archive IS NULL ORDER BY date DESC";
+$sql="SELECT * FROM events WHERE archive='$archiveName' ORDER BY date DESC";
 $result=mysqli_query($conn, $sql);
 $array=array();
 while($row=$result->fetch_array()){
          $array[]=$row;
 }
 $totalEvents=mysqli_num_rows($result);
-
-//Query to select number of new messages
-$sql="SELECT * FROM events WHERE userId='$userId' AND declineReply IS NOT NULL AND viewedNotification IS NULL";
-$result=mysqli_query($conn, $sql);
-$array3=array();
-while($row=$result->fetch_array()){
-         $array3[]=$row;
-}
-$data=mysqli_num_rows($result);
 mysqli_close($conn);
 ?>
 
@@ -47,65 +34,46 @@ mysqli_close($conn);
     <meta name="viewport" content="width=device-width, initial-scale=1">    
     
     <!-- Bootstrap -->
-	<link href="../assets/css/bootstrap.min.css" rel="stylesheet">	
+	<link href="../../assets/css/bootstrap.min.css" rel="stylesheet">	
 	
 	<!-- Font Awesome -->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     
     <!-- My CSS -->  
-	<link rel="stylesheet" href="../assets/mycss/facultyHome.css">
+	<link rel="stylesheet" href="../../assets/mycss/facultyHome.css">
 	
-	<title>Events List</title>
+	<title>Archived Events - <?php echo $archiveName; ?></title>
 </head>
+
 <body>
 
 <!-- Navbar starts -->  
 <nav class="navbar sticky-top navbar-expand-sm bg-dark navbar-dark">
   <ul class="navbar-nav">
    <li class="nav-item">
-      <a class="nav-link" href="home.php"><i class="fas fa-home"></i>   Home</a>
+      <a class="nav-link" href="../home.php"><i class="fas fa-home"></i>   Home</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="rejectedEvents.php"><i class="far fa-calendar"></i>   Rejected Events</a>
+      <a class="nav-link"  href="../allUsers.php"><i class="fas fa-users"></i>   All Users</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link disabled"><i class="fas fa-calendar-alt"></i>   All Events</a>
+      <a class="nav-link" href="../allEvents.php"><i class="fas fa-calendar-alt"></i>   All Events</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link"  href="../archives.php"><i class="fas fa-archive"></i>   Archives</a>
     </li>
   </ul>
   <ul class="navbar-nav ml-auto">
-<li class="nav-item dropdown">
-  <?php
-    if($data==0){
-  ?>
-    <a class="nav-link"><i class="far fa-bell"> No New Message</i></a>
-  <?php
-    }else{
-  ?>
-    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-bell"> New Message (<?php echo $data ?>)</i></a>
-      <div class="dropdown-menu dropdown-menu-right">
-       <?php
-        for($i=0; $i<$data; $i=$i+1){
-       ?>
-        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo $array3[$i]['declineReply']; ?></a>
-      <?php
-        }
-      ?>
-      </div>
-  <?php
-    } 
-  ?>  
-</li>
-    
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       Profile</i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
-        <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
+        <a class="dropdown-item" href="../../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
+        <a class="dropdown-item" href="../../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
       </div>
     </li>
   </ul>
 </nav>
-<!-- Navbar ends --> 
+<!-- Navbar ends -->  
 
 <br/>
 <div class="container-fluid">
@@ -208,11 +176,11 @@ mysqli_close($conn);
          </div>
           
         <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-10">
-            <h3>List of all the Past Events: </h3>
+            <h3>List of all the Archived Events from <?php echo $archiveName; ?>: <button onclick="window.location='../unarchiveEvents.php/?archive=<?php echo $archiveName; ?>';" class="btn btn-outline-danger" id="unarchive">Unarchive <?php echo $archiveName; ?></button></h3>
             <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">
         
-        <table class="table table-bordered table-hover" id="myTable">
-          <thead  class="thead-dark">
+        <table class="table table-bordered table-hover allEventsTable" id="myTable">
+          <thead class="thead-dark">
             <tr>
               <th><a id="name" data-order="desc" href="#">Name of the Event</a></th>
               <th><a id="department" data-order="desc" href="#">Department</a></th>    
@@ -230,7 +198,7 @@ mysqli_close($conn);
             for($i=0; $i<$totalEvents; $i=$i+1){
             ?>
                 <div id="eventRows">
-                 <tr class='clickable-row' data-href='../eventDetails.php/?url=<?php echo $array[$i]['url']; ?>'>
+                 <tr class='clickable-row' data-href='../../eventDetails.php/?url=<?php echo $array[$i]['url']; ?>'>
                   <td><?php echo $array[$i]['name']; ?></td>
                   <td><?php echo $array[$i]['department']; ?></td>
                   <td><?php echo $array[$i]['category']; ?></td>
@@ -246,7 +214,9 @@ mysqli_close($conn);
             }  
           ?> 
           </tbody>
-        </table>    
+        </table>  
+          <button onclick="exportToExcel();" class="btn btn-outline-info" id="generateReport">Generate and Download Report</button>  
+          <button onclick="print();" class="btn btn-outline-info" id="printReport">Print Report</button>  
         </div>        
     </div>
     <br/><br/><br/>
@@ -257,12 +227,10 @@ mysqli_close($conn);
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>  
 
 <!-- Bootstrap -->
-<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../../assets/js/bootstrap.min.js"></script>
 
 <script>  
-$("th:nth-child(6)").hide()
-$("td:nth-child(6)").hide()
-    
+
 function sort(){
     var department, category, year, type, attendees, eventFor;
     department=$('#department1').val();
@@ -354,7 +322,72 @@ $('#myInput').keydown(function(event) {
         event.preventDefault();
     }
 });
+
+$("th:nth-child(6)").hide()
+$("td:nth-child(6)").hide()
     
+function exportToExcel(){
+    var tableID=$('.allEventsTable').attr('id');
+    var tab_text="<table border='2px'><tr bgcolor='#87AFC6' style='height: 75px; text-align: center; width: 250px'>";
+    var textRange; var i=0;
+    tab = document.getElementById(tableID); // id of table
+
+    for(i = 0 ; i < tab.rows.length ; i++)
+    {
+
+        tab_text=tab_text;
+        if(tab.rows[i].style.display != "none"){
+            tab_text=tab_text+tab.rows[i].innerHTML+"</tr>";
+        }
+        
+        //tab_text=tab_text+"</tr>";
+    }
+
+    tab_text= tab_text+"</table>";
+
+    var ua = window.navigator.userAgent;
+    var msie = ua.indexOf("MSIE ");
+
+    if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+    {
+        txtArea1.document.open("txt/html","replace");
+        txtArea1.document.write( 'sep=,\r\n' + tab_text);
+        txtArea1.document.close();
+        txtArea1.focus();
+        sa=txtArea1.document.execCommand("SaveAs",true,"report.txt");
+    }
+    else {
+       sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+    }
+    
+    return (sa);
+}
+    
+function print()
+{
+    var tableID=$('.allEventsTable').attr('id');
+    var tab_text="<table border='2px'><tr bgcolor='#87AFC6' style='height: 75px; text-align: center; width: 250px'>";
+    var textRange; var i=0;
+    tab = document.getElementById(tableID); // id of table
+
+    for(i = 0 ; i < tab.rows.length ; i++)
+    {
+
+        tab_text=tab_text;
+        if(tab.rows[i].style.display != "none"){
+            tab_text=tab_text+tab.rows[i].innerHTML+"</tr>";
+        }
+        
+        //tab_text=tab_text+"</tr>";
+    }
+    tab_text= tab_text+"</table>";
+    
+    newWin= window.open("");
+    newWin.document.write(tab_text);
+    newWin.print();
+    newWin.close();
+}
+
 jQuery(document).ready(function($) {
     $(".clickable-row").click(function() {
         window.location = $(this).data("href");

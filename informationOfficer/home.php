@@ -20,7 +20,7 @@ $userId = $rowUserId['userId'];
 
 //Logic to count total pages for pagination
 $num_rec_per_page=10;
-$selecAllIssues = "SELECT * FROM events WHERE userId='$userId' AND approvalStatus='1'";
+$selecAllIssues = "SELECT * FROM events WHERE userId='$userId' AND approvalStatus='1' AND archive IS NULL";
 $allIssues = mysqli_query($conn, $selecAllIssues);			  
 $total_records =mysqli_num_rows($allIssues);  //count number of issues					  
 $total_pages = ceil($total_records / $num_rec_per_page);   
@@ -45,7 +45,7 @@ $totalUnapprovedEvents=mysqli_num_rows($result);
 
 //Query to select events that are approved
 $start_from=($page-1)*$num_rec_per_page; 
-$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus='1' ORDER BY date DESC LIMIT $start_from, $num_rec_per_page";
+$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus='1' AND archive IS NULL ORDER BY date DESC LIMIT $start_from, $num_rec_per_page";
 $result=mysqli_query($conn, $sql);
 $array2=array();
 while($row=$result->fetch_array()){

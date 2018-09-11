@@ -19,7 +19,7 @@ $rowUserId=mysqli_fetch_assoc($resultUserId);
 $userId = $rowUserId['userId'];
 
 //Query to select events that are approved
-$sql="SELECT * FROM events WHERE approvalStatus='1' ORDER BY date DESC";
+$sql="SELECT * FROM events WHERE approvalStatus='1' AND archive IS NULL ORDER BY date DESC";
 $result=mysqli_query($conn, $sql);
 $array=array();
 while($row=$result->fetch_array()){

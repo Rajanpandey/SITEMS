@@ -63,6 +63,9 @@ mysqli_close($conn);
     <li class="nav-item">
       <a class="nav-link" href="allEvents.php"><i class="fas fa-calendar-alt"></i>   All Events</a>
     </li>
+    <li class="nav-item">
+      <a class="nav-link"  href="archives.php"><i class="fas fa-archive"></i>   Archives</a>
+    </li>
   </ul>
   <ul class="navbar-nav ml-auto">
     <li class="nav-item dropdown">

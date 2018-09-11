@@ -65,7 +65,7 @@ mysqli_close($conn);
             <br/><br/><br/><br/>
               <center>
                 <div class="card posts" style="width:400px">
-                  <img src="assets/img/profile2.jpg" style="width:100%">
+                  <img src="assets/img/profile.png" style="width:100%">
                   <div class="card-body">
                   <h4 class="card-title"><?php echo $array[0]['name']; ?></h4>
                   <h5 class="card-title"><?php echo $array[0]['type']; ?></h5>

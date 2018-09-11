@@ -39,9 +39,6 @@
     margin-bottom: 12px; /* Add some space below the input */
 }
 
-#navbardrop{
-}
-
 .dropdown-menu a:link {
 }
 
@@ -69,3 +66,31 @@
 #myTable tr {
     cursor: pointer;
 }  
+
+.postss {
+    height: 150px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);    
+}
+
+.postss:hover {
+    -ms-transform: scale(1.02); /* IE 9 */
+    -webkit-transform: scale(1.02)); /* Safari 3-8 */
+    transform: scale(1.02); 
+}
+
+.postss a:link {
+    color: black;
+}
+
+.postss a:visited {
+    color: black;
+}
+
+.postss a:hover{
+    color: black;
+}
+
+.postss a:active{
+    color: black;
+}
