@@ -13,10 +13,11 @@ if(mysqli_connect_error()){
 }
 
 //Query to select the user
-$sqlUserId="SELECT userId FROM users WHERE email='$login_session'";
+$sqlUserId="SELECT * FROM users WHERE email='$login_session'";
 $resultUserId=mysqli_query($conn, $sqlUserId);
 $rowUserId=mysqli_fetch_assoc($resultUserId);
 $userId = $rowUserId['userId'];
+$userName = $rowUserId['name'];
 
 //Query to select events that are approved
 $sql="SELECT * FROM users ORDER BY type";
@@ -69,7 +70,7 @@ mysqli_close($conn);
   </ul>
   <ul class="navbar-nav ml-auto">
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       Profile</i></a>
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       <?php echo $userName; ?></i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
         <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
@@ -188,13 +189,13 @@ mysqli_close($conn);
         <table class="table table-bordered table-hover allEventsTable" id="myTable">
           <thead class="thead-dark">
             <tr>
-              <th><a data-order="desc" href="#">User ID</a></th>
-              <th><a data-order="desc" href="#">Name</a></th>    
-              <th><a data-order="desc" href="#">EMail</a></th>              
-              <th><a data-order="desc" href="#">Password</a></th>
-              <th><a data-order="desc" href="#">Role</a></th>
-              <th><a data-order="desc" href="#">Edit</a></th>
-              <th><a data-order="desc" href="#">Delete</a></th>
+              <th>User ID</th>
+              <th>Name</th>    
+              <th>EMail</th>              
+              <th>Password</th>
+              <th>Role</th>
+              <th>Edit</th>
+              <th>Delete</th>
             </tr>
           </thead>
           <tbody>

@@ -13,10 +13,11 @@ if(mysqli_connect_error()){
 }
 
 //Query to select the user
-$sqlUserId="SELECT userId FROM users WHERE email='$login_session'";
+$sqlUserId="SELECT * FROM users WHERE email='$login_session'";
 $resultUserId=mysqli_query($conn, $sqlUserId);
 $rowUserId=mysqli_fetch_assoc($resultUserId);
 $userId = $rowUserId['userId'];
+$userName = $rowUserId['name'];
 
 //Logic to count total pages for pagination
 $num_rec_per_page=10;
@@ -89,7 +90,7 @@ mysqli_close($conn);
   </ul>
   <ul class="navbar-nav ml-auto">
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       Profile</i></a>
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       <?php echo $userName; ?></i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
         <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
@@ -106,7 +107,7 @@ mysqli_close($conn);
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Submit a new event</h4>
+          <h4 class="modal-title">Submit a new event data</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <!-- Modal Header Ends -->
@@ -240,7 +241,7 @@ mysqli_close($conn);
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">        
-        <h4 class="modal-title">Reason for declining (optional):</h4>
+        <h4 class="modal-title">Reason for declining event data (optional):</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
@@ -261,18 +262,18 @@ mysqli_close($conn);
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <center><img class="logo" src="../assets/img/sitLogo.png"></center><br/>            
-            <button type="button" class="btn btn-outline-info btn-block" data-toggle="modal" data-target="#myModal">Submit a new event</button><br/><br/>
+            <button type="button" class="btn btn-outline-info btn-block" data-toggle="modal" data-target="#myModal">Submit a new event data</button><br/><br/>
         </div>        
         
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <h3>Events awaiting my approval: <button onclick="location.href='approveAll.php';" class="btn btn-outline-dark">Approve All Events!</button> </h3>
+            <h3>Event data awaiting my approval: <button onclick="location.href='approveAll.php';" class="btn btn-outline-dark">Approve All Event Data!</button> </h3>
             <br/>
         </div>
         <?php 
         if($totalUnapprovedEvents==0){
     ?>
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-success">
-          <strong>Congrats!</strong> There is no unapproved event left! 
+          <strong>Congrats!</strong> There is no unapproved event data left! 
         </div>
     <?php 
         }else{
@@ -312,13 +313,12 @@ mysqli_close($conn);
         </div>
         
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-info">
-          <a class="alert-link" href="allEvents.php">Click Here</a> to view all events posted by everyone!
+          <a class="alert-link" href="allEvents.php">Click Here</a> to view all event data submitted by everyone!
         </div>  
         
-        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
-            <h3>Past Events posted by me: </h3>
+        <div class="col-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
+            <h3>List of event data submitted by me: </h3>
         </div>
-        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"></div>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
 <?php  
     if($total_records!=0){
@@ -474,10 +474,10 @@ mysqli_close($conn);
         <table class="table table-bordered table-hover" id="myTable">
           <thead class="thead-dark">
             <tr>
-              <th><a class="column_sort" id="name" data-order="desc" href="#">Name of the Event</a></th>
-              <th><a class="column_sort" id="category" data-order="desc" href="#">Category</a></th>              
-              <th><a class="column_sort" id="eventDescribe" data-order="desc" href="#">Description</a></th>
-              <th><a class="column_sort" id="date" data-order="desc" href="#">Date</a></th>
+              <th><a id="name">Name of the Event</a></th>
+              <th><a id="category">Category</a></th>              
+              <th><a id="eventDescribe">Description</a></th>
+              <th><a id="date">Date</a></th>
             </tr>
           </thead>
           <tbody>
@@ -502,7 +502,7 @@ mysqli_close($conn);
                 }  
             }else{
           ?> 
-              <h3>No Events to show!!</h3>
+              <h3>No event data to show!</h3>
           <?php
             }
           ?> 
@@ -521,33 +521,7 @@ mysqli_close($conn);
 <!-- Bootstrap -->
 <script src="../assets/js/bootstrap.min.js"></script>
 
-<script>  
- $(document).ready(function(){  
-      $(document).on('click', '.column_sort', function(){  
-           var column_name = $(this).attr("id");  
-           var order = $(this).data("order");  
-           var arrow = ''; 
-           if(order == 'desc')  
-           {  
-                arrow = '&nbsp;<i class="fa fa-chevron-down" aria-hidden="true"></i>';  
-           }  
-           else  
-           {  
-                arrow = '&nbsp;<i class="fa fa-chevron-up" aria-hidden="true"></i>';  
-           }  
-           $.ajax({  
-                url:"sortColumns.php",  
-                method:"POST",  
-                data:{column_name:column_name, order:order},  
-                success:function(data)  
-                {  
-                     $('#eventsTable').html(data);  
-                     $('#'+column_name+'').append(arrow);  
-                }  
-           })  
-      });  
- });
-    
+<script>      
 function otherDepartment(){
     var x = $("#otherDepartmentText").val();
     document.getElementById("otherDepartmentDropdown").value=x;

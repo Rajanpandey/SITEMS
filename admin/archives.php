@@ -12,6 +12,13 @@ if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 }
 
+//Query to select the user
+$sqlUserId="SELECT * FROM users WHERE email='$login_session'";
+$resultUserId=mysqli_query($conn, $sqlUserId);
+$rowUserId=mysqli_fetch_assoc($resultUserId);
+$userId = $rowUserId['userId'];
+$userName = $rowUserId['name'];
+
 //Query to select unqiue archive names
 $sql="SELECT DISTINCT archive FROM events WHERE archive IS NOT NULL";
 $result=mysqli_query($conn, $sql);
@@ -66,7 +73,7 @@ mysqli_close($conn);
   </ul>
   <ul class="navbar-nav ml-auto">
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       Profile</i></a>
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       <?php echo $userName; ?></i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
         <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
@@ -87,21 +94,21 @@ mysqli_close($conn);
 <div class="container">
     <div class="row">
         <div class="col-12">
-         <h3>Archive Events:</h3>
+         <h3>Archive Event Data:</h3>
          <form class="form-inline" action="archiveEvents.php" method="post">
            <div class="form-group">
-             <label for="name">Name:&nbsp;&nbsp;&nbsp;&nbsp;</label>
-             <input type="text" class="form-control" id="name" name="name" required>
+             <label for="name" title="Eg: Year 2016-17">Name of the Archive:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+             <input type="text" class="form-control" id="name" name="name" title="Eg: Year 2016-17" required>
            </div>
            <div class="form-group">
-             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="from">From:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="from">Archive from:&nbsp;&nbsp;&nbsp;&nbsp;</label>
              <input type="date" class="form-control" id="from" name="from" required>
            </div>
            <div class="form-group">
-             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="to">To:&nbsp;&nbsp;&nbsp;&nbsp;</label>
+             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<label for="to">Archive to:&nbsp;&nbsp;&nbsp;&nbsp;</label>
              <input type="date" class="form-control" id="to" name="to" required>
            </div><br/><br/><br/><br/>
-           <button type="submit" class="btn btn-outline-primary btn-block">Archive</button>
+           <button type="submit" class="btn btn-outline-danger btn-block">Archive data falling in the range mentioned above</button>
          </form><hr/>     
         </div>   
     </div>        
@@ -110,7 +117,7 @@ mysqli_close($conn);
 <div class="container">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <h3>Archived Events:</h3>
+            <h3>List of Archives:</h3>
         </div>   
     </div>        
 </div> 

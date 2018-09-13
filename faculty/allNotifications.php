@@ -19,39 +19,14 @@ $rowUserId=mysqli_fetch_assoc($resultUserId);
 $userId = $rowUserId['userId'];
 $userName = $rowUserId['name'];
 
-//Logic to count total pages for pagination
-$num_rec_per_page=10;
-$selecAllIssues = "SELECT * FROM events WHERE userId='$userId' AND approvalStatus='1'";
-$allIssues = mysqli_query($conn, $selecAllIssues);			  
-$total_records =mysqli_num_rows($allIssues);  //count number of issues					  
-$total_pages = ceil($total_records / $num_rec_per_page);   
-
-//Fetch Issues Posted By All Users
-if(isset($_GET["page"])) {
-    $page  = $_GET["page"]; 
-} else { 
-    $page=1; 
-}; 
-
-//Query to select events awaiting approval
-$sql="SELECT * FROM events WHERE approvalStatus IS NULL ORDER BY date DESC";
+//Query to select events that are rejected
+$sql="SELECT * FROM events WHERE userId='$userId' AND declineReply IS NOT NULL AND viewedNotification IS NULL";
 $result=mysqli_query($conn, $sql);
-if($result!=NULL){
-    $array1 = array();
-    while($row=mysqli_fetch_assoc($result)){
-         $array1[]=$row;
-    }
-}
-$totalUnapprovedEvents=mysqli_num_rows($result);
-
-//Query to select events that are approved
-$start_from=($page-1)*$num_rec_per_page; 
-$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus='1' ORDER BY date DESC LIMIT $start_from, $num_rec_per_page";
-$result=mysqli_query($conn, $sql);
-$array2=array();
+$array=array();
 while($row=$result->fetch_array()){
-         $array2[]=$row;
+         $array[]=$row;
 }
+$noOfNotifications=mysqli_num_rows($result);
 
 mysqli_close($conn);
 ?>
@@ -73,14 +48,8 @@ mysqli_close($conn);
     <!-- My CSS -->  
 	<link rel="stylesheet" href="../assets/mycss/facultyHome.css">
 	
-	<title>Information Officer Home</title>
+	<title>Notifications</title>
 </head>
-
-<style>
-    center a{
-        color: black;
-    }    
-</style>
 
 <body>
 
@@ -88,23 +57,33 @@ mysqli_close($conn);
 <nav class="navbar sticky-top navbar-expand-sm bg-dark navbar-dark">
   <ul class="navbar-nav">
    <li class="nav-item">
-      <a class="nav-link disabled"><i class="fas fa-home"></i>   Home</a>
+      <a class="nav-link" href="home.php"><i class="fas fa-home"></i>   Home</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link"  href="allUsers.php"><i class="fas fa-users"></i>   All Users</a>
+      <a class="nav-link" href="rejectedEvents.php"><i class="far fa-calendar"></i>   Rejected Events</a>
     </li>
     <li class="nav-item">
       <a class="nav-link"  href="allEvents.php"><i class="fas fa-calendar-alt"></i>   All Events</a>
     </li>
-    <li class="nav-item">
-      <a class="nav-link"  href="archives.php"><i class="fas fa-archive"></i>   Archives</a>
-    </li>
   </ul>
   <ul class="navbar-nav ml-auto">
+<li class="nav-item dropdown">
+  <?php
+    if($noOfNotifications==0){
+  ?>
+    <a class="nav-link disabled"><i class="far fa-bell"> No New Message</i></a>
+  <?php
+    }else{
+  ?>
+    <a class="nav-link dropdown-toggle disabled" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-bell"> New Message (<?php echo $noOfNotifications ?>)</i></a>
+  <?php
+    } 
+  ?>  
+    
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       <?php echo $userName; ?></i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
+        <a class="dropdown-item" href="profile.php"><i class="fas fa-user-alt"></i>   My Profile</a>
         <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
       </div>
     </li>
@@ -112,26 +91,41 @@ mysqli_close($conn);
 </nav>
 <!-- Navbar ends -->  
 
+
 <div class="container">
-    <div class="row">
+    <div class="row">        
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <center><img class="logo" src="../assets/img/sitLogo.png"></center><hr/><br/><br/><br/><br/><br/><br/><br/><br/>          
-        </div>        
-        
-        <div class="col-4">            
-            <center><a href="allUsers.php"><i class="fas fa-users fa-5x"></i><br/>Manage Users</a></center><br/><br/><br/><br/>    
+            <br/><h3>All new notifications: </h3><br/>
+            <a href="clearNotifications.php">Clear all notification</a>
         </div>
-           
-        <div class="col-4">
-            <center><a href="allEvents.php"><i class="fas fa-calendar-alt fa-5x"></i><br/>Manage Events</a></center>
-        </div>  
-        
-        <div class="col-4">
-            <center><a href="archives.php"><i class="fas fa-archive fa-5x"></i><br/>Archive Events</a></center>
-        </div>       
-        </div>
-        
     </div>
+        
+ <div class="row">
+  <div class="col-4">
+    <div class="list-group" id="list-tab" role="tablist">
+    <?php
+     for($i=0; $i<$noOfNotifications; $i=$i+1){
+    ?>
+      <a class="list-group-item list-group-item-action" id="<?php echo $i ?>" data-toggle="list" href="#list-<?php echo $i.$i ?>" role="tab" aria-controls="home"><?php echo $array[$i]['name']; ?></a>
+    <?php
+     }
+    ?>
+    </div>
+  </div>
+  <div class="col-8">
+    <div class="tab-content" id="nav-tabContent">
+     <?php
+      for($i=0; $i<$noOfNotifications; $i=$i+1){
+     ?>
+        <div class="tab-pane fade" id="list-<?php echo $i.$i ?>" role="tabpanel" aria-labelledby="<?php echo $i ?>"><a href="../eventDetails.php/?url=<?php echo $array[$i]['url']; ?>"><?php echo $array[$i]['declineReply']; ?></a></div>
+     <?php
+      }
+     ?>
+    </div>
+  </div>
+ </div>
+    </div>
+    <br/><br/><br/>
 
 <!-- Ajax -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>	
@@ -139,5 +133,19 @@ mysqli_close($conn);
 
 <!-- Bootstrap -->
 <script src="../assets/js/bootstrap.min.js"></script>
+
+<script>  
+jQuery(document).ready(function($) {
+    $(".clickable-row").click(function() {
+        window.location = $(this).data("href");
+    });
+});
+    
+$(".viewResponse").click(function(){
+    alert(this.id);
+});
+    
+</script> 
  
+
 </body>

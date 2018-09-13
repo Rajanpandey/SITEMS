@@ -13,10 +13,11 @@ if(mysqli_connect_error()){
 }
 
 //Query to select the user
-$sqlUserId="SELECT userId FROM users WHERE email='$login_session'";
+$sqlUserId="SELECT * FROM users WHERE email='$login_session'";
 $resultUserId=mysqli_query($conn, $sqlUserId);
 $rowUserId=mysqli_fetch_assoc($resultUserId);
 $userId = $rowUserId['userId'];
+$userName = $rowUserId['name'];
 
 //Query to select events that are approved
 $sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus='1' AND archive IS NULL ORDER BY date DESC";
@@ -55,7 +56,7 @@ mysqli_close($conn);
     <!-- My CSS -->  
 	<link rel="stylesheet" href="../assets/mycss/facultyHome.css">
 	
-	<title>Events List</title>
+	<title>Approved Event Data</title>
 </head>
 <body>
 
@@ -69,7 +70,7 @@ mysqli_close($conn);
       <a class="nav-link" href="rejectedEvents.php"><i class="far fa-calendar"></i>   Rejected Events</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link disabled"><i class="fas fa-calendar-alt"></i>   All Events</a>
+      <a class="nav-link disabled"><i class="fas fa-calendar-alt"></i>   Approved Events</a>
     </li>
   </ul>
   <ul class="navbar-nav ml-auto">
@@ -83,21 +84,44 @@ mysqli_close($conn);
   ?>
     <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-bell"> New Message (<?php echo $data ?>)</i></a>
       <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="clearNotifications.php/?url=<?php echo $userId; ?>" style="text-align:right;">Clear all notification</a>
        <?php
+        if($data<=10){
         for($i=0; $i<$data; $i=$i+1){
+            if($i%2==0){
        ?>
-        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo $array3[$i]['declineReply']; ?></a>
+        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
       <?php
+            }else{
+      ?>
+        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>" style="background-color:#C7BBF0;"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+      <?php  
+            }
+        }
+       }else{
+            for($i=0; $i<10; $i=$i+1){
+            if($i%2==0){
+       ?>
+        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+      <?php
+            }else{
+      ?>
+        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>" style="background-color:#C7BBF0;"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+      <?php  
+            }
+          }
+       ?>
+            <a class="dropdown-item" href="allNotifications.php/?url=<?php echo $userId; ?>" style="text-align:right;">View all notifications</a>
+      <?php  
         }
       ?>
       </div>
   <?php
     } 
   ?>  
-</li>
     
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       Profile</i></a>
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       <?php echo $userName; ?></i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
         <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
@@ -206,23 +230,24 @@ mysqli_close($conn);
               <button onmouseover="sort();" class="btn btn-outline-success" id="submitFilters">Hover over me to Sort</button>  
           </form>  
          </div>
-          
-        <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-10">
-            <h3>List of all the Past Events: </h3>
-            <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">
         
+        <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-10">           
+          <h3>List of approved event data submitted by me: </h3>
+          <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">
+          
+        <div class="table-responsive" id="eventsTable">
         <table class="table table-bordered table-hover" id="myTable">
-          <thead  class="thead-dark">
+          <thead class="thead-dark">
             <tr>
-              <th><a id="name" data-order="desc" href="#">Name of the Event</a></th>
-              <th><a id="department" data-order="desc" href="#">Department</a></th>    
-              <th><a id="category" data-order="desc" href="#">Category</a></th>              
-              <th><a id="eventDescribe" data-order="desc" href="#">Description</a></th>
-              <th><a id="date" data-order="desc" href="#">Date</a></th>
-              <th><a id="year" data-order="desc" href="#">Year</a></th>
-              <th><a id="attendees" data-order="desc" href="#">Attendees</a></th>
-              <th><a id="eventFor" data-order="desc" href="#">Event For</a></th>
-              <th><a id="type" data-order="desc" href="#">Type</a></th>
+              <th><a class="column_sort" id="name" data-order="desc" href="#">Name of the Event</a></th>
+              <th><a class="column_sort" id="department" data-order="desc" href="#">Department</a></th>    
+              <th><a class="column_sort" id="category" data-order="desc" href="#">Category</a></th>              
+              <th><a class="column_sort" id="eventDescribe" data-order="desc" href="#">Description</a></th>
+              <th><a class="column_sort" id="date" data-order="desc" href="#">Date</a></th>
+              <th><a class="column_sort" id="year" data-order="desc" href="#">Year</a></th>
+              <th><a class="column_sort" id="attendees" data-order="desc" href="#">Attendees</a></th>
+              <th><a class="column_sort" id="eventFor" data-order="desc" href="#">Event For</a></th>
+              <th><a class="column_sort" id="type" data-order="desc" href="#">Type</a></th>
             </tr>
           </thead>
           <tbody>
@@ -247,7 +272,8 @@ mysqli_close($conn);
           ?> 
           </tbody>
         </table>    
-        </div>        
+        </div>     
+      </div>   
     </div>
     <br/><br/><br/>
 </div>
@@ -262,6 +288,32 @@ mysqli_close($conn);
 <script>  
 $("th:nth-child(6)").hide()
 $("td:nth-child(6)").hide()
+    
+ $(document).ready(function(){  
+      $(document).on('click', '.column_sort', function(){  
+           var column_name = $(this).attr("id");  
+           var order = $(this).data("order");  
+           var arrow = ''; 
+           if(order == 'desc')  
+           {  
+                arrow = '&nbsp;<i class="fa fa-chevron-down" aria-hidden="true"></i>';  
+           }  
+           else  
+           {  
+                arrow = '&nbsp;<i class="fa fa-chevron-up" aria-hidden="true"></i>';  
+           }  
+           $.ajax({  
+                url:"sortColumns.php",  
+                method:"POST",  
+                data:{column_name:column_name, order:order},  
+                success:function(data)  
+                {  
+                     $('#eventsTable').html(data);  
+                     $('#'+column_name+'').append(arrow);  
+                }  
+           })  
+      });  
+ });
     
 function sort(){
     var department, category, year, type, attendees, eventFor;

@@ -14,6 +14,13 @@ if(mysqli_connect_error()){
 
 $archiveName=$_GET['archive'];
 
+//Query to select the user
+$sqlUserId="SELECT * FROM users WHERE email='$login_session'";
+$resultUserId=mysqli_query($conn, $sqlUserId);
+$rowUserId=mysqli_fetch_assoc($resultUserId);
+$userId = $rowUserId['userId'];
+$userName = $rowUserId['name'];
+
 //Query to select events that are approved
 $sql="SELECT * FROM events WHERE archive='$archiveName' ORDER BY date DESC";
 $result=mysqli_query($conn, $sql);
@@ -65,7 +72,7 @@ mysqli_close($conn);
   </ul>
   <ul class="navbar-nav ml-auto">
     <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       Profile</i></a>
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       <?php echo $userName; ?></i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
         <a class="dropdown-item" href="../../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
         <a class="dropdown-item" href="../../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
@@ -176,7 +183,7 @@ mysqli_close($conn);
          </div>
           
         <div class="col-12 col-sm-12 col-md-12 col-lg-10 col-xl-10">
-            <h3>List of all the Archived Events from <?php echo $archiveName; ?>: <button onclick="window.location='../unarchiveEvents.php/?archive=<?php echo $archiveName; ?>';" class="btn btn-outline-danger" id="unarchive">Unarchive <?php echo $archiveName; ?></button></h3>
+            <h3>List of all events in the archive [<?php echo $archiveName; ?>]: <button onclick="window.location='../unarchiveEvents.php/?archive=<?php echo $archiveName; ?>';" class="btn btn-outline-danger" id="unarchive">Unarchive <?php echo $archiveName; ?></button></h3>
             <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">
         
         <table class="table table-bordered table-hover allEventsTable" id="myTable">
