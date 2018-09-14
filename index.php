@@ -53,7 +53,7 @@ if(isset($_SESSION['login_user'])){
             <form action="connection.php" method="POST">
               <div class="container">
                 <label for="email"><b>Email:</b></label>
-                <input type="email" placeholder="Enter Email Address" name="email" required value="<?php if(isset($_COOKIE["member_email"])) { echo $_COOKIE["member_email"]; } ?>">
+                <input type="text" placeholder="Enter Email Address" name="email" required value="<?php if(isset($_COOKIE["member_email"])) { echo $_COOKIE["member_email"]; } ?>">
                 
                 <label for="password"><b>Password:</b></label>
                 <input type="password" placeholder="Enter Password" name="password" required value="<?php if(isset($_COOKIE["member_password"])) { echo $_COOKIE["member_password"]; } ?>" class="input-field">

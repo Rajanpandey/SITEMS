@@ -176,16 +176,22 @@ mysqli_close($conn);
       </div>
     </div>
   </div>
-<!-- Add User Modal Ends -->
+<!-- Edit User Modal Ends -->
 
 <br/>
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <h3>List of all Users: <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#myModal">Add new users</button><br/></h3>
+            <select class="form-control" id="sort">
+                    <option selected id=""> -- Sort By Role -- </option>
+                    <option id="faculty">Faculty</option>
+                    <option id="informationOfficer">Information Officer</option>
+                    <option id="admin">Admin</option>
+                  </select><br/>
 
             <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">            
-        
+        <div class="table-responsive" id="usersTable">
         <table class="table table-bordered table-hover allEventsTable" id="myTable">
           <thead class="thead-dark">
             <tr>
@@ -209,15 +215,27 @@ mysqli_close($conn);
                   <td class="email"><?php echo $array[$i]['email']; ?></td>
                   <td class="password"><?php echo $array[$i]['password']; ?></td>
                   <td class="type"><?php echo $array[$i]['type']; ?></td>
-                  <td><button type="button" class="btn btn-outline-info edit" data-toggle="modal" data-target="#myModal2">Edit</button></td>
-                  <td><a href="deleteUser.php/?userId=<?php echo $array[$i]['userId']; ?>"><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
+                  <?php
+                  if($array[$i]['email']=="$login_session"){
+                  ?>
+                      <td><button type="button" class="btn btn-outline-info"disabled title="Current user. Cannot Edit.">Edit</button></td>
+                      <td><button type="button" class="btn btn-outline-danger" disabled title="Current user. Cannot delete.">Delete</button></td>
+                  <?php
+                  }else{
+                  ?>
+                      <td><button type="button" class="btn btn-outline-info edit" data-toggle="modal" data-target="#myModal2">Edit</button></td>
+                      <td><a href="deleteUser.php/?userId=<?php echo $array[$i]['userId']; ?>"><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
+                  <?php
+                  }
+                  ?>                  
                 </tr>
                 </div>
           <?php
             }  
           ?> 
           </tbody>
-        </table>           
+        </table>       
+        </div>    
           <button onclick="exportToExcel();" class="btn btn-outline-info" id="generateReport">Generate and Download Report</button>  
           <button onclick="print();" class="btn btn-outline-info" id="printReport">Print Report</button>  
         </div>        
@@ -233,6 +251,23 @@ mysqli_close($conn);
 <script src="../assets/js/bootstrap.min.js"></script>
 
 <script>  
+    
+ $(document).ready(function(){  
+      $(document).on('change', '#sort', function(){  
+   
+          var $sel = $("#sort");
+          var role_name = $sel.val();
+ 
+           $.ajax({  
+                url:"sortUsers.php",  
+                method:"POST",  
+                data:{role_name:role_name},  
+                success:function(data){  
+                    $('#usersTable').html(data);  
+                }  
+           })  
+      });  
+ });
     
 function search() {
   var input, filter, table, tr, td, i;

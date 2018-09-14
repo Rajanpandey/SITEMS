@@ -59,6 +59,34 @@ mysqli_close($conn);
 </style>
 <body>
 
+<!-- Change Password Modal -->
+<div class="modal fade" id="myModal">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+      
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Change Password</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal Header Ends -->
+        
+        <!-- Modal body -->
+        <div class="modal-body">
+          <form method="POST" action="changePassword.php">
+           <label for="category">Enter a new password:</label>
+           <input type="text" class="form-control" id="password" name="password" value="" required><br/>
+                      
+           <button type="submit" class="btn btn-outline-primary" name="submit">Change Password</button>               
+          </form>
+        </div>  
+        <!-- Modal body Ends -->  
+            
+      </div>
+    </div>
+  </div>
+<!-- Change Password Modal Ends -->
+
 <div class="container">
 	<div class="row">
         <div class="col-12">
@@ -74,6 +102,10 @@ mysqli_close($conn);
                 </div>
                </div>
               </center>       
+        </div>
+        <div class="col-4"></div>
+        <div class="col-4">
+            <center><button type="button" class="btn btn-outline-dark btn-block edit" data-toggle="modal" data-target="#myModal">Change Password</button></center>       
         </div>
     </div>
 </div>

@@ -3,6 +3,10 @@ session_start();
 
     $email = $_POST['email'];
     $password = $_POST['password'];
+
+    if (!strpos($email, '@')) {
+        $email=$email.'@sitpune.edu.in';
+    }
     
     $conn=mysqli_connect("localhost", "root", "", "sitems");
     $query = "SELECT * FROM users WHERE email='$email'";
