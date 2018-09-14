@@ -86,11 +86,53 @@ mysqli_close($conn);
         <div class="modal-content">
       
         <!-- Modal Header -->
-        <div class="modal-header">
-          <h4 class="modal-title">Add new users</h4>&nbsp;&nbsp;&nbsp;&nbsp;<a class="btn btn-outline-primary" id="add">Add a new row</a>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
-        </div>
+        <div class="modal-header">         
+          <h4 class="modal-title">Add new users</h4><br/>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>      
+        </div>         
         <!-- Modal Header Ends -->
+         
+          <table class="table">
+                <tbody>
+                  <tr>
+                    <td>
+                        <select class="form-control" id="noOfRowsToAdd">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>                
+                    <option value="4">4</option>                
+                    <option value="5">5</option>                
+                    <option value="6">6</option>                
+                    <option value="7">7</option>                
+                    <option value="8">8</option>                
+                    <option value="9">9</option>                
+                    <option value="10">10</option>                
+                      </select>  
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-primary" id="add"> <<- Add these many rows</a>                        
+                    </td>
+                    <td>
+                        <select class="form-control" id="noOfRowsToDelete">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>                
+                    <option value="4">4</option>                
+                    <option value="5">5</option>                
+                    <option value="6">6</option>                
+                    <option value="7">7</option>                
+                    <option value="8">8</option>                
+                    <option value="9">9</option>                
+                    <option value="10">10</option>                
+                      </select>  
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-primary" id="remove"> <<- Delete these many rows</a>                        
+                    </td>
+                  </tr>
+                </tbody>
+                </table>
+         
         
         <!-- Modal body -->
         <div class="modal-body">
@@ -350,7 +392,13 @@ function print()
 }
     
 $("#add").click(function () {
-     $("#userTable").each(function () {
+    var e = document.getElementById("noOfRowsToAdd");
+    var noOfRowsToAdd = e.options[e.selectedIndex].value;
+    
+    var i;
+    
+    for(i=0; i<noOfRowsToAdd; i++){
+        $("#userTable").each(function () {
          var tds = '<tr>';
          jQuery.each($('tr:last td', this), function () {
              tds += '<td>' + $(this).html() + '</td>';
@@ -362,7 +410,27 @@ $("#add").click(function () {
              $(this).append(tds);
          }
      });
+    }
+    
+     
 });
+    
+$('#remove').on("click", function(){
+    var i;
+    var e = document.getElementById("noOfRowsToDelete");
+            
+    var noOfRowsToDelete = e.options[e.selectedIndex].value;      
+    var noOfRows = document.getElementById("userTable").rows.length-1;            
+            
+    for(i=0; i<noOfRowsToDelete; i++){
+        if(noOfRows>noOfRowsToDelete){
+            $('#userTable tr:last').remove();
+        }else{
+             alert("Can't remove the row!");
+            break;
+         }
+      }            
+ })
  
 $(".edit").click(function() {
     var userId=$(this).closest("tr")   // Finds the closest row <tr> 

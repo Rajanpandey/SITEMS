@@ -26,7 +26,7 @@ $userId = $rowUserId['userId'];
       $order = 'desc';  
  }  
 
- $query = "SELECT * FROM events WHERE approvalStatus='1' ORDER BY ".$_POST['column_name']." ".$_POST['order']."";
+ $query = "SELECT * FROM events WHERE approvalStatus='1' AND archive IS NULL ORDER BY ".$_POST['column_name']." ".$_POST['order']."";
  $result = mysqli_query($connect, $query);  
  $output .= '  
  <table class="table table-bordered table-hover">

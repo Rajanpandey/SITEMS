@@ -94,3 +94,7 @@
 .postss a:active{
     color: black;
 }
+
+.articleImage{
+    background-image:url('../img/sitLogo.png');
+}

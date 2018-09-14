@@ -259,8 +259,50 @@ mysqli_close($conn);
               </div>
               
               <div class="form-group">
-                  <label for="resource">Mention the Name and Designation of Resource person(s):</label>&nbsp;&nbsp;&nbsp;<a class="btn btn-outline-primary" id="add">Add a new row</a>
-                  <table class="table" id="userTable">
+                  <label for="resource">Mention the Name and Designation of Resource person(s):</label><br/>
+                  
+                <table class="table">
+                <tbody>
+                  <tr>
+                    <td>
+                        <select class="form-control" id="noOfRowsToAdd">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>                
+                    <option value="4">4</option>                
+                    <option value="5">5</option>                
+                    <option value="6">6</option>                
+                    <option value="7">7</option>                
+                    <option value="8">8</option>                
+                    <option value="9">9</option>                
+                    <option value="10">10</option>                
+                      </select>  
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-primary" id="add"> <<- Add these many rows</a>                        
+                    </td>
+                    <td>
+                        <select class="form-control" id="noOfRowsToDelete">
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>                
+                    <option value="4">4</option>                
+                    <option value="5">5</option>                
+                    <option value="6">6</option>                
+                    <option value="7">7</option>                
+                    <option value="8">8</option>                
+                    <option value="9">9</option>                
+                    <option value="10">10</option>                
+                      </select>  
+                    </td>
+                    <td>
+                        <a class="btn btn-outline-primary" id="remove"> <<- Delete these many rows</a>                        
+                    </td>
+                  </tr>
+                </tbody>
+                </table>                 
+                  
+                <table class="table" id="userTable">
                 <thead  class="thead-light">
                   <tr>
                     <th>Name</th>
@@ -582,7 +624,13 @@ jQuery(document).ready(function($) {
 });    
     
 $("#add").click(function () {
-     $("#userTable").each(function () {
+    var e = document.getElementById("noOfRowsToAdd");
+    var noOfRowsToAdd = e.options[e.selectedIndex].value;
+    
+    var i;
+    
+    for(i=0; i<noOfRowsToAdd; i++){
+        $("#userTable").each(function () {
          var tds = '<tr>';
          jQuery.each($('tr:last td', this), function () {
              tds += '<td>' + $(this).html() + '</td>';
@@ -594,7 +642,27 @@ $("#add").click(function () {
              $(this).append(tds);
          }
      });
+    }
+    
+     
 });
+    
+$('#remove').on("click", function(){
+    var i;
+    var e = document.getElementById("noOfRowsToDelete");
+            
+    var noOfRowsToDelete = e.options[e.selectedIndex].value;      
+    var noOfRows = document.getElementById("userTable").rows.length-1;            
+            
+    for(i=0; i<noOfRowsToDelete; i++){
+        if(noOfRows>noOfRowsToDelete){
+            $('#userTable tr:last').remove();
+        }else{
+             alert("Can't remove the row!");
+            break;
+         }
+      }            
+ })
  </script> 
  
 

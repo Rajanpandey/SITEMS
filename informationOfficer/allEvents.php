@@ -169,8 +169,6 @@ mysqli_close($conn);
                     <option value="">Any Other Activity:</option>
                   </select>
               </div>
-              <button onclick="reset();" class="btn btn-outline-danger" id="resetFilters">Reset</button>  
-              <button onmouseover="sort();" class="btn btn-outline-success" id="submitFilters">Hover over me to Sort</button>  
           </form>  
          </div>
           
@@ -182,15 +180,14 @@ mysqli_close($conn);
         <table class="table table-bordered table-hover allEventsTable" id="myTable">
           <thead class="thead-dark">
             <tr>
-              <th><a class="column_sort" id="name" data-order="desc" href="#">Name of the Event</a></th>
-              <th><a class="column_sort" id="department" data-order="desc" href="#">Department</a></th>    
-              <th><a class="column_sort" id="category" data-order="desc" href="#">Category</a></th>              
-              <th><a class="column_sort" id="eventDescribe" data-order="desc" href="#">Description</a></th>
-              <th><a class="column_sort" id="date" data-order="desc" href="#">Date</a></th>
-              <th><a class="column_sort" id="year" data-order="desc" href="#">Year</a></th>
-              <th><a class="column_sort" id="attendees" data-order="desc" href="#">Attendees</a></th>
-              <th><a class="column_sort" id="eventFor" data-order="desc" href="#">Event For</a></th>
-              <th><a class="column_sort" id="type" data-order="desc" href="#">Type</a></th>
+              <th><a id="name">Name of the Event</a></th>
+              <th><a id="department">Department</a></th>    
+              <th><a id="category">Category</a></th>              
+              <th><a id="eventDescribe">Description</a></th>
+              <th><a id="date">Date</a></th>
+              <th><a id="attendees">Attendees</a></th>
+              <th><a id="eventFor">Event For</a></th>
+              <th><a id="type">Type</a></th>
             </tr>
           </thead>
           <tbody>
@@ -204,7 +201,6 @@ mysqli_close($conn);
                   <td><?php echo $array[$i]['category']; ?></td>
                   <td><?php echo $array[$i]['eventDescribe']; ?></td>
                   <td><?php echo $array[$i]['date']; ?></td>
-                  <td><?php echo substr($array[$i]['date'], 0,4); ?></td>
                   <td><?php echo $array[$i]['attendees']; ?></td>
                   <td><?php echo $array[$i]['eventFor']; ?></td>
                   <td><?php echo $array[$i]['type']; ?></td>
@@ -230,32 +226,25 @@ mysqli_close($conn);
 <!-- Bootstrap -->
 <script src="../assets/js/bootstrap.min.js"></script>
 
-<script>  
- $(document).ready(function(){  
-      $(document).on('click', '.column_sort', function(){  
-           var column_name = $(this).attr("id");  
-           var order = $(this).data("order");  
-           var arrow = ''; 
-           if(order == 'desc')  
-           {  
-                arrow = '&nbsp;<i class="fa fa-chevron-down" aria-hidden="true"></i>';  
-           }  
-           else  
-           {  
-                arrow = '&nbsp;<i class="fa fa-chevron-up" aria-hidden="true"></i>';  
-           }  
-           $.ajax({  
-                url:"sortColumns.php",  
-                method:"POST",  
-                data:{column_name:column_name, order:order},  
-                success:function(data)  
-                {  
-                     $('#eventsTable').html(data);  
-                     $('#'+column_name+'').append(arrow);  
-                }  
-           })  
-      });  
- });
+<script>          
+$("#department1").change(function(){
+    sort();
+});    
+$("#category1").change(function(){
+    sort();
+});    
+$("#year1").change(function(){
+    sort();
+});    
+$("#type1").change(function(){
+    sort();
+});    
+$("#attendees1").change(function(){
+    sort();
+});    
+$("#eventFor1").change(function(){
+    sort();
+});   
     
 function sort(){
     var department, category, year, type, attendees, eventFor;
@@ -265,38 +254,15 @@ function sort(){
     type=$('#type1').val();
     attendees=$('#attendees1').val();
     eventFor=$('#eventFor1').val();
-        
-    reset();
-
-    if(department!=""){
-        sortTable(department, 1);
-    }
-    if(category!=""){
-        sortTable(category, 2);
-    }
-    if(year!=""){
-        sortTable(year, 5);
-    }
-    if(type!=""){
-        sortTable(type, 8);
-    }
-    if(attendees!=""){
-        sortTable(attendees, 6);
-    }
-    if(eventFor!=""){
-        sortTable(eventFor, 7);
-    }
-}
     
-function reset(){
-  var table, tr, td, i, j;
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-      if(tr[i].style.display == "none"){
-           tr[i].style.display = "";
-        }   
-  }
+    $.ajax({  
+        url:"sort.php",  
+        method:"POST",  
+        data:{department:department, category:category, year:year, type:type, attendees:attendees, eventFor:eventFor},  
+        success:function(data){  
+            $('#eventsTable').html(data);  
+        }  
+    })       
 }
     
 function search() {
@@ -309,48 +275,13 @@ function search() {
     td = tr[i].getElementsByTagName("td")[0];
     if (td) {
       if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-        if(tr[i].style.display == "none"){
-           tr[i].style.display = "none";
-        }else{
-            tr[i].style.display = "";
-        }
-      } else {
-        tr[i].style.display = "none";
-      }
-    }       
-  }
-}
-    
-function sortTable(col, pos) {
-  var input, filter, table, tr, td, i;
-  filter = col.toUpperCase();
-  table = document.getElementById("myTable");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[pos];
-    if (td) {
-      if (td.innerHTML.toUpperCase()===filter) {
-        if(tr[i].style.display == "none"){
-           tr[i].style.display = "none";
-        }else{
-            tr[i].style.display = "";
-        }
-        
+        tr[i].style.display = "";        
       } else {
         tr[i].style.display = "none";
       }
     }       
   }
 } 
-
-$('#myInput').keydown(function(event) {
-    if (event.keyCode == 8) {
-        event.preventDefault();
-    }
-});
-
-$("th:nth-child(6)").hide()
-$("td:nth-child(6)").hide()
     
 function exportToExcel(){
     var tableID=$('.allEventsTable').attr('id');

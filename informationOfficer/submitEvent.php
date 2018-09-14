@@ -64,7 +64,7 @@ else{
         VALUES ('$name', '$department', '$incharge', '$date', '$type', '$describe', '$achievement', '$attendees', '$for', '$resourceName', '$resourceDesignation', '$category', '$new_name', '$userId', '$new_url', '1')"; 
     if(mysqli_query($conn, $sql)){
         echo "<script type=\"text/javascript\">
-        alert('Your event has been sent to information officer for approval!');
+        alert('The event has been submitted!');
         window.location='home.php';
         </script>";
     } else {
