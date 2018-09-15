@@ -6,7 +6,7 @@ if(!isset($_SESSION['login_user'])){
 ?>
 
 <?php
-$conn=mysqli_connect("localhost", "root", "", "sitems");
+require('../connect.php');
 
 if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
@@ -169,6 +169,7 @@ mysqli_close($conn);
                     <option value="">Any Other Activity:</option>
                   </select>
               </div>
+              <button onclick="reset();" class="btn btn-outline-danger" id="resetFilters">Reset</button>  
           </form>  
          </div>
           
@@ -281,6 +282,16 @@ function search() {
       }
     }       
   }
+} 
+    
+function reset(){
+    var department, category, year, type, attendees, eventFor;
+    department=$('#department1').val()="";
+    category=$('#category1').val()="";
+    year=$('#year1').val()="";
+    type=$('#type1').val()="";
+    attendees=$('#attendees1').val()="";
+    eventFor=$('#eventFor1').val()="";
 } 
     
 function exportToExcel(){

@@ -1,5 +1,5 @@
 <?php
-$conn=mysqli_connect("localhost", "root", "", "sitems");
+require('connect.php');
 session_start();
 
 if(isset($_SESSION['login_user'])){ 

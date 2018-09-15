@@ -8,7 +8,7 @@ session_start();
         $email=$email.'@sitpune.edu.in';
     }
     
-    $conn=mysqli_connect("localhost", "root", "", "sitems");
+    require('connect.php');
     $query = "SELECT * FROM users WHERE email='$email'";
     $result = mysqli_query($conn, $query);
     $array = array();

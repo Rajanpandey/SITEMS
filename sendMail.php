@@ -1,6 +1,6 @@
 <?php
 //Get the Email from the DB
-$conn=mysqli_connect("localhost", "root", "", "sitems");
+require('connect.php');
 if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 }

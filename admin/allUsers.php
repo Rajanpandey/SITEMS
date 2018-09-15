@@ -6,7 +6,7 @@ if(!isset($_SESSION['login_user'])){
 ?>
 
 <?php
-$conn=mysqli_connect("localhost", "root", "", "sitems");
+require('../connect.php');
 
 if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
@@ -225,14 +225,25 @@ mysqli_close($conn);
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
             <h3>List of all Users: <button type="button" class="btn btn-outline-success" data-toggle="modal" data-target="#myModal">Add new users</button><br/></h3>
-            <select class="form-control" id="sort">
-                    <option selected id=""> -- Sort By Role -- </option>
-                    <option id="faculty">Faculty</option>
-                    <option id="informationOfficer">Information Officer</option>
-                    <option id="admin">Admin</option>
-                  </select><br/>
+            <table class="table">
+                <tbody>
+                  <tr>
+                    <td>
+                     <select class="form-control" id="sort">
+                        <option selected id=""> -- Sort By Role -- </option>
+                        <option id="faculty">Faculty</option>
+                        <option id="informationOfficer">Information Officer</option>
+                        <option id="admin">Admin</option>
+                     </select>
+                    </td>
+                    <td>
+                        <button onClick="window.location.reload()" class="btn btn-outline-danger">Reset</button>                       
+                    </td>                    
+                  </tr>
+                </tbody>
+                </table>
 
-            <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">            
+        <input type="text" id="myInput" onkeyup="search()" placeholder="Search for names.." title="Type in a name">            
         <div class="table-responsive" id="usersTable">
         <table class="table table-bordered table-hover allEventsTable" id="myTable">
           <thead class="thead-dark">
@@ -310,7 +321,7 @@ mysqli_close($conn);
            })  
       });  
  });
-    
+        
 function search() {
   var input, filter, table, tr, td, i;
   input = document.getElementById("myInput");

@@ -6,7 +6,7 @@ if(!isset($_SESSION['login_user'])){
 ?>
 
 <?php
-$conn=mysqli_connect("localhost", "root", "", "sitems");
+require('connect.php');
 
 if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());

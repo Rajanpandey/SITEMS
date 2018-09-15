@@ -6,7 +6,7 @@ $resultUserId=mysqli_query($conn, $sqlUserId);
 $rowUserId=mysqli_fetch_assoc($resultUserId);
 $userId = $rowUserId['userId'];
 
-$conn=mysqli_connect("localhost", "root", "", "sitems");
+require('../connect.php');
 
 $eventId=$_POST['eventId'];
 $sql="SELECT * FROM events WHERE eventId='$eventId'";

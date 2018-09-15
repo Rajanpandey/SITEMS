@@ -7,7 +7,7 @@ if(!isset($_SESSION['login_user'])){
 
 <?php  
  //sort.php  
-$connect=mysqli_connect("localhost", "root", "", "sitems");
+require('../connect.php');
 
 $output="";
 $role=$_POST['role_name'];
@@ -16,7 +16,7 @@ if($role=="Information Officer"){
 }
   
  $query = "SELECT * FROM users WHERE type='$role'";
- $result = mysqli_query($connect, $query);  
+ $result = mysqli_query($conn, $query);  
  $output .= '  
  <table class="table table-bordered table-hover allEventsTable" id="myTable">
           <thead class="thead-dark">

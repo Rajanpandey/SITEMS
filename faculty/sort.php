@@ -6,7 +6,7 @@ if(!isset($_SESSION['login_user'])){
 ?>
 
 <?php
-$conn=mysqli_connect("localhost", "root", "", "sitems");
+require('../connect.php');
 
 if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
@@ -58,7 +58,7 @@ $output .= '
         <th><a class="column_sort" id="eventDescribe">Description</a></th>    
         <th><a class="column_sort" id="date">Date</a></th>
         <th><a class="column_sort" id="attendees">Attendees</a></th>
-        <th><a class="column_sort" id="eventFor>Event For</a></th>
+        <th><a class="column_sort" id="eventFor">Event For</a></th>
         <th><a class="column_sort" id="type">Type</a></th>
       </thead>  
  ';  
