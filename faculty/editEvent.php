@@ -76,7 +76,16 @@ mysqli_close($conn);
 	
 	<title>Edit Event Details</title>
 </head>
-    <body>      
+
+<style>
+.thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
+</style>
+   
+<body>      
     
 <!-- Navbar starts -->  
 <nav class="navbar sticky-top navbar-expand-sm bg-dark navbar-dark">
@@ -96,10 +105,18 @@ mysqli_close($conn);
        
         <br/><div class="container">
         
-        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-danger">
-           <h5>The Information Officer says:</h5>
-            <?php echo $array[0]['declineReply']; ?> 
-        </div>
+        <?php
+        if($array[0]['declineReply']!=""){
+        ?>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-danger">          
+              <h5>The Information Officer says:</h5>
+              <?php echo $array[0]['declineReply']; ?>
+            </div>
+        <?php
+        }
+        ?>          
+           
+        
         
          <h3>Edit Event Details: </h3><hr/>
           <form method="POST" action="../submitEditedEvent.php" enctype='multipart/form-data' >
@@ -316,7 +333,11 @@ mysqli_close($conn);
               
               <div class="form-group">
                   <label for="media"><b>Add more files?</b></label>
-                  <input type="file" name="media[]" accept="file_extension|audio/*|video/*|image/*|media_type" multiple="multiple" class="form-control-file">
+                  <div id="wrapper" style="margin-top: 20px;">
+                     <label for="files" class="btn btn-primary">Select File(s)</label><p id="noOfFiles"></p>
+                     <input style="visibility:hidden;" type="file" id="files" name="media[]" accept="file_extension|audio/*|video/*|image/*|media_type" multiple="multiple" class="form-control-file" required>
+                      <output id="list"></output>
+                  </div>
               </div>
               
               <div class="form-group" style="display:none">
@@ -385,6 +406,42 @@ mysqli_close($conn);
                 }
             }            
         })
+            
+  function handleFileSelect(evt) {
+    document.getElementById("list").innerHTML ="";
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+          // Render thumbnail.
+          var span = document.createElement('span');
+          span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+          document.getElementById('list').insertBefore(span, null);
+        };
+      })(f);
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f);
+    }
+  }
+
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+    
+  
+  $("#files").on('change', function(){
+    var noOfFiles=0;
+    var countFiles = $(this)[0].files.length;
+    noOfFiles=noOfFiles+countFiles;
+    document.getElementById("noOfFiles").innerHTML = noOfFiles+" File(s) Selected";
+      
+  })
 
         </script>
     

@@ -90,11 +90,11 @@ mysqli_close($conn);
         for($i=0; $i<$data; $i=$i+1){
             if($i%2==0){
        ?>
-        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+        <a class="dropdown-item" href="eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
       <?php
             }else{
       ?>
-        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>" style="background-color:#C7BBF0;"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+        <a class="dropdown-item" href="eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>" style="background-color:#C7BBF0;"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
       <?php  
             }
         }
@@ -102,11 +102,11 @@ mysqli_close($conn);
             for($i=0; $i<10; $i=$i+1){
             if($i%2==0){
        ?>
-        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+        <a class="dropdown-item" href="eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
       <?php
             }else{
       ?>
-        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>" style="background-color:#C7BBF0;"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+        <a class="dropdown-item" href="eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>" style="background-color:#C7BBF0;"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
       <?php  
             }
           }
@@ -123,7 +123,7 @@ mysqli_close($conn);
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       <?php echo $userName; ?></i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
+        <a class="dropdown-item" href="profile.php"><i class="fas fa-user-alt"></i>   My Profile</a>
         <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
       </div>
     </li>
@@ -253,7 +253,7 @@ mysqli_close($conn);
             for($i=0; $i<$totalEvents; $i=$i+1){
             ?>
                 <div id="eventRows">
-                 <tr class='clickable-row' data-href='../eventDetails.php/?url=<?php echo $array[$i]['url']; ?>'>
+                 <tr class='clickable-row' data-href='eventDetails.php/?url=<?php echo $array[$i]['url']; ?>'>
                   <td><?php echo $array[$i]['name']; ?></td>
                   <td><?php echo $array[$i]['department']; ?></td>
                   <td><?php echo $array[$i]['category']; ?></td>

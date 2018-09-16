@@ -14,10 +14,9 @@ if(mysqli_connect_error()){
 
 $url=$_GET["url"]; 
 
-if(substr($_SERVER['HTTP_REFERER'], -8)=='home.php' || substr($_SERVER['HTTP_REFERER'], -20)=='allNotifications.php'){
-    $sql="UPDATE events SET viewedNotification='1' WHERE url='$url'";
-    $result=mysqli_query($conn, $sql);
-}
+$sql="UPDATE events SET viewedNotification='1' WHERE url='$url'";
+$result=mysqli_query($conn, $sql);
+
 
 
 //Query to select the user

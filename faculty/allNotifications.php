@@ -117,7 +117,7 @@ mysqli_close($conn);
      <?php
       for($i=0; $i<$noOfNotifications; $i=$i+1){
      ?>
-        <div class="tab-pane fade" id="list-<?php echo $i.$i ?>" role="tabpanel" aria-labelledby="<?php echo $i ?>"><a href="../eventDetails.php/?url=<?php echo $array[$i]['url']; ?>"><?php echo $array[$i]['declineReply']; ?></a></div>
+        <div class="tab-pane fade" id="list-<?php echo $i.$i ?>" role="tabpanel" aria-labelledby="<?php echo $i ?>"><a href="eventDetails.php/?url=<?php echo $array[$i]['url']; ?>"><?php echo $array[$i]['declineReply']; ?></a></div>
      <?php
       }
      ?>

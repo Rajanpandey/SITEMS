@@ -76,6 +76,14 @@ mysqli_close($conn);
 	<title>Information Officer Home</title>
 </head>
 
+<style>
+.thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
+</style>
+
 <body>
 
 <!-- Navbar starts -->  
@@ -92,7 +100,7 @@ mysqli_close($conn);
     <li class="nav-item dropdown">
       <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       <?php echo $userName; ?></i></a>
       <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-        <a class="dropdown-item" href="../profile.php?u=<?php echo $userId; ?>"><i class="fas fa-user-alt"></i>   My Profile</a>
+        <a class="dropdown-item" href="profile.php"><i class="fas fa-user-alt"></i>   My Profile</a>
         <a class="dropdown-item" href="../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
       </div>
     </li>
@@ -114,15 +122,74 @@ mysqli_close($conn);
         
         <!-- Modal body -->
         <div class="modal-body">
-          <form method="POST" action="submitEvent.php" enctype='multipart/form-data' >
-             <div class="form-group">
-                <label for="event">Name of the event:</label>
-                <input type="text" class="form-control" id="event" name="name" required>
-              </div>
-              
-              <div class="form-group">
-                <label for="sedepartmentl1">Institute Level/Department:</label>
-                  <select class="form-control" id="department"  name="department" required>
+          <form method="POST" action="submitEvent.php" enctype='multipart/form-data'>
+            <table class="table table-borderless table-striped">
+                <tr>
+                    <td>
+                        <center>Name of the event:</center>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="event" name="name" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <center>Event In-charge (Name of faculty/staff):</center>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" id="incharge" name="incharge" required>
+                    </td>
+                </tr>                                         
+                
+                <tr>
+                    <td>
+                        <center>Attendees:</center>
+                    </td>
+                    <td>
+                        <center><label class="checkbox-inline"><input type="checkbox" value="Staff" name="attendees[]">&nbsp; Staff &nbsp;&nbsp;&nbsp;</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="Faculty" name="attendees[]">&nbsp; Faculty &nbsp;&nbsp;&nbsp;</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="Student" name="attendees[]">&nbsp; Student &nbsp;&nbsp;&nbsp;</label></center>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <center>Event is for:</center>
+                    </td>
+                    <td>
+                        <center><label class="checkbox-inline"><input type="checkbox" value="B.Tech" name="for[]">&nbsp; B.Tech &nbsp;&nbsp;&nbsp;</label>
+                        <label class="checkbox-inline"><input type="checkbox" value="M.Tech" name="for[]">&nbsp; M.Tech &nbsp;&nbsp;&nbsp;</label></center>
+                    </td>
+                </tr>
+                
+                
+                <tr>
+                    <td>
+                        <center>Date of the event:</center>
+                    </td>
+                    <td>
+                        <input type="date" class="form-control" id="date"  name="date" required>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <center>Type:</center>
+                    </td>
+                    <td>
+                        <select class="form-control" id="type" name="type" required>
+                            <option disabled selected value> -- Select an option -- </option>
+                            <option value="Curricular Activity">Curricular Activity</option>
+                            <option value="Co-Curricular Activity">Co-Curricular Activity</option>
+                        </select>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <center>Institute Level/Department:</center>
+                    </td>
+                    <td>
+                        <select class="form-control" id="department"  name="department" required>
                     <option disabled selected value> -- Select an option -- </option>
                     <option value="CSIT">CS/IT</option>
                     <option value="EnTc">EnTc</option>
@@ -134,45 +201,17 @@ mysqli_close($conn);
                     <option value="Techfest">Techfest</option>
                     <option value="CSR">CSR</option>
                     <option value="" id="otherDepartmentDropdown">Other Club Activities</option><br/>                    
-                  </select>
+                      </select>
                   <input type="text" class="form-control" id="otherDepartmentText" placeholder="For Other Club Activities (Leave blank if not applicable)" onkeyup="otherDepartment()" value="">
-              </div>
-              
-              <div class="form-group">
-                  <label for="incharge">Event In-charge (Name of faculty/staff):</label>
-                  <textarea class="form-control" rows="5" id="incharge" maxlength="1000" name="incharge" required></textarea>
-              </div>
-              
-              <div class="form-group">
-                <label for="date">Date of the event:</label>
-                <input type="date" class="form-control" id="date"  name="date" required>
-              </div>
-              
-              <div class="form-group">
-                <label for="date">Attendees:</label>
-                <label class="checkbox-inline"><input type="checkbox" value="Staff" name="attendees[]">&nbsp; Staff &nbsp;&nbsp;&nbsp;</label>
-                <label class="checkbox-inline"><input type="checkbox" value="Faculty" name="attendees[]">&nbsp; Faculty &nbsp;&nbsp;&nbsp;</label>
-                <label class="checkbox-inline"><input type="checkbox" value="Student" name="attendees[]">&nbsp; Student &nbsp;&nbsp;&nbsp;</label>
-              </div>
-              
-              <div class="form-group">
-                <label for="for">Event is for:</label>
-                <label class="checkbox-inline"><input type="checkbox" value="B.Tech" name="for[]">&nbsp; B.Tech &nbsp;&nbsp;&nbsp;</label>
-                <label class="checkbox-inline"><input type="checkbox" value="M.Tech" name="for[]">&nbsp; M.Tech &nbsp;&nbsp;&nbsp;</label>
-              </div>
-              
-              <div class="form-group">
-                <label for="type">Type:</label>
-                  <select class="form-control" id="type" name="type" required>
-                    <option disabled selected value> -- Select an option -- </option>
-                    <option value="Curricular Activity">Curricular Activity</option>
-                    <option value="Co-Curricular Activity">Co-Curricular Activity</option>
-                  </select>
-              </div>     
-                       
-              <div class="form-group">
-                <label for="category">Category of event:</label>
-                  <select class="form-control" id="category" name="category" required>
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td>
+                        <center>Category of event:</center>
+                    </td>
+                    <td>
+                        <select class="form-control" id="category" name="category" required>
                     <option disabled selected value> -- Select an option -- </option>
                     <option value="Guest Lecture">Guest Lecture</option>
                     <option value="Seminar">Seminar</option>
@@ -187,15 +226,39 @@ mysqli_close($conn);
                     <option value="Annual College Gathering Fest">Annual College Gathering Fest</option>
                     <option value="Annual College Technical Fest">Annual College Technical Fest</option>
                     <option value="Conference">Conference</option>
-                    <option value="">Any Other Activity:</option>
+                    <option value="" id="otherCategoryDropdown">Any Other Activity:</option>
                   </select>
                   <input type="text" class="form-control" id="otherCategoryText" placeholder="For Other Category of event (Leave blank if not applicable)" onkeyup="otherCategory()" value="">
-              </div>
-              
+                    </td>
+                </tr>
+                
+                <tr>
+                    <td colspan="2">
+                        A paragraph describing the event/activty:
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea class="form-control" rows="5" id="describe" maxlength="5000" name="describe" required></textarea>
+                    </td>
+                </tr>  
+                <tr>
+                    <td colspan="2">
+                        Any Achievement/Awards won during the said activity:
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <textarea class="form-control" rows="5" id="achievement" maxlength="1000" name="achievement" required></textarea>
+                    </td>
+                </tr>  
+                
+            </table>
+
               <div class="form-group">
-                  <label for="resource">Mention the Name and Designation of Resource person(s):</label>
+                  <label for="resource">Mention the Name and Designation of Resource person(s):</label><br/>
                   
-                  <table class="table">
+                <table class="table">
                 <tbody>
                   <tr>
                     <td>
@@ -234,11 +297,10 @@ mysqli_close($conn);
                     </td>
                   </tr>
                 </tbody>
-                </table>
+                </table>                 
                   
-                  
-                  <table class="table" id="userTable">
-                <thead class="thead-light">
+                <table class="table table-bordered" id="userTable">
+                <thead  class="thead-light">
                   <tr>
                     <th>Name</th>
                     <th>Designation</th>
@@ -254,18 +316,12 @@ mysqli_close($conn);
               </div>
               
               <div class="form-group">
-                  <label for="describe">A paragraph describing the event/activty:</label>
-                  <textarea class="form-control" rows="5" id="describe" maxlength="5000" name="describe" required></textarea>
-              </div>
-              
-              <div class="form-group">
-                  <label for="achievement">Any Achievement/Awards won during the said activity:</label>
-                  <textarea class="form-control" rows="5" id="achievement" maxlength="1000" name="achievement" required></textarea>
-              </div>
-              
-              <div class="form-group">
-                  <label for="media">Please upload 5/7 <b>high resolution pictures</b> of the said event; and also mail the same to Information Officer:</label>
-                  <input type="file" name="media[]" accept="file_extension|audio/*|video/*|image/*|media_type" multiple="multiple" class="form-control-file">
+                  <label for="media">Please upload 5/7 <b>high resolution pictures</b> and other documents of the said event:</label>
+                  <div id="wrapper" style="margin-top: 20px;">
+                     <label for="files" class="btn btn-primary">Select File(s)</label><p id="noOfFiles"></p>
+                     <input style="visibility:hidden;" type="file" id="files" name="media[]" accept="file_extension|audio/*|video/*|image/*|media_type" multiple="multiple" class="form-control-file" required>
+                      <output id="list"></output>
+                  </div>
               </div>
               
               <button type="submit" class="btn btn-outline-primary" name="submit">Submit</button>              
@@ -325,13 +381,13 @@ mysqli_close($conn);
     
         <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">              
               <div class="posts" id="<?php echo $array1[$i]['eventId']; ?>">
-              <a href="../eventDetails.php/?url=<?php echo $array1[$i]['url']; ?>">
+              <a href="eventDetails.php/?url=<?php echo $array1[$i]['url']; ?>">
                <div class="image">
                 <img class="articleImage" src="../assets/img/<?php echo $array1[$i]['category']; ?>.jpg">
                </div>
                </a>
                <div class="container" id="description">
-                 <a href="../eventDetails.php/?url=<?php echo $array1[$i]['url']; ?>">
+                 <a href="eventDetails.php/?url=<?php echo $array1[$i]['url']; ?>">
                   <h4 class="card-title"><?php echo $array1[$i]['name']; ?></h4>
                   <p class="card-text">Held on: <?php echo $array1[$i]['date']; ?></p>
                  </a><br/>
@@ -535,7 +591,7 @@ mysqli_close($conn);
                 for($i=0; $i<$n; $i=$i+1){
             ?>
                 <div id="eventRows">
-                 <tr class='clickable-row' data-href='../eventDetails.php/?url=<?php echo $array2[$i]['url']; ?>'>
+                 <tr class='clickable-row' data-href='eventDetails.php/?url=<?php echo $array2[$i]['url']; ?>'>
                   <td><?php echo $array2[$i]['name']; ?></td>
                   <td><?php echo $array2[$i]['category']; ?></td>
                   <td><?php echo $array2[$i]['eventDescribe']; ?></td>
@@ -670,5 +726,41 @@ $('#remove').on("click", function(){
          }
       }            
  })
+    
+function handleFileSelect(evt) {
+    document.getElementById("list").innerHTML ="";
+    var files = evt.target.files; // FileList object
+
+    // Loop through the FileList and render image files as thumbnails.
+    for (var i = 0, f; f = files[i]; i++) {
+
+      var reader = new FileReader();
+
+      // Closure to capture the file information.
+      reader.onload = (function(theFile) {
+        return function(e) {
+          // Render thumbnail.
+          var span = document.createElement('span');
+          span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                            '" title="', escape(theFile.name), '"/>'].join('');
+          document.getElementById('list').insertBefore(span, null);
+        };
+      })(f);
+
+      // Read in the image file as a data URL.
+      reader.readAsDataURL(f);
+    }
+  }
+
+  document.getElementById('files').addEventListener('change', handleFileSelect, false);
+    
+  
+  $("#files").on('change', function(){
+    var noOfFiles=0;
+    var countFiles = $(this)[0].files.length;
+    noOfFiles=noOfFiles+countFiles;
+    document.getElementById("noOfFiles").innerHTML = noOfFiles+" File(s) Selected";
+      
+  })
  </script> 
 </body>

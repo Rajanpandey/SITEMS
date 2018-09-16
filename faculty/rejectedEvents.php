@@ -92,11 +92,11 @@ mysqli_close($conn);
         for($i=0; $i<$data; $i=$i+1){
             if($i%2==0){
        ?>
-        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+        <a class="dropdown-item" href="eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
       <?php
             }else{
       ?>
-        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>" style="background-color:#C7BBF0;"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+        <a class="dropdown-item" href="eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>" style="background-color:#C7BBF0;"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
       <?php  
             }
         }
@@ -104,11 +104,11 @@ mysqli_close($conn);
             for($i=0; $i<10; $i=$i+1){
             if($i%2==0){
        ?>
-        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+        <a class="dropdown-item" href="eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
       <?php
             }else{
       ?>
-        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>" style="background-color:#C7BBF0;"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+        <a class="dropdown-item" href="eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>" style="background-color:#C7BBF0;"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
       <?php  
             }
           }
@@ -174,7 +174,7 @@ mysqli_close($conn);
                 for($i=0; $i<$noOfDeclinedEvents; $i=$i+1){
             ?>
                 <div id="eventRows">
-                 <tr class='clickable-row' data-href='../eventDetails.php/?url=<?php echo $array[$i]['url']; ?>'>
+                 <tr class='clickable-row' data-href='eventDetails.php/?url=<?php echo $array[$i]['url']; ?>'>
                   <td><?php echo $array[$i]['name']; ?></td>
                   <td><?php echo $array[$i]['department']; ?></td>
                   <td><?php echo $array[$i]['category']; ?></td>
@@ -183,13 +183,15 @@ mysqli_close($conn);
                   <?php    
                     if($array[$i]['declineReply']!=''){
                   ?>
-                  <td><a href=""><button type="button" class="btn btn-outline-dark viewResponse" id="<?php echo $array[$i]['declineReply']; ?>">View IO's reply</button></a></td>                  
+                  <td><a href=""><button type="button" class="btn btn-outline-dark viewResponse" id="<?php echo $array[$i]['declineReply']; ?>">View IO's reply</button></a></td>           
                   <td><a href="editEvent.php/?url=<?php echo $array[$i]['url']; ?>"><button type="button" class="btn btn-outline-primary">Edit</button></a></td>
                   <td><a href="deleteEvent.php?url=<?php echo $array[$i]['url']; ?>"><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
                   <?php    
                     }else{
                   ?>
-                  <td colspan="3"><a href="deleteEvent.php?url=<?php echo $array[$i]['url']; ?>"><button type="button" class="btn btn-outline-danger">No Response by IO, Delete Event</button></a></td>                  
+                  <td><a href=""><button type="button" class="btn btn-outline-dark disabled">No reply by IO</button></a></td>           
+                  <td><a href="editEvent.php/?url=<?php echo $array[$i]['url']; ?>"><button type="button" class="btn btn-outline-primary">Edit</button></a></td>
+                  <td colspan="3"><a href="deleteEvent.php?url=<?php echo $array[$i]['url']; ?>"><button type="button" class="btn btn-outline-danger">Delete</button></a></td>                  
                   <?php    
                     }
                   ?>                  
