@@ -6,6 +6,7 @@ img {
 /* Bordered form */
 form {
     border: 3px solid #f1f1f1;
+    border-bottom-width: 50px;
 }
 
 /* Full-width inputs */

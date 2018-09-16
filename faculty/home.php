@@ -36,7 +36,7 @@ if(isset($_GET["page"])) {
 //Query to select events awaiting approval
 $issues=0;
 $start_from=($page-1)*$num_rec_per_page; 
-$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus IS NULL ORDER BY date DESC";
+$sql="SELECT * FROM events WHERE userId='$userId' AND approvalStatus IS NULL AND draft IS NULL ORDER BY date DESC";
 $result=mysqli_query($conn, $sql);
 if($result!=NULL){
     $array1 = array();
@@ -87,7 +87,9 @@ mysqli_close($conn);
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     
     <!-- My CSS -->  
-	<link rel="stylesheet" href="../assets/mycss/facultyHome.css">
+	<link rel="stylesheet" href="../assets/mycss/sitLogo.css">
+	<link rel="stylesheet" href="../assets/mycss/table.css">
+	<link rel="stylesheet" href="../assets/mycss/cards.css">
 	
 	<title>Faculty Home</title>
 </head>
@@ -109,10 +111,13 @@ mysqli_close($conn);
       <a class="nav-link disabled"><i class="fas fa-home"></i>   Home</a>
     </li>
     <li class="nav-item">
+      <a class="nav-link" href="drafts.php"><i class="fas fa-bookmark"></i>   Drafts</a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" href="rejectedEvents.php"><i class="far fa-calendar"></i>   Rejected Events</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link"  href="allEvents.php"><i class="fas fa-calendar-alt"></i>   Approved Events</a>
+      <a class="nav-link" href="allEvents.php"><i class="fas fa-calendar-alt"></i>   Approved Events</a>
     </li>
   </ul>
   <ul class="navbar-nav ml-auto">
@@ -390,7 +395,8 @@ mysqli_close($conn);
                   </div>
               </div>
               
-              <button type="submit" class="btn btn-outline-primary" name="submit" class="submit">Submit &nbsp;&nbsp;<i  id="spin"></i></button>              
+              <button type="submit" class="btn btn-outline-dark" name="save" class="save">Save as a Draft &nbsp;&nbsp;<i  id="spin"></i></button>              
+              <button type="submit" class="btn btn-outline-primary" name="submit" class="submit">Submit Event &nbsp;&nbsp;<i  id="spin"></i></button>              
           </form>
         </div>  
         <!-- Modal body Ends -->  
@@ -721,6 +727,9 @@ $('#remove').on("click", function(){
       }            
  })
     
+function clearNoOfFile(){
+    document.getElementById("noOfFiles").innerHTML = "0 File(s) Selected";
+}
 
 function handleFileSelect(evt) {
     document.getElementById("list").innerHTML ="";
@@ -729,7 +738,16 @@ function handleFileSelect(evt) {
     // Loop through the FileList and render image files as thumbnails.
     for (var i = 0, f; f = files[i]; i++) {
 
-      var reader = new FileReader();
+        if(f.type.substring(0, 5)=='image'){
+            if(Math.round(f.size/1024)<1024){
+                alert("Pictures smaller than 1mb are not allowed!");
+                document.getElementById("list").innerHTML ="";
+                setTimeout(clearNoOfFile, 100);                
+                return;
+            }
+        }
+        
+      var reader = new FileReader();       
 
       // Closure to capture the file information.
       reader.onload = (function(theFile) {
@@ -740,6 +758,7 @@ function handleFileSelect(evt) {
                             '" title="', escape(theFile.name), '"/>'].join('');
           document.getElementById('list').insertBefore(span, null);
         };
+          
       })(f);
 
       // Read in the image file as a data URL.

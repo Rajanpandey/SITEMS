@@ -27,8 +27,11 @@ $category=mysqli_real_escape_string($conn,trim($_POST['category']));
 $type=mysqli_real_escape_string($conn,trim($_POST['type']));
 $describe=mysqli_real_escape_string($conn,trim($_POST['describe']));
 $achievement=mysqli_real_escape_string($conn,trim($_POST['achievement']));
+$year=substr($date, 0, 4);
 
 //Used implode to separate array values with commas
+$resourceName=implode(',', (array)$_POST['resourceName']);
+$resourceDesignation=implode(',', (array)$_POST['resourceDesignation']);
 $attendees=implode(',', (array)$_POST['attendees']);
 $for=implode(',', (array)$_POST['for']);
 
@@ -80,16 +83,31 @@ else{
     }    
   
     //Store everything to the database
-    $sql="UPDATE events SET name='$name', department='$department', incharge='$incharge', date='$date', type='$type', eventDescribe='$describe', achievements='$achievement', attendees='$attendees', eventFor='$for', category='$category', media='$new_name', url='$new_url', approvalStatus=NULL, declineReply=NULL, viewedNotification=NULL WHERE eventId='$eventId'";
+    if (isset($_POST['submit'])) {
+            $sql="UPDATE events SET name='$name', department='$department', incharge='$incharge', date='$date', year='$year', type='$type', eventDescribe='$describe', achievements='$achievement', attendees='$attendees', eventFor='$for', resourceName='$resourceName', resourceDesignation='$resourceDesignation', category='$category', media='$new_name', url='$new_url', approvalStatus=NULL, declineReply=NULL, viewedNotification=NULL, draft=NULL WHERE eventId='$eventId'";
     
-    if(mysqli_query($conn, $sql)){
-        echo "<script type=\"text/javascript\">
-        alert('Your event has been sent to information officer for approval!');
-        window.location='home.php';
-        </script>";
-    } else {
-        echo "Error".$sql."<br>".$conn->error;
-    }          
+        if(mysqli_query($conn, $sql)){
+         echo "<script type=\"text/javascript\">
+         alert('Your event has been sent to information officer for approval!');
+         window.location='home.php';
+         </script>";
+     } else {
+            echo "Error".$sql."<br>".$conn->error;
+        }   
+    }
+    elseif (isset($_POST['save'])) {        
+        $sql="UPDATE events SET name='$name', department='$department', incharge='$incharge', date='$date', year='$year', type='$type', eventDescribe='$describe', achievements='$achievement', attendees='$attendees', eventFor='$for', resourceName='$resourceName', resourceDesignation='$resourceDesignation', category='$category', media='$new_name', url='$new_url', draft='1', approvalStatus=NULL, declineReply=NULL, viewedNotification=NULL WHERE eventId='$eventId'";
+        
+        if(mysqli_query($conn, $sql)){
+            echo "<script type=\"text/javascript\">
+            alert('Your event has been saved to drafts!');
+            window.location='home.php';
+            </script>";
+        } else {
+            echo "Error".$sql."<br>".$conn->error;
+        }  
+    }
+             
 }          
 
 function friendly_seo_string($vp_string){   														

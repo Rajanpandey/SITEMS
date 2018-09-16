@@ -45,7 +45,9 @@ mysqli_close($conn);
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     
     <!-- My CSS -->  
-	<link rel="stylesheet" href="../assets/mycss/facultyHome.css">
+	<link rel="stylesheet" href="../assets/mycss/search.css">
+	<link rel="stylesheet" href="../assets/mycss/table.css">
+	<link rel="stylesheet" href="../assets/mycss/filters.css">
 	
 	<title>Events List</title>
 </head>
@@ -83,7 +85,7 @@ mysqli_close($conn);
 <br/>
 <div class="container-fluid">
     <div class="row">
-       <div class="col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 alert alert-info">
+       <div class="col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 alert alert-info filters filters">
           <strong class="alert-link">Filters</strong> to sort!
                   
           <form class="moreFilters">
@@ -109,16 +111,15 @@ mysqli_close($conn);
               <div class="form-group">
                 <label for="department">Year:</label>
                   <select class="form-control" id="year1">
-                    <option selected value=""> -- Select an option -- </option>
-                    <option value="2018">2018</option>
-                    <option value="2017">2017</option>
-                    <option value="2016">2016</option>
-                    <option value="2015">2015</option>
-                    <option value="2014">2014</option>
-                    <option value="2013">2013</option>
-                    <option value="2012">2012</option>
-                    <option value="2011">2011</option>
-                    <option value="2010">2010</option>
+                   <option selected value=""> -- Select an option -- </option>
+                   
+                   <?php
+                    for($i=date("Y"); $i>=2010; $i=$i-1){
+                   ?>
+                        <option value="<?php echo $i ?>"><?php echo $i ?></option>
+                   <?php
+                    }
+                   ?>                    
                   </select>
               </div>
               

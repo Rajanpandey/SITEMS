@@ -46,7 +46,6 @@ mysqli_close($conn);
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     
     <!-- My CSS -->  
-	<link rel="stylesheet" href="../assets/mycss/facultyHome.css">
 	
 	<title>Notifications</title>
 </head>
@@ -58,6 +57,9 @@ mysqli_close($conn);
   <ul class="navbar-nav">
    <li class="nav-item">
       <a class="nav-link" href="home.php"><i class="fas fa-home"></i>   Home</a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="drafts.php"><i class="fas fa-bookmark"></i>   Drafts</a>
     </li>
     <li class="nav-item">
       <a class="nav-link" href="rejectedEvents.php"><i class="far fa-calendar"></i>   Rejected Events</a>

@@ -34,7 +34,7 @@ if(isset($_GET["page"])) {
 }; 
 
 //Query to select events awaiting approval
-$sql="SELECT * FROM events WHERE approvalStatus IS NULL ORDER BY date DESC";
+$sql="SELECT * FROM events WHERE approvalStatus IS NULL AND draft IS NULL ORDER BY date DESC";
 $result=mysqli_query($conn, $sql);
 if($result!=NULL){
     $array1 = array();
@@ -71,7 +71,9 @@ mysqli_close($conn);
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     
     <!-- My CSS -->  
-	<link rel="stylesheet" href="../assets/mycss/facultyHome.css">
+	<link rel="stylesheet" href="../assets/mycss/sitLogo.css">
+	<link rel="stylesheet" href="../assets/mycss/cards.css">
+	<link rel="stylesheet" href="../assets/mycss/table.css">
 	
 	<title>Information Officer Home</title>
 </head>
@@ -727,6 +729,11 @@ $('#remove').on("click", function(){
       }            
  })
     
+    
+function clearNoOfFile(){
+    document.getElementById("noOfFiles").innerHTML = "0 File(s) Selected";
+}
+
 function handleFileSelect(evt) {
     document.getElementById("list").innerHTML ="";
     var files = evt.target.files; // FileList object
@@ -734,7 +741,16 @@ function handleFileSelect(evt) {
     // Loop through the FileList and render image files as thumbnails.
     for (var i = 0, f; f = files[i]; i++) {
 
-      var reader = new FileReader();
+        if(f.type.substring(0, 5)=='image'){
+            if(Math.round(f.size/1024)<1024){
+                alert("Pictures smaller than 1mb are not allowed!");
+                document.getElementById("list").innerHTML ="";
+                setTimeout(clearNoOfFile, 100);                
+                return;
+            }
+        }
+        
+      var reader = new FileReader();       
 
       // Closure to capture the file information.
       reader.onload = (function(theFile) {
@@ -745,6 +761,7 @@ function handleFileSelect(evt) {
                             '" title="', escape(theFile.name), '"/>'].join('');
           document.getElementById('list').insertBefore(span, null);
         };
+          
       })(f);
 
       // Read in the image file as a data URL.

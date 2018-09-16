@@ -128,8 +128,16 @@ mysqli_close($conn);
           <?php 
            if($array[0]['approvalStatus']==NULL){
           ?>
-           <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-primary">
-              The event submission is pending my approval.
+           <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-danger">
+              The event submission is pending my approval.<br/>
+              <button onclick="location.href='../approve2.php/?eventId=<?php echo $array[0]['eventId']; ?>';" class="btn btn-outline-success approve">Approve</button> 
+              <button class="btn btn-outline-danger commentDecline">Decline</button> <br/><br/>
+              <div class="declineReply" style="display: none;">
+                 <form method="post" action="../decline2.php/?eventId=<?php echo $array[0]['eventId']; ?>">
+                     <textarea class="form-control" rows="5" maxlength="5000" placeholder="Reason for declining event data (optional):" name="comment"></textarea><br/>
+                     <button type="submit" class="btn btn-outline-danger">Submit</button> 
+                 </form>                  
+              </div>
             </div>
           <?php 
            }
@@ -278,8 +286,13 @@ mysqli_close($conn);
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
         
         <!--Bootstrap-->
-        <script src="../assets/js/bootstrap.min.js"></script>  
+        <script src="../../assets/js/bootstrap.min.js"></script>  
     
+<script>
+$(".commentDecline").click(function(){
+    $(".declineReply").toggle();
+});    
+</script>
     </body>
     
 </html>

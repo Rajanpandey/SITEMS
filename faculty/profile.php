@@ -80,6 +80,9 @@ mysqli_close($conn);
       <a class="nav-link" href="home.php"><i class="fas fa-home"></i>   Home</a>
     </li>
     <li class="nav-item">
+      <a class="nav-link" href="drafts.php"><i class="fas fa-bookmark"></i>   Drafts</a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" href="rejectedEvents.php"><i class="far fa-calendar"></i>   Rejected Events</a>
     </li>
     <li class="nav-item">
@@ -206,6 +209,6 @@ mysqli_close($conn);
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
         
         <!--Bootstrap-->
-        <script src="../assets/js/bootstrap.min.js"></script>  
+        <script src="../../assets/js/bootstrap.min.js"></script>   
 </body>    
 </html>

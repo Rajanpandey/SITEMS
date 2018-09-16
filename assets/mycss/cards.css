@@ -1,0 +1,40 @@
+.posts {
+    height: 400px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);    
+}
+
+.posts:hover {
+    -ms-transform: scale(1.02); /* IE 9 */
+    -webkit-transform: scale(1.02)); /* Safari 3-8 */
+    transform: scale(1.02); 
+}
+
+.posts a:link {
+    color: black;
+}
+
+.posts a:visited {
+    color: black;
+}
+
+.posts a:hover{
+    color: black;
+}
+
+.posts a:active{
+    color: black;
+}
+
+.articleImage{
+    background-image:url('../img/sitLogo.png');
+}
+
+.articleImage {
+    width: 100%;
+    height: 200px;
+}
+
+#description{
+    padding-top: 10px;
+}

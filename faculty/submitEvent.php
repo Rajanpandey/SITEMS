@@ -61,16 +61,33 @@ else{
     $new_name=implode(',', $arrayOfFileNames);
   
     //Store everything to the database
-    $sql="INSERT INTO events (name, department, incharge, date, year, type, eventDescribe, achievements, attendees, eventFor, resourceName, resourceDesignation, category, media, userId, url) 
-        VALUES ('$name', '$department', '$incharge', '$date', '$year', '$type', '$describe', '$achievement', '$attendees', '$for', '$resourceName', '$resourceDesignation', '$category', '$new_name', '$userId', '$new_url')";    
-    if(mysqli_query($conn, $sql)){
-        echo "<script type=\"text/javascript\">
-        alert('Your event has been sent to information officer for approval!');
-        window.location='home.php';
-        </script>";
-    } else {
-        echo "Error".$sql."<br>".$conn->error;
-    }          
+    if (isset($_POST['submit'])) {
+         $sql="INSERT INTO events (name, department, incharge, date, year, type, eventDescribe, achievements, attendees, eventFor, resourceName, resourceDesignation, category, media, userId, url) VALUES ('$name', '$department', '$incharge', '$date', '$year', '$type', '$describe', '$achievement', '$attendees', '$for', '$resourceName', '$resourceDesignation', '$category', '$new_name', '$userId', '$new_url')"; 
+        
+        if(mysqli_query($conn, $sql)){
+            echo "<script type=\"text/javascript\">
+            alert('Your event has been sent to information officer for approval!');
+            window.location='home.php';
+            </script>";
+        } else {
+            echo "Error".$sql."<br>".$conn->error;
+        }  
+    }
+    elseif (isset($_POST['save'])) {        
+        $sql="INSERT INTO events (name, department, incharge, date, year, type, eventDescribe, achievements, attendees, eventFor, resourceName, resourceDesignation, category, media, userId, url, draft) VALUES ('$name', '$department', '$incharge', '$date', '$year', '$type', '$describe', '$achievement', '$attendees', '$for', '$resourceName', '$resourceDesignation', '$category', '$new_name', '$userId', '$new_url', '1')";
+        
+        if(mysqli_query($conn, $sql)){
+            echo "<script type=\"text/javascript\">
+            alert('Your event has been saved to drafts!');
+            window.location='home.php';
+            </script>";
+        } else {
+            echo "Error".$sql."<br>".$conn->error;
+        }  
+    }
+   
+    
+            
 }          
 
 function friendly_seo_string($vp_string){   														

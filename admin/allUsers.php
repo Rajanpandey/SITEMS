@@ -45,7 +45,7 @@ mysqli_close($conn);
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     
     <!-- My CSS -->  
-	<link rel="stylesheet" href="../assets/mycss/facultyHome.css">
+	<link rel="stylesheet" href="../assets/mycss/search.css">
 	
 	<title>Events List</title>
 </head>
@@ -137,7 +137,7 @@ mysqli_close($conn);
         <!-- Modal body -->
         <div class="modal-body">
           <form method="POST" action="addUser.php" enctype='multipart/form-data' >
-            <table class="table" id="userTable">
+            <table class="table table-bordered" id="userTable">
                 <thead class="thead-light">
                   <tr>
                     <th>Name</th>

@@ -32,15 +32,28 @@ foreach($files as $file){ // iterate files
     unlink($file); // delete file
 }
 
-$sql="DELETE FROM events WHERE url='$url'";
-if(mysqli_query($conn, $sql)){
+if($array[0]['draft']=='1'){
+    $sql="DELETE FROM events WHERE url='$url'";
+    if(mysqli_query($conn, $sql)){    
+    echo "<script type=\"text/javascript\">
+           alert('The event has been permanently deleted!');
+           window.location='drafts.php';
+          </script>";
+    }else{
+        echo "Error".$sql."<br>".$conn->error;
+    }
+}else{
+    $sql="DELETE FROM events WHERE url='$url'";
+    if(mysqli_query($conn, $sql)){  
     echo "<script type=\"text/javascript\">
            alert('The event has been permanently deleted!');
            window.location='rejectedEvents.php';
           </script>";
 }else{
     echo "Error".$sql."<br>".$conn->error;
+}    
 }
+
 removeEmptySubFolders("../TempMedia");
 
 mysqli_close($conn);

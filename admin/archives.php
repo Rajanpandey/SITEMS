@@ -48,7 +48,8 @@ mysqli_close($conn);
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     
     <!-- My CSS -->  
-	<link rel="stylesheet" href="../assets/mycss/facultyHome.css">
+	<link rel="stylesheet" href="../assets/mycss/sitLogo.css">
+	<link rel="stylesheet" href="../assets/mycss/search.css">
 	
 	<title>Archives</title>
 </head>
@@ -117,7 +118,7 @@ mysqli_close($conn);
 <div class="container">
     <div class="row">
         <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <h3>List of Archives:</h3>
+            <h3>List of Archives:</h3><br/>
         </div>   
     </div>        
 </div> 
@@ -133,14 +134,11 @@ mysqli_close($conn);
        }else{
            for($i=0; $i<$totalArchives; $i=$i+1){
       ?>
-           <div class="col-6 col-sm-3 col-md-3 col-lg-3 col-xl-3"><br/>
-              <a href="archivedEvents.php/?archive=<?php echo $array[$i]['archive']; ?>">
-              <div class="postss">
-                <div class="container" id="description">
-                  <h4 class="card-title"><?php echo ($i+1).'. '.$array[$i]['archive']; ?></h4>
-                </div>
-              </div></a>
-            </div>  
+       <div class="col-4">
+          <a href="archivedEvents.php/?archive=<?php echo $array[$i]['archive']; ?>">
+              <button class="btn btn-outline-primary btn-block"> <?php echo $array[$i]['archive']; ?> </button>
+          </a>
+        </div>  
       <?php 
            }
        }    

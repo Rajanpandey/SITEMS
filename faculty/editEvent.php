@@ -14,16 +14,12 @@ if(mysqli_connect_error()){
 
 $url=$_GET["url"]; 
 
-if(substr($_SERVER['HTTP_REFERER'], -8)=='home.php'){
-    $sql="UPDATE events SET viewedNotification='1' WHERE url='$url'";
-    $result=mysqli_query($conn, $sql);
-}
-
 //Query to select the user
-$sqlUserId="SELECT userId FROM users WHERE email='$login_session'";
+$sqlUserId="SELECT * FROM users WHERE email='$login_session'";
 $resultUserId=mysqli_query($conn, $sqlUserId);
 $rowUserId=mysqli_fetch_assoc($resultUserId);
 $userId = $rowUserId['userId'];
+$userName = $rowUserId['name'];
 
 //Query to select the user
 $sqlUserId="SELECT type FROM users WHERE email='$login_session'";
@@ -94,10 +90,68 @@ mysqli_close($conn);
       <a class="nav-link" href="../home.php"><i class="fas fa-home"></i>   Home</a>
     </li>
     <li class="nav-item">
+      <a class="nav-link" href="../drafts.php"><i class="fas fa-bookmark"></i>   Drafts</a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" href="../rejectedEvents.php"><i class="far fa-calendar"></i>   Rejected Events</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link"  href="../allEvents.php"><i class="fas fa-calendar-alt"></i>   All Events</a>
+      <a class="nav-link"  href="../allEvents.php"><i class="fas fa-calendar-alt"></i>   Approved Events</a>
+    </li>
+  </ul>
+  <ul class="navbar-nav ml-auto">
+<li class="nav-item dropdown">
+  <?php
+    if($data==0){
+  ?>
+    <a class="nav-link"><i class="far fa-bell"> No New Message</i></a>
+  <?php
+    }else{
+  ?>
+    <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown"><i class="fas fa-bell"> New Message (<?php echo $data ?>)</i></a>
+      <div class="dropdown-menu dropdown-menu-right">
+          <a class="dropdown-item" href="clearNotifications.php/?url=<?php echo $userId; ?>" style="text-align:right;">Clear all notification</a>
+       <?php
+        if($data<=10){
+        for($i=0; $i<$data; $i=$i+1){
+            if($i%2==0){
+       ?>
+        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+      <?php
+            }else{
+      ?>
+        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>" style="background-color:#C7BBF0;"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+      <?php  
+            }
+        }
+       }else{
+            for($i=0; $i<10; $i=$i+1){
+            if($i%2==0){
+       ?>
+        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+      <?php
+            }else{
+      ?>
+        <a class="dropdown-item" href="../eventDetails.php/?url=<?php echo $array3[$i]['url']; ?>" style="background-color:#C7BBF0;"><?php echo $array3[$i]['name']; ?><br/><?php echo substr($array3[$i]['declineReply'], 0, 40); ?></a>
+      <?php  
+            }
+          }
+       ?>
+            <a class="dropdown-item" href="../allNotifications.php/?url=<?php echo $userId; ?>" style="text-align:right;">View all notifications</a>
+      <?php  
+        }
+      ?>
+      </div>
+  <?php
+    } 
+  ?>  
+    
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle">       <?php echo $userName; ?></i></a>
+      <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+        <a class="dropdown-item" href="../profile.php"><i class="fas fa-user-alt"></i>   My Profile</a>
+        <a class="dropdown-item" href="../../logout.php"><i class="fas fa-sign-out-alt"></i>   Logout</a>
+      </div>
     </li>
   </ul>
 </nav>
@@ -335,7 +389,7 @@ mysqli_close($conn);
                   <label for="media"><b>Add more files?</b></label>
                   <div id="wrapper" style="margin-top: 20px;">
                      <label for="files" class="btn btn-primary">Select File(s)</label><p id="noOfFiles"></p>
-                     <input style="visibility:hidden;" type="file" id="files" name="media[]" accept="file_extension|audio/*|video/*|image/*|media_type" multiple="multiple" class="form-control-file" required>
+                     <input style="visibility:hidden;" type="file" id="files" name="media[]" accept="file_extension|audio/*|video/*|image/*|media_type" multiple="multiple" class="form-control-file">
                       <output id="list"></output>
                   </div>
               </div>
@@ -343,6 +397,13 @@ mysqli_close($conn);
               <div class="form-group" style="display:none">
                 <input type="text" class="form-control" id="eventId" name="eventId" value="<?php echo $array[0]['eventId']; ?>">
               </div>
+              <?php
+              if(substr($_SERVER['HTTP_REFERER'], -10)=='drafts.php'){
+              ?>
+                <button type="submit" class="btn btn-outline-dark" name="save" class="save">Save as a Draft &nbsp;&nbsp;<i  id="spin"></i></button>         
+              <?php
+              }
+              ?>
               
               <button type="submit" class="btn btn-outline-primary" name="submit">Save Edits and Resubmit Event</button>      
           </form><br/> 
@@ -354,7 +415,7 @@ mysqli_close($conn);
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
         
         <!--Bootstrap-->
-        <script src="assets/js/bootstrap.min.js"></script>  
+        <script src="../../assets/js/bootstrap.min.js"></script>  
         
         <script>
         function otherDepartment(){
@@ -407,14 +468,28 @@ mysqli_close($conn);
             }            
         })
             
-  function handleFileSelect(evt) {
+      
+function clearNoOfFile(){
+    document.getElementById("noOfFiles").innerHTML = "0 File(s) Selected";
+}
+
+function handleFileSelect(evt) {
     document.getElementById("list").innerHTML ="";
     var files = evt.target.files; // FileList object
 
     // Loop through the FileList and render image files as thumbnails.
     for (var i = 0, f; f = files[i]; i++) {
 
-      var reader = new FileReader();
+        if(f.type.substring(0, 5)=='image'){
+            if(Math.round(f.size/1024)<1024){
+                alert("Pictures smaller than 1mb are not allowed!");
+                document.getElementById("list").innerHTML ="";
+                setTimeout(clearNoOfFile, 100);                
+                return;
+            }
+        }
+        
+      var reader = new FileReader();       
 
       // Closure to capture the file information.
       reader.onload = (function(theFile) {
@@ -425,6 +500,7 @@ mysqli_close($conn);
                             '" title="', escape(theFile.name), '"/>'].join('');
           document.getElementById('list').insertBefore(span, null);
         };
+          
       })(f);
 
       // Read in the image file as a data URL.
