@@ -69,10 +69,12 @@ mysqli_close($conn);
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     
     <!-- My CSS -->  
+    <link href="../../assets/mycss/thumbEventInfo.css" rel="stylesheet">	
 	
 	<title>Event Details</title>
 </head>
-    <body>
+
+<body>
        
 <!-- Navbar starts -->  
 <nav class="navbar sticky-top navbar-expand-sm bg-dark navbar-dark">
@@ -179,10 +181,16 @@ mysqli_close($conn);
           ?>
           
           <?php 
-           if($array[0]['approvalStatus']==NULL){
+           if($array[0]['approvalStatus']==NULL && substr($_SERVER['HTTP_REFERER'], -10)!='drafts.php'){
           ?>
            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-primary">
               The event submission is pending approval.
+            </div>
+          <?php 
+           }elseif($array[0]['approvalStatus']==NULL && substr($_SERVER['HTTP_REFERER'], -10)=='drafts.php'){
+          ?>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-primary">
+              Draft View
             </div>
           <?php 
            }
@@ -278,22 +286,67 @@ mysqli_close($conn);
             </div>
               
             <div class="col-sm-12">
-              <h3>Media Location</h3>
+              <h3>Files</h3>
+              <table class="table table-hover">
+                                                
               <?php 
                 if($array[0]['approvalStatus']==1){
                     for($i=0; $i<$sizeOfArray; $i=$i+1){
               ?>
-                        <p>pathToMedia/<?php echo $arrayOfMediaLoc[$i] ?></p>
+                      <tr>  
+                       <td> 
+                        <p>Media/<?php echo $arrayOfMediaLoc[$i] ?></p>
+                       </td>                       
+                        <td> 
+                        <a href="../../Media/<?php echo $arrayOfMediaLoc[$i] ?>" download=""><button class="btn btn-primary">Download</button></a>
+                        </td>
+                        <td> 
+                        <?php 
+                            if(substr($arrayOfMediaLoc[$i], -4)=='.jpg' || substr($arrayOfMediaLoc[$i], -4)=='jpeg' || substr($arrayOfMediaLoc[$i], -4)=='.png' || substr($arrayOfMediaLoc[$i], -4)=='.raw' || substr($arrayOfMediaLoc[$i], -4)=='tiff'){
+                        ?>
+                        <img class="thumb" src="../../Media/<?php echo $arrayOfMediaLoc[$i] ?>">
+                        <?php 
+                            }else{
+                        ?>
+                            No thumbnail
+                        <?php 
+                            }
+                        ?>
+                        </td>
+                        </tr>
               <?php 
                     }
                 }else{
                     for($i=0; $i<$sizeOfArray; $i=$i+1){
               ?>
-                      <p>pathToTempMedia/<?php echo $arrayOfMediaLoc[$i] ?></p>
+                      <tr>  
+                       <td> 
+                        <p>TempMedia/<?php echo $arrayOfMediaLoc[$i] ?></p>
+                       </td>                       
+                        <td> 
+                        <a href="../../TempMedia/<?php echo $arrayOfMediaLoc[$i] ?>" download=""><button class="btn btn-primary">Download</button></a>
+                        </td>
+                        <td> 
+                        <?php 
+                            if(substr($arrayOfMediaLoc[$i], -4)=='.jpg' || substr($arrayOfMediaLoc[$i], -4)=='jpeg' || substr($arrayOfMediaLoc[$i], -4)=='.png' || substr($arrayOfMediaLoc[$i], -4)=='.raw' || substr($arrayOfMediaLoc[$i], -4)=='tiff'){
+                        ?>
+                        <img class="thumb" src="../../TempMedia/<?php echo $arrayOfMediaLoc[$i] ?>">
+                        <?php 
+                            }else{
+                        ?>
+                            No thumbnail
+                        <?php 
+                            }
+                        ?>
+                        </td>
+                        </tr>
               <?php 
                     }
                 }
-              ?>         
+              ?>      
+               
+              </table>   
+                 
               <br/><br/>
             </div>
               

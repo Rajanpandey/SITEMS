@@ -52,20 +52,20 @@ $output ="";
 $output .= '  
  <table class="table table-bordered table-hover" id="myTable">
       <thead class="thead-dark">  
-        <th><a class="column_sort" id="name">Name of the Event</a></th>
-        <th><a class="column_sort" id="department">Department</a></th>  
-        <th><a class="column_sort" id="category">Category</a></th>
-        <th><a class="column_sort" id="eventDescribe">Description</a></th>    
-        <th><a class="column_sort" id="date">Date</a></th>
-        <th><a class="column_sort" id="attendees">Attendees</a></th>
-        <th><a class="column_sort" id="eventFor">Event For</a></th>
-        <th><a class="column_sort" id="type">Type</a></th>
+        <th><a id="name">Name of the Event</a></th>
+        <th><a id="department">Department</a></th>  
+        <th><a id="category">Category</a></th>
+        <th><a id="eventDescribe">Description</a></th>    
+        <th><a id="date">Date</a></th>
+        <th><a id="attendees">Attendees</a></th>
+        <th><a id="eventFor">Event For</a></th>
+        <th><a id="type">Type</a></th>
       </thead>  
  ';  
  while($row = mysqli_fetch_array($result))  
  {  
       $output .= '  
-      <tr class="clickable-row" data-href="eventDetails.php/?url='.$row["url"].'">  
+      <tr onclick=location.href="eventDetails.php/?url='.$row["url"].'">
            <td>' . $row["name"] . '</td>   
            <td>' . $row["department"] . '</td>  
            <td>' . $row["category"] . '</td>  

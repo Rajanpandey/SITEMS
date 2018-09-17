@@ -80,7 +80,7 @@ mysqli_close($conn);
 <div class="container-fluid">
     <div class="row">
        <div class="col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 alert alert-info filters">
-          <strong class="alert-link">Filters</strong> to sort!
+          <strong class="alert-link">Filters</strong>
                   
           <form class="moreFilters">
             <br/>
@@ -197,7 +197,7 @@ mysqli_close($conn);
             for($i=0; $i<$totalEvents; $i=$i+1){
             ?>
                 <div id="eventRows">
-                 <tr class='clickable-row' data-href='eventDetails.php/?url=<?php echo $array[$i]['url']; ?>'>
+                 <tr onclick="location.href='eventDetails.php/?url=<?php echo $array[$i]['url']?>'">
                   <td><?php echo $array[$i]['name']; ?></td>
                   <td><?php echo $array[$i]['department']; ?></td>
                   <td><?php echo $array[$i]['category']; ?></td>
@@ -356,11 +356,5 @@ function print()
     newWin.print();
     newWin.close();
 }
-
-jQuery(document).ready(function($) {
-    $(".clickable-row").click(function() {
-        window.location = $(this).data("href");
-    });
-});
  </script> 
 </body>

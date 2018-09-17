@@ -52,11 +52,17 @@ if(isset($_SESSION['login_user'])){
             
             <form action="connection.php" method="POST">
               <div class="container">
+               
                 <label for="email"><b>Email:</b></label>
-                <input type="text" placeholder="Enter Email Address" name="email" required value="<?php if(isset($_COOKIE["member_email"])) { echo $_COOKIE["member_email"]; } ?>">
+                <div class="input-group mb-3">
+                  <input type="text" class="form-control" placeholder="Enter Email Address" aria-label="Enter Email Address" aria-describedby="basic-addon2" name="email" required value="<?php if(isset($_COOKIE["member_email"])) { echo $_COOKIE["member_email"]; } ?>">
+                  <div class="input-group-append">
+                    <span class="input-group-text" id="basic-addon2">@sitpune.edu.in</span>
+                  </div>
+                </div>
                 
                 <label for="password"><b>Password:</b></label>
-                <input type="password" placeholder="Enter Password" name="password" required value="<?php if(isset($_COOKIE["member_password"])) { echo $_COOKIE["member_password"]; } ?>" class="input-field">
+                <input type="password" class="form-control" placeholder="Enter Password" name="password" required value="<?php if(isset($_COOKIE["member_password"])) { echo $_COOKIE["member_password"]; } ?>" class="input-field">
                 
                 <button type="submit">Login</button>
                 

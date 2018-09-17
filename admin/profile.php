@@ -47,22 +47,11 @@ mysqli_close($conn);
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     
     <!-- My CSS -->  
+	<link rel="stylesheet" href="../assets/mycss/profile.css">
 	
 	<title>My Profile</title>
 </head>
 
-<style>
-.posts {
-    margin-bottom: 20px;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);    
-}
-
-.posts:hover {
-    -ms-transform: scale(1.02); /* IE 9 */
-    -webkit-transform: scale(1.02)); /* Safari 3-8 */
-    transform: scale(1.02); 
-}
-</style>
 <body>
 <!-- Navbar starts -->  
 <nav class="navbar sticky-top navbar-expand-sm bg-dark navbar-dark">
@@ -153,6 +142,6 @@ mysqli_close($conn);
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
         
         <!--Bootstrap-->
-        <script src="../../assets/js/bootstrap.min.js"></script>  
+        <script src="../assets/js/bootstrap.min.js"></script>  
 </body>    
 </html>

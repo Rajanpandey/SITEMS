@@ -385,6 +385,39 @@ mysqli_close($conn);
                   <textarea class="form-control" rows="5" id="achievement" maxlength="1000" name="achievement" required><?php echo $array[0]['achievements']; ?></textarea>
               </div>
               
+              <div class="col-sm-12">
+              <h3>Files</h3>
+              <table class="table table-hover">                                                
+              <?php 
+                    for($i=0; $i<$sizeOfArray; $i=$i+1){
+              ?>
+                      <tr>  
+                       <td> 
+                        <p>TempMedia/<?php echo $arrayOfMediaLoc[$i] ?></p>
+                       </td>                       
+                        <td> 
+                        <a href="../../TempMedia/<?php echo $arrayOfMediaLoc[$i] ?>" download="">Download</a>
+                        </td>
+                        <td> 
+                        <?php 
+                            if(substr($arrayOfMediaLoc[$i], -4)=='.jpg' || substr($arrayOfMediaLoc[$i], -4)=='jpeg' || substr($arrayOfMediaLoc[$i], -4)=='.png' || substr($arrayOfMediaLoc[$i], -4)=='.raw' || substr($arrayOfMediaLoc[$i], -4)=='tiff'){
+                        ?>
+                        <img class="thumb" src="../../TempMedia/<?php echo $arrayOfMediaLoc[$i] ?>">
+                        <?php 
+                            }else{
+                        ?>
+                            No thumbnail
+                        <?php 
+                            }
+                        ?>
+                        </td>
+                        </tr>
+              <?php 
+                    }
+              ?>                             
+              </table>   
+            </div>
+              
               <div class="form-group">
                   <label for="media"><b>Add more files?</b></label>
                   <div id="wrapper" style="margin-top: 20px;">

@@ -44,7 +44,7 @@ $result=mysqli_query($conn, $sql);
 
 $output ="";
 $output .= '  
- <table class="table table-bordered table-hover id="myTable"">
+ <table class="table table-bordered table-hover" id="myTable">
       <thead class="thead-dark">  
         <th><a class="column_sort" id="name">Name of the Event</a></th>
         <th><a class="column_sort" id="department">Department</a></th>  
@@ -59,7 +59,7 @@ $output .= '
  while($row = mysqli_fetch_array($result))  
  {  
       $output .= '  
-      <tr>  
+      <tr onclick=location.href="eventDetails.php/?url='.$row["url"].'">
            <td>' . $row["name"] . '</td>   
            <td>' . $row["department"] . '</td>  
            <td>' . $row["category"] . '</td>  

@@ -45,11 +45,9 @@ removeEmptySubFolders("../TempMedia");
 
 mysqli_close($conn);
 
-function removeEmptySubFolders($path)
-{
+function removeEmptySubFolders($path){
   $empty=true;
-  foreach (glob($path.DIRECTORY_SEPARATOR."*") as $file)
-  {
+  foreach (glob($path.DIRECTORY_SEPARATOR."*") as $file){
      $empty &= is_dir($file) && RemoveEmptySubFolders($file);
   }
   return $empty && rmdir($path);

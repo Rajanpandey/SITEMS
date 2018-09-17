@@ -74,17 +74,10 @@ mysqli_close($conn);
 	<link rel="stylesheet" href="../assets/mycss/sitLogo.css">
 	<link rel="stylesheet" href="../assets/mycss/cards.css">
 	<link rel="stylesheet" href="../assets/mycss/table.css">
+	<link rel="stylesheet" href="../assets/mycss/thumbPostEvent.css">
 	
 	<title>Information Officer Home</title>
 </head>
-
-<style>
-.thumb {
-    height: 75px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
-  }
-</style>
 
 <body>
 

@@ -59,7 +59,7 @@ $output .= '
  while($row = mysqli_fetch_array($result))  
  {  
       $output .= '  
-      <tr>  
+      <tr onclick=location.href="eventDetails.php/?url='.$row["url"].'">
            <td>' . $row["name"] . '</td>   
            <td>' . $row["department"] . '</td>  
            <td>' . $row["category"] . '</td>  

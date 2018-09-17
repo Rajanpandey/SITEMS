@@ -90,17 +90,10 @@ mysqli_close($conn);
 	<link rel="stylesheet" href="../assets/mycss/sitLogo.css">
 	<link rel="stylesheet" href="../assets/mycss/table.css">
 	<link rel="stylesheet" href="../assets/mycss/cards.css">
+	<link rel="stylesheet" href="../assets/mycss/thumbPostEvent.css">
 	
 	<title>Faculty Home</title>
 </head>
-
-<style>
-.thumb {
-    height: 75px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
-  }
-</style>
 
 <body>
 
@@ -464,13 +457,14 @@ mysqli_close($conn);
         </div>
         
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"></div>
+        <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4"></div>
         <div class="col-12 col-sm-12 col-md-4 col-lg-4 col-xl-4">
 <?php  
     if($total_records!=0){
     //If page 1-3 is selected, show first 5 pages
     if($page<4){
 ?>
-    <ul class="pagination">
+    <ul class="pagination justify-content-end">
     <?php     
     if($page==1){
         ?>
