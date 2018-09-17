@@ -179,10 +179,16 @@ mysqli_close($conn);
           ?>
           
           <?php 
-           if($array[0]['approvalStatus']==NULL){
+           if($array[0]['approvalStatus']==NULL && substr($_SERVER['HTTP_REFERER'], -10)!='drafts.php'){
           ?>
            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-primary">
               The event submission is pending approval.
+            </div>
+          <?php 
+           }elseif($array[0]['approvalStatus']==NULL && substr($_SERVER['HTTP_REFERER'], -10)=='drafts.php'){
+          ?>
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 alert alert-primary">
+              Draft View
             </div>
           <?php 
            }
