@@ -1,0 +1,36 @@
+<table border='2px'><tr bgcolor='#87AFC6' style='height: 75px; text-align: center; width: 250px'>
+              <th>User ID</th>
+              <th>Name</th>    
+              <th>EMail</th>              
+              <th>Password</th>
+              <th>Role</th>
+              <th>Edit</th>
+              <th>Delete</th>
+            </tr>
+                  <td class="userId">3</td>
+                  <td class="name">Bhumika Saini</td>
+                  <td class="email">bhumika.saini@sitpune.edu.in</td>
+                  <td class="password">bhumika12345</td>
+                  <td class="type">admin</td>
+                                        <td><button type="button" class="btn btn-outline-info" disabled="" title="Current user. Cannot Edit.">Edit</button></td>
+                      <td><button type="button" class="btn btn-outline-danger" disabled="" title="Current user. Cannot delete.">Delete</button></td>
+                                    
+                </tr>
+                  <td class="userId">1</td>
+                  <td class="name">Rajan Pandey</td>
+                  <td class="email">rajan.pandey@sitpune.edu.in</td>
+                  <td class="password">rkp12345</td>
+                  <td class="type">faculty</td>
+                                        <td><button type="button" class="btn btn-outline-info edit" data-toggle="modal" data-target="#myModal2">Edit</button></td>
+                      <td><a href="deleteUser.php/?userId=1"><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
+                                    
+                </tr>
+                  <td class="userId">2</td>
+                  <td class="name">Ashwin Kolhatkar</td>
+                  <td class="email">kolhatkar.ashwin@sitpune.edu.in</td>
+                  <td class="password">ashwin12345</td>
+                  <td class="type">informationOfficer</td>
+                                        <td><button type="button" class="btn btn-outline-info edit" data-toggle="modal" data-target="#myModal2">Edit</button></td>
+                      <td><a href="deleteUser.php/?userId=2"><button type="button" class="btn btn-outline-danger">Delete</button></a></td>
+                                    
+                </tr></table>
