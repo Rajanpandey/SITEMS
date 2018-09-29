@@ -12,9 +12,9 @@ if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 }
 
-$name=$_POST['name'];
-$from=$_POST['from'];
-$to=$_POST['to'];
+$name=mysqli_real_escape_string($conn,trim($_POST['name']));
+$from=mysqli_real_escape_string($conn,trim($_POST['from']));
+$to=mysqli_real_escape_string($conn,trim($_POST['to']));
 
 $sql="UPDATE events SET archive='$name' WHERE date>='$from' AND date<='$to' and approvalStatus='1'";
 $result=mysqli_query($conn, $sql);

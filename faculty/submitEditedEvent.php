@@ -8,7 +8,7 @@ $userId = $rowUserId['userId'];
 
 require('../connect.php');
 
-$eventId=$_POST['eventId'];
+$eventId=mysqli_real_escape_string($conn,trim($_POST['eventId']));
 $sql="SELECT * FROM events WHERE eventId='$eventId'";
 $result=mysqli_query($conn, $sql);
 if($result!=NULL){

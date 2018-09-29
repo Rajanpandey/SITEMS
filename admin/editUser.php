@@ -12,11 +12,11 @@ if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 }
 
-$userId=$_POST['userId'];
-$name=$_POST['name'];
-$email=$_POST['email'];
-$password=$_POST['password'];
-$type=$_POST['type'];
+$userId=mysqli_real_escape_string($conn,trim($_POST['userId']));
+$name=mysqli_real_escape_string($conn,trim($_POST['name']));
+$eventId=mysqli_real_escape_string($conn,trim($_POST['email']));
+$email=mysqli_real_escape_string($conn,trim($_POST['password']));
+$type=mysqli_real_escape_string($conn,trim($_POST['type']));
 
 $sql="UPDATE users SET name='$name', email='$email', password='$password', type='$type' WHERE userId='$userId'";
 if(mysqli_query($conn, $sql)){

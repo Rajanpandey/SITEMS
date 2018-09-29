@@ -12,7 +12,7 @@ if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 }
 
-$eventId = $_POST["eventId"]; 
+$eventId=mysqli_real_escape_string($conn,trim($_POST['eventId']));
 $sql="UPDATE events SET approvalStatus='1' WHERE eventId='$eventId'";
 $result=mysqli_query($conn, $sql);
 

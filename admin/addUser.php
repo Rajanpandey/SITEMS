@@ -12,9 +12,9 @@ if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 }
 
-$name=$_POST['name'];
-$email=$_POST['email'];
-$password=$_POST['password'];
+$name=mysqli_real_escape_string($conn,trim($_POST['name']));
+$email=mysqli_real_escape_string($conn,trim($_POST['email']));
+$password=mysqli_real_escape_string($conn,trim($_POST['password']));
 $type=$_POST['type'];
 
 $noOfAdds=sizeof($name);

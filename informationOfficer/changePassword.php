@@ -12,7 +12,7 @@ if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 }
 
-$password=$_POST['password'];
+$password=mysqli_real_escape_string($conn,trim($_POST['password']));
 
 $sql="UPDATE users SET password='$password' WHERE email='$login_session'";
 if(mysqli_query($conn, $sql)){

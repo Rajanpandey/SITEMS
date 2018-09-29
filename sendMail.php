@@ -5,7 +5,7 @@ if(mysqli_connect_error()){
     die('Connect Error('.mysqli_connect_errno().')'.mysqli_connect_error());
 }
 
-$email=$_POST['email'];
+$email=mysqli_real_escape_string($conn,trim($_POST['email']));
     
 $sql="SELECT password FROM users WHERE email='$email'";
 $result=mysqli_query($conn, $sql);
@@ -37,8 +37,8 @@ try {
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'sitcodewars@gmail.com';                 // SMTP username
-    $mail->Password = 'rkp12345';                           // SMTP password
+    $mail->Username = getenv('MAIL');                 // SMTP username
+    $mail->Password = getenv('PASS');                            // SMTP password
     $mail->SMTPSecure = 'ssl';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 465;                                    // TCP port to connect to
 
