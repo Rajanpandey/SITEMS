@@ -3,10 +3,16 @@ require('connect.php');
 session_start();
 
 if(isset($_SESSION['login_user'])){ 
-    $user_check = $_SESSION['login_user'];
-    $query = "SELECT email FROM users WHERE email='$user_check'";
-    $ses_sql = mysqli_query($conn, $query);
-    $row = mysqli_fetch_assoc($ses_sql);
-    $login_session = $row['email'];
+    $email = $_SESSION['login_user'];
+    
+    $query = "SELECT email FROM users WHERE email=? LIMIT 1";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();    
+    
+    $result = $stmt->get_result();
+    while ($row = $result->fetch_assoc()) {
+        $login_session = $row['email'];
+    }    
 }
 ?>
